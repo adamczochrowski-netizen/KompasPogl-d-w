@@ -16,6 +16,9 @@
   const PARTY_THRESHOLD = 65;   // % podobieństwa, od którego partia "pasuje"
   const $ = id => document.getElementById(id);
   const Q = Object.fromEntries(QUESTIONS.map(q => [q.id, q]));
+  // Główny test = pytania bez flagi pool. Pytania z pool: true są tylko w Tematach.
+  const TEST = QUESTIONS.filter(q => !q.pool);
+  const TOPIC_DRAW = 10;   // tyle pytań losujemy przy jednym podejściu do tematu
   const LQ = Object.fromEntries((SZ.LEGACY || []).map(q => [q.id, q]));   // stare pytania ze skalą
   const isChoice = q => q.type === 'scenario' || q.type === 'positions';
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -221,18 +224,23 @@
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
+  const inTopic = () => state.mode === 'topic' && state.topic;
   function wantIds() {
-    return state.mode === 'topic' && state.topic ? topicIds(state.topic) : QUESTIONS.map(q => q.id);
+    return inTopic() ? topicIds(state.topic) : TEST.map(q => q.id);
   }
   function buildDeck() {
     const ids = wantIds();
-    state.deck = shuffle(ids);
+    // W temacie losujemy TOPIC_DRAW pytań: najpierw te, na które jeszcze nie ma odpowiedzi.
+    state.deck = inTopic()
+      ? shuffle(ids.filter(id => state.answers[id] == null)).concat(shuffle(ids.filter(id => state.answers[id] != null))).slice(0, TOPIC_DRAW)
+      : shuffle(ids);
     const i = state.deck.findIndex(id => state.answers[id] == null);
     state.pos = i < 0 ? 0 : i;
     state.justFinished = false;
   }
-  const deckOk = Array.isArray(state.deck) && state.deck.every(id => Q[id]) &&
-    state.deck.length === wantIds().length && wantIds().every(id => state.deck.includes(id));
+  const deckOk = Array.isArray(state.deck) && state.deck.every(id => Q[id]) && (inTopic()
+    ? state.deck.length === Math.min(TOPIC_DRAW, wantIds().length) && state.deck.every(id => wantIds().includes(id))
+    : state.deck.length === wantIds().length && wantIds().every(id => state.deck.includes(id)));
   if (!deckOk) buildDeck();
   if (!(state.pos >= 0 && state.pos < state.deck.length)) state.pos = 0;
   const curQ = () => Q[state.deck[state.pos]];
@@ -244,7 +252,7 @@
     document.title = t('appTitle');
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === state.lang));
-    document.querySelector('#mode [data-mode="full"]').textContent = `${t('modeTest')} (${QUESTIONS.length})`;
+    document.querySelector('#mode [data-mode="full"]').textContent = `${t('modeTest')} (${TEST.length})`;
     document.querySelector('#mode [data-mode="topic"]').textContent = `${t('modeTopics')} (${TOPICS.length})`;
     ['selX', 'selY'].forEach(id => {
       $(id).innerHTML = AXES.map(a => `<option value="${a.id}">${tr(a.name)}</option>`).join('');
@@ -423,6 +431,7 @@
       <p>${t('topicMost')} <b style="color:${st.dominant.color}">${tr(st.dominant.name)}</b> (${pct(st.counts[st.dominant.id], st.n)}%)</p>
       ${stackBar(st.counts, st.n, true)}
       <div class="topic-done-actions">
+        ${st.ids.some(id => state.answers[id] == null) ? `<button class="ghost" data-topic-act="more">${t('topicMore')}</button>` : ''}
         <button class="ghost" data-topic-act="pick">${t('topicPick')}</button>
         <button class="ghost" data-topic-act="results">${t('topicSeeResults')}</button>
       </div></div>`;
@@ -514,7 +523,6 @@
     $('btnBubble').classList.toggle('on', state.bubble);
     $('btnBubble').title = state.bubble ? t('bubbleHide') : t('bubbleShow');
     $('btnPrev').disabled = state.pos === 0;
-    $('btnClear').style.display = cur == null ? 'none' : '';
 
     // Nie pokazujemy, w którą stronę przesuwa odpowiedź - żeby nie sugerować wyboru.
     // W trybie „Tematy” po ostatnim pytaniu pokazujemy podsumowanie tematu.
@@ -578,7 +586,7 @@
   }
   function renderConfidence(count, consistency) {
     $('confidence').innerHTML = AXES.map(a => {
-      const total = QUESTIONS.filter(q => axisWeights(q)[a.id]).length;
+      const total = TEST.filter(q => axisWeights(q)[a.id]).length;
       const c = consistency[a.id] || 0;
       const col = c >= .75 ? '#4ade80' : c >= .4 ? '#fbbf24' : '#f87171';
       return `<div class="conf-row">
@@ -745,7 +753,7 @@
   function renderTable() {
     const extra = Object.keys(state.answers).filter(id => !state.deck.includes(id));
     const ids = state.deck.concat(extra);
-    $('tableCount').textContent = `${Object.keys(state.answers).length} / ${QUESTIONS.length}`;
+    $('tableCount').textContent = `${TEST.filter(q => state.answers[q.id] != null).length} / ${TEST.length}`;
     $('table').querySelector('tbody').innerHTML = ids.map((id, i) => {
       const q = Q[id], v = state.answers[id];
       const ansColor = v == null ? '' : q.type === 'positions' ? CAMPS[q.options[v].camp].color
@@ -795,7 +803,7 @@
       : `<p>${t('summaryEmpty')}</p>`;
     $('report').innerHTML = `
       <h1>${t('appTitle')}</h1>
-      <p class="rep-sub">${t('repSub', { date })} · ${t('repAnswered', { n: answered.length, total: QUESTIONS.length })}</p>
+      <p class="rep-sub">${t('repSub', { date })} · ${t('repAnswered', { n: answered.length, total: TEST.length })}</p>
       <h2>${t('liveTitle')}</h2><p>${summaryHtml(scores, count, consistency) || t('summaryEmpty')}</p>
       <div class="rep-imgs"><div><img src="${$('compass').toDataURL()}"></div><div><img src="${$('radar').toDataURL()}"></div></div>
       <div class="rep-cols">
@@ -960,7 +968,6 @@
   $('btnPrev').onclick = () => go(state.pos - 1);
   $('btnNext').onclick = () => go(state.pos + 1);
   $('btnSkip').onclick = () => go((state.pos + 1) % state.deck.length);
-  $('btnClear').onclick = clearAnswer;
   $('btnBubble').onclick = toggleBubble;
   $('btnExport').onclick = exportJson;
   $('btnReport').onclick = printReport;
@@ -997,7 +1004,8 @@
   $('topicCrumb').addEventListener('click', e => { if (e.target.closest('#btnTopics')) setMode('topic'); });
   $('fxLine').addEventListener('click', e => {
     const b = e.target.closest('[data-topic-act]'); if (!b) return;
-    if (b.dataset.topicAct === 'pick') setMode('topic'); else setTab('results');
+    if (b.dataset.topicAct === 'more') { buildDeck(); save(); renderAll(); $('qcard').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    else if (b.dataset.topicAct === 'pick') setMode('topic'); else setTab('results');
   });
   $('tabbar').addEventListener('click', e => {
     const b = e.target.closest('button[data-tab]'); if (b) setTab(b.dataset.tab);
