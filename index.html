@@ -47,6 +47,7 @@
     <button data-tab="quiz"><span class="ti">📝</span><span data-i18n="tabQuiz"></span></button>
     <button data-tab="results"><span class="ti">📊</span><span data-i18n="tabResults"></span></button>
     <button data-tab="match"><span class="ti">🎯</span><span data-i18n="tabMatch"></span></button>
+    <button data-tab="exercises"><span class="ti">🧠</span><span data-i18n="tabEx"></span></button>
     <button data-tab="more"><span class="ti">📁</span><span data-i18n="tabMore"></span></button>
   </nav>
 
@@ -158,6 +159,11 @@
       <p class="hint" data-i18n="partyHint"></p>
     </section>
 
+    <section class="panel wide ex-panel" data-view="exercises">
+      <div class="card-head"><h2 id="exTitle"></h2></div>
+      <div id="exRoot"></div>
+    </section>
+
     <section class="panel wide" data-sec="snap" data-view="more">
       <div class="card-head">
         <h2 data-i18n="snapTitle"></h2>
@@ -222,6 +228,8 @@
   <script src="js/references.js"></script>
   <script src="js/ideologies.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/exercises.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/exercises-ui.js"></script>
 </body>
 </html>

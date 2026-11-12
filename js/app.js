@@ -851,6 +851,7 @@
     renderPeople(scores, count);
     renderSnapshots(scores);
     renderTable();
+    if (SZ.ExUI) SZ.ExUI.render();
   }
 
   // ── Raport (druk / PDF) ──
@@ -1133,7 +1134,10 @@
   SZ.App = {
     t, tr, esc, dialog, infoBox, toast,
     get state() { return state; },
-    save, curQ, answerLabel, fxHtml,
+    save, curQ, answerLabel, fxHtml, setTab,
+    renderAll: () => renderAll(),
+    // Odpowiedź z zakładki Ćwiczenia - liczy się tak samo jak w teście.
+    setAnswer(id, v) { state.answers[id] = v; state.order = state.order.filter(x => x !== id).concat(id); save(); renderAll(); },
     answer: asVoice(answer),
     next: asVoice(() => go(state.pos + 1)),
     prev: asVoice(() => go(state.pos - 1)),
