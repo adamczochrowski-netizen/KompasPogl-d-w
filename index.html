@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Kompas Poglądów</title>
+  <meta name="description" content="Zdefiniuj swoje poglądy — gospodarczo, politycznie, społecznie.">
+  <meta name="theme-color" content="#0d1017">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Kompas">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+  <header class="topbar">
+    <div class="brand">
+      <h1 data-i18n="appTitle"></h1>
+      <p data-i18n="appSub"></p>
+    </div>
+    <div class="actions">
+      <button class="ghost" id="btnGuide">❓<span class="btn-txt" data-i18n="guideTxt"></span></button>
+      <div class="seg" id="lang">
+        <button data-lang="pl">PL</button><button data-lang="en">EN</button>
+      </div>
+      <div class="seg" id="mode">
+        <button data-mode="quick"></button><button data-mode="full"></button>
+      </div>
+      <button class="ghost" id="btnShuffle" data-i18n="shuffle"></button>
+      <div class="menu">
+        <button class="ghost" id="btnMenu">⋯<span class="btn-txt" data-i18n="moreTxt"></span></button>
+        <div class="menu-pop" id="menuPop" hidden>
+          <!-- Na telefonie tryb i losowanie są tutaj, żeby nie zajmowały górnego paska -->
+          <button class="mobile-only" id="mMode"></button>
+          <button class="mobile-only" id="mShuffle" data-i18n="shuffle"></button>
+          <hr class="mobile-only">
+          <button id="btnReport" data-i18n="report"></button>
+          <button id="btnImage" data-i18n="image"></button>
+          <button id="btnExport" data-i18n="export"></button>
+          <label class="btnlike"><span data-i18n="import"></span><input type="file" id="fileImport" accept=".json" hidden></label>
+          <hr>
+          <button class="danger" id="btnReset" data-i18n="reset"></button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dwutorowe paski na żywo -->
+  <section class="live panel" data-view="quiz results">
+    <div class="live-head">
+      <h2 data-i18n="liveTitle"></h2>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <span class="progress-txt" id="progressTxt"></span>
+    </div>
+    <div class="axes" id="axes"></div>
+    <p class="summary" id="summary"></p>
+    <p class="hint axis-hint" data-i18n="axisClickHint"></p>
+  </section>
+
+  <main class="grid">
+    <!-- Pytanie + dymek -->
+    <section class="qzone" data-view="quiz">
+      <div class="qcard panel" id="qcard">
+        <div class="qmeta">
+          <span class="qnum" id="qnum"></span>
+          <span class="chips" id="qchips"></span>
+          <button class="info-btn" id="btnBubble" title="Info">i</button>
+        </div>
+        <h3 class="qtext" id="qtext"></h3>
+        <div id="dilemma" class="dilemma"></div>
+        <div class="scale" id="scale"></div>
+        <p class="fx-line" id="fxLine"></p>
+        <div class="importance" id="importance">
+          <span data-i18n="impTitle"></span>
+          <div class="seg small-seg" id="impSeg"></div>
+        </div>
+        <div class="qnav">
+          <button class="ghost" id="btnPrev" data-i18n="prev"></button>
+          <button class="ghost small" id="btnClear" data-i18n="clear"></button>
+          <button class="ghost" id="btnSkip" data-i18n="skip"></button>
+          <button class="primary" id="btnNext" data-i18n="next"></button>
+        </div>
+        <p class="hint" data-i18n="shortcuts"></p>
+      </div>
+      <aside class="bubble" id="bubble">
+        <div class="bubble-sec">
+          <h4>💡 <span data-i18n="bubbleWhat"></span></h4>
+          <p id="bWhat"></p>
+        </div>
+        <div class="bubble-sec">
+          <h4>🏠 <span data-i18n="bubbleExample"></span></h4>
+          <p id="bExample"></p>
+        </div>
+        <div class="bubble-sec bpositions" id="bPositions" hidden></div>
+        <details class="bubble-sec args" id="bArgs">
+          <summary data-i18n="argsToggle"></summary>
+          <div class="arg pro"><h4 id="bProTitle"></h4><p id="bPro"></p></div>
+          <div class="arg con"><h4 id="bConTitle"></h4><p id="bCon"></p></div>
+        </details>
+      </aside>
+    </section>
+
+    <!-- Wykresy i wyniki (każdą sekcję da się zwinąć: data-sec) -->
+    <section class="panel chart-card half" data-sec="compass" data-view="results">
+      <div class="card-head">
+        <h2 data-i18n="compassTitle"></h2>
+        <div class="selects">
+          <label><span data-i18n="xAxis"></span> <select id="selX"></select></label>
+          <label><span data-i18n="yAxis"></span> <select id="selY"></select></label>
+        </div>
+      </div>
+      <canvas id="compass" class="sq"></canvas>
+      <p class="hint" data-i18n="compassHint"></p>
+    </section>
+
+    <section class="panel chart-card half" data-sec="radar" data-view="results">
+      <div class="card-head"><h2 data-i18n="radarTitle"></h2></div>
+      <canvas id="radar" class="sq"></canvas>
+      <p class="hint" data-i18n="radarHint"></p>
+    </section>
+
+    <section class="panel third" data-sec="match" data-view="match">
+      <div class="card-head"><h2 data-i18n="matchTitle"></h2></div>
+      <div id="matches" class="matches"></div>
+      <p class="hint" data-i18n="matchHint"></p>
+    </section>
+
+    <section class="panel third" data-sec="conf" data-view="results">
+      <div class="card-head"><h2 data-i18n="confTitle"></h2></div>
+      <div id="confidence" class="conf"></div>
+      <p class="hint" data-i18n="confHint"></p>
+    </section>
+
+    <section class="panel third" data-sec="camps" data-view="results">
+      <div class="card-head"><h2 data-i18n="campsTitle"></h2></div>
+      <div id="contra" class="contra camps"></div>
+      <p class="hint" data-i18n="campsHint"></p>
+    </section>
+
+    <section class="panel chart-card wide" data-sec="history" data-view="results">
+      <div class="card-head"><h2 data-i18n="historyTitle"></h2><div class="legend" id="legend"></div></div>
+      <canvas id="history" class="wide-canvas"></canvas>
+      <p class="hint" data-i18n="historyHint"></p>
+    </section>
+
+    <section class="panel wide" data-sec="parties" data-view="match">
+      <div class="card-head"><h2 data-i18n="partyTitle"></h2></div>
+      <div id="parties" class="parties"></div>
+      <p class="hint" data-i18n="partyHint"></p>
+    </section>
+
+    <section class="panel wide" data-sec="snap" data-view="more">
+      <div class="card-head">
+        <h2 data-i18n="snapTitle"></h2>
+        <div class="snap-actions">
+          <button class="ghost" id="btnSnap" data-i18n="snapSave"></button>
+          <label class="ghost btnlike"><span data-i18n="snapFriend"></span><input type="file" id="fileFriend" accept=".json" hidden></label>
+        </div>
+      </div>
+      <div class="snap-grid">
+        <div id="snapList" class="snap-list"></div>
+        <div id="diff" class="diff"></div>
+      </div>
+      <p class="hint" data-i18n="snapHint"></p>
+    </section>
+
+    <section class="panel wide" data-sec="table" data-view="more">
+      <div class="card-head"><h2 data-i18n="tableTitle"></h2><span class="hint" id="tableCount"></span></div>
+      <div class="table-wrap">
+        <table id="table">
+          <thead><tr>
+            <th data-i18n="thNum"></th><th data-i18n="thQ"></th><th data-i18n="thA"></th><th data-i18n="thImp"></th><th data-i18n="thFx"></th>
+          </tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel wide" data-sec="people" data-view="match">
+      <div class="card-head"><h2 data-i18n="peopleTitle"></h2></div>
+      <div id="people" class="people"></div>
+      <p class="hint" data-i18n="peopleHint"></p>
+    </section>
+  </main>
+
+  <!-- Dolny pasek zakładek — widoczny tylko na telefonie -->
+  <nav class="tabbar" id="tabbar">
+    <button data-tab="quiz"><span class="ti">📝</span><span data-i18n="tabQuiz"></span></button>
+    <button data-tab="results"><span class="ti">📊</span><span data-i18n="tabResults"></span></button>
+    <button data-tab="match"><span class="ti">🎯</span><span data-i18n="tabMatch"></span></button>
+    <button data-tab="more"><span class="ti">📁</span><span data-i18n="tabMore"></span></button>
+  </nav>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <!-- Okienko (zamiast systemowych confirm/prompt, które bywają blokowane) -->
+  <div class="modal" id="modal" hidden>
+    <div class="modal-box" role="dialog" aria-modal="true">
+      <div id="modalBody"></div>
+      <input type="text" id="modalInput" hidden>
+      <div class="modal-actions" id="modalActions"></div>
+    </div>
+  </div>
+
+  <!-- Raport do druku / PDF (widoczny tylko przy drukowaniu) -->
+  <div id="report"></div>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/questions-1.js"></script>
+  <script src="js/questions-2.js"></script>
+  <script src="js/questions-3.js"></script>
+  <script src="js/positions.js"></script>
+  <script src="js/positions-2.js"></script>
+  <script src="js/references.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/voice.js"></script>
+</body>
+</html>

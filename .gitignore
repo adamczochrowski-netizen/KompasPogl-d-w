@@ -1,0 +1,4 @@
+# Klucze API — nigdy do repozytorium
+.env
+__pycache__/
+*.pyc
