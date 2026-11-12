@@ -1,4 +1,4 @@
-// Wykresy rysowane na <canvas> — bez zewnętrznych bibliotek, działa offline.
+// Wykresy rysowane na <canvas> - bez zewnętrznych bibliotek, działa offline.
 window.SZ = window.SZ || {};
 
 SZ.Charts = (function () {
@@ -75,7 +75,7 @@ SZ.Charts = (function () {
         ctx.beginPath(); ctx.arc(toX(x), toY(y), 2.5, 0, Math.PI * 2); ctx.fill();
       });
     }
-    // Porównanie (migawka / znajomy) — pusty okrąg
+    // Porównanie (migawka / znajomy) - pusty okrąg
     if (o.compare) {
       const qx = toX(o.compare[0]), qy = toY(o.compare[1]);
       ctx.strokeStyle = '#fbbf24'; ctx.lineWidth = 3;
@@ -205,7 +205,7 @@ SZ.Charts = (function () {
     });
   }
 
-  // Wykres w ukrytej sekcji (zwiniętej albo w innej zakładce na telefonie) ma rozmiar ~0 —
+  // Wykres w ukrytej sekcji (zwiniętej albo w innej zakładce na telefonie) ma rozmiar ~0 -
   // wtedy go nie rysujemy, bo ujemne promienie rzucają wyjątek. Narysuje się po pokazaniu.
   const guard = fn => (canvas, o) => {
     const r = canvas.getBoundingClientRect();

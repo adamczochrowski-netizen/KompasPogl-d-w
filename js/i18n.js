@@ -5,7 +5,7 @@ window.SZ = window.SZ || {};
 SZ.I18N = {
   pl: {
     appTitle: 'Kompas Poglądów',
-    appSub: 'Zdefiniuj się — gospodarczo, politycznie, społecznie',
+    appSub: 'Zdefiniuj się - gospodarczo, politycznie, społecznie',
     liveTitle: 'Twój kierunek na żywo',
     question: 'Pytanie', of: 'z',
     typeDilemma: 'Dylemat', typeScenario: 'Scenariusz',
@@ -38,13 +38,13 @@ SZ.I18N = {
     contraDisagree: 'Nie zgadzasz się z żadnym z nich, choć są swoimi przeciwieństwami na osi {axis}.',
     partyTitle: 'Partie o podobnych poglądach', partyHint: 'Pozycje partii to przybliżone szacunki na podstawie programów i wypowiedzi (stan ok. 2025–2026), nie oficjalne dane.',
     partyNone: 'Brak partii z takimi poglądami', partyNeedMore: 'Odpowiedz na co najmniej {n} pytań, aby zobaczyć dopasowanie.',
-    peopleTitle: 'Ludzie o podobnych poglądach', peopleHint: 'Przybliżone szacunki poglądów znanych osób i postaci — dla zabawy i inspiracji, nie jako ocena.',
+    peopleTitle: 'Ludzie o podobnych poglądach', peopleHint: 'Przybliżone szacunki poglądów znanych osób i postaci - dla zabawy i inspiracji, nie jako ocena.',
     snapTitle: 'Historia i porównania', snapHint: 'Zapisz migawkę, aby za kilka miesięcy sprawdzić, jak zmieniły się Twoje poglądy. Możesz też wczytać plik eksportu znajomego.',
     snapSave: '📸 Zapisz migawkę', snapFriend: '👥 Wczytaj znajomego', snapName: 'Nazwa migawki:', snapDefault: 'Mój profil',
     snapEmpty: 'Brak zapisanych migawek.', snapSelf: 'migawka', snapFriendKind: 'znajomy',
     compare: 'Porównaj', hide: 'Ukryj', you: 'Ty', diffTitle: 'Ty vs {name}', del: 'Usuń', delConfirm: 'Usunąć „{name}”?',
     tableTitle: 'Twoje odpowiedzi', thNum: '#', thQ: 'Pytanie', thA: 'Odpowiedź', thImp: 'Ważność', thFx: 'Wpływ',
-    noAnswer: '—', summaryEmpty: 'Odpowiedz na kilka pytań, a tu pojawi się opis Twojego profilu.',
+    noAnswer: '-', summaryEmpty: 'Odpowiedz na kilka pytań, a tu pojawi się opis Twojego profilu.',
     center: 'centrum', mild: 'lekko', moderate: 'umiarkowanie', strong: 'wyraźnie', extreme: 'skrajnie',
     answers: 'odp.', done: 'Wszystkie pytania za Tobą! Możesz zmieniać odpowiedzi w tabeli.',
     export: 'Eksport', import: 'Import', reset: 'Od nowa', report: '📄 Raport', image: '🖼️ Obrazek',
@@ -59,29 +59,29 @@ SZ.I18N = {
     collapse: 'Zwiń / rozwiń',
     argsToggle: '⚖️ Argumenty obu stron',
     axisClickHint: 'Kliknij dowolną oś, żeby zobaczyć, co oznacza i skąd wziął się Twój wynik.',
-    fxTitle: 'Ta odpowiedź przesuwa Cię:', fxNeutral: 'Ta odpowiedź nie przesuwa wyniku — jest neutralna.',
+    fxTitle: 'Ta odpowiedź przesuwa Cię:', fxNeutral: 'Ta odpowiedź nie przesuwa wyniku - jest neutralna.',
     axisWhy: 'Skąd Twój wynik?', axisNoData: 'Nie ma jeszcze odpowiedzi na tej osi.', axisScore: 'Twój wynik',
     peoplePl: '🇵🇱 Z Polski', peopleWorld: '🌍 Ze świata', peopleFiction: '🎬 Z fikcji (na wesoło)',
     posWhy: 'Dlaczego:', posExample: 'Przykład:',
-    campsTitle: 'Twój rozkład', campsHint: 'Ile razy wybierasz stanowisko lewicy, centrum i prawicy — ogółem i w każdej dziedzinie. Kliknij wyjątek, aby wrócić do pytania.',
+    campsTitle: 'Twój rozkład', campsHint: 'Ile razy wybierasz stanowisko lewicy, centrum i prawicy - ogółem i w każdej dziedzinie. Kliknij wyjątek, aby wrócić do pytania.',
     campsMost: 'Najczęściej wybierasz:', campsRightSplit: 'W tym prawica', campsLeftSplit: 'W tym lewica', campsByDomain: 'Według dziedzin',
-    campsExceptions: 'Twoje wyjątki — tu nie wybierasz stanowiska: {camp}',
+    campsExceptions: 'Twoje wyjątki - tu nie wybierasz stanowiska: {camp}',
     guideHtml: `<h3>Jak to działa?</h3>
       <ol>
         <li><b>Odpowiadaj szczerze, nie „jak wypada”.</b> Nie ma dobrych ani złych odpowiedzi.</li>
-        <li><b>Przy każdym pytaniu masz kilka konkretnych stanowisk:</b> typowe dla lewicy, centrum i prawicy (czasem lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową). Wybierz to, które jest Ci <b>najbliższe</b> — nie musi pasować w 100%.</li>
+        <li><b>Przy każdym pytaniu masz kilka konkretnych stanowisk:</b> typowe dla lewicy, centrum i prawicy (czasem lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową). Wybierz to, które jest Ci <b>najbliższe</b> - nie musi pasować w 100%.</li>
         <li>Jeśli żadne Ci nie pasuje albo nie masz zdania, kliknij <b>„Pomiń”</b>.</li>
         <li><b>Dymek „i”</b> wyjaśnia, dlaczego każdy obóz tak uważa, podaje przykład z życia i link do Wikipedii.</li>
-        <li><b>Ważność:</b> wybierz „Bardzo”, jeśli sprawa jest dla Ciebie kluczowa — liczy się podwójnie. „Mało” liczy się o połowę słabiej.</li>
+        <li><b>Ważność:</b> wybierz „Bardzo”, jeśli sprawa jest dla Ciebie kluczowa - liczy się podwójnie. „Mało” liczy się o połowę słabiej.</li>
         <li><b>Wynik:</b> każda oś ma dwa bieguny, od −100 do +100. Kliknij oś, żeby zobaczyć, które odpowiedzi Cię tam zaprowadziły.</li>
         <li><b>Pewność i sprzeczności</b> pokazują, gdzie warto zastanowić się jeszcze raz.</li>
         <li>Partie i postacie to <b>przybliżone porównania</b>, a nie wyrocznia.</li>
       </ol>
-      <p class="hint">Wszystko zostaje w Twojej przeglądarce — nic nie jest nigdzie wysyłane.</p>`
+      <p class="hint">Wszystko zostaje w Twojej przeglądarce - nic nie jest nigdzie wysyłane.</p>`
   },
   en: {
     appTitle: 'Worldview Compass',
-    appSub: 'Define yourself — economically, politically, socially',
+    appSub: 'Define yourself - economically, politically, socially',
     liveTitle: 'Your direction, live',
     question: 'Question', of: 'of',
     typeDilemma: 'Dilemma', typeScenario: 'Scenario',
@@ -114,13 +114,13 @@ SZ.I18N = {
     contraDisagree: 'You disagree with both, although they are opposites on the {axis} axis.',
     partyTitle: 'Parties with similar views', partyHint: 'Party positions are rough estimates based on programmes and statements (around 2025–2026), not official data.',
     partyNone: 'No party with such views', partyNeedMore: 'Answer at least {n} questions to see matches.',
-    peopleTitle: 'People with similar views', peopleHint: 'Rough estimates of the views of well-known people and characters — for fun and inspiration, not as a judgement.',
+    peopleTitle: 'People with similar views', peopleHint: 'Rough estimates of the views of well-known people and characters - for fun and inspiration, not as a judgement.',
     snapTitle: 'History and comparisons', snapHint: 'Save a snapshot to check in a few months how your views have changed. You can also load a friend\'s export file.',
     snapSave: '📸 Save snapshot', snapFriend: '👥 Load a friend', snapName: 'Snapshot name:', snapDefault: 'My profile',
     snapEmpty: 'No saved snapshots.', snapSelf: 'snapshot', snapFriendKind: 'friend',
     compare: 'Compare', hide: 'Hide', you: 'You', diffTitle: 'You vs {name}', del: 'Delete', delConfirm: 'Delete "{name}"?',
     tableTitle: 'Your answers', thNum: '#', thQ: 'Question', thA: 'Answer', thImp: 'Importance', thFx: 'Effect',
-    noAnswer: '—', summaryEmpty: 'Answer a few questions and your profile description will appear here.',
+    noAnswer: '-', summaryEmpty: 'Answer a few questions and your profile description will appear here.',
     center: 'centre', mild: 'slightly', moderate: 'moderately', strong: 'clearly', extreme: 'extremely',
     answers: 'ans.', done: 'All questions answered! You can change answers in the table.',
     export: 'Export', import: 'Import', reset: 'Start over', report: '📄 Report', image: '🖼️ Image',
@@ -135,24 +135,24 @@ SZ.I18N = {
     collapse: 'Collapse / expand',
     argsToggle: '⚖️ Arguments on both sides',
     axisClickHint: 'Click any axis to see what it means and where your score comes from.',
-    fxTitle: 'This answer moves you:', fxNeutral: 'This answer does not move your score — it is neutral.',
+    fxTitle: 'This answer moves you:', fxNeutral: 'This answer does not move your score - it is neutral.',
     axisWhy: 'Where does your score come from?', axisNoData: 'No answers on this axis yet.', axisScore: 'Your score',
     peoplePl: '🇵🇱 From Poland', peopleWorld: '🌍 From the world', peopleFiction: '🎬 From fiction (just for fun)',
     posWhy: 'Why:', posExample: 'Example:',
-    campsTitle: 'Your distribution', campsHint: 'How often you pick the left, centre and right position — overall and in each area. Click an exception to go back to the question.',
+    campsTitle: 'Your distribution', campsHint: 'How often you pick the left, centre and right position - overall and in each area. Click an exception to go back to the question.',
     campsMost: 'You most often pick:', campsRightSplit: 'Of which right', campsLeftSplit: 'Of which left', campsByDomain: 'By area',
-    campsExceptions: 'Your exceptions — here you did not pick: {camp}',
+    campsExceptions: 'Your exceptions - here you did not pick: {camp}',
     guideHtml: `<h3>How it works</h3>
       <ol>
         <li><b>Answer honestly, not "as you should".</b> There are no right or wrong answers.</li>
-        <li><b>Each question offers a few concrete positions:</b> typical of the left, centre and right (sometimes the left splits into social and progressive, and the right into conservative and free-market). Pick the one <b>closest</b> to you — it does not have to fit 100%.</li>
+        <li><b>Each question offers a few concrete positions:</b> typical of the left, centre and right (sometimes the left splits into social and progressive, and the right into conservative and free-market). Pick the one <b>closest</b> to you - it does not have to fit 100%.</li>
         <li>If none fits or you have no opinion, click <b>"Skip"</b>.</li>
         <li><b>The "i" bubble</b> explains why each camp thinks so, with an everyday example and a Wikipedia link.</li>
-        <li><b>Importance:</b> pick "Very" if the issue is key for you — it counts double. "A little" counts half.</li>
+        <li><b>Importance:</b> pick "Very" if the issue is key for you - it counts double. "A little" counts half.</li>
         <li><b>Score:</b> each axis has two poles, from −100 to +100. Click an axis to see which answers took you there.</li>
         <li><b>Confidence and contradictions</b> show where it is worth thinking again.</li>
         <li>Parties and characters are <b>rough comparisons</b>, not an oracle.</li>
       </ol>
-      <p class="hint">Everything stays in your browser — nothing is sent anywhere.</p>`
+      <p class="hint">Everything stays in your browser - nothing is sent anywhere.</p>`
   }
 };

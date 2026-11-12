@@ -91,7 +91,7 @@
   const axisById = id => AXES.find(a => a.id === id);
 
   // ── Okienko w stronie ──
-  // Zastępuje confirm/prompt/alert — wbudowane przeglądarki (np. podgląd w aplikacji) potrafią je blokować.
+  // Zastępuje confirm/prompt/alert - wbudowane przeglądarki (np. podgląd w aplikacji) potrafią je blokować.
   function dialog({ html, input, buttons }) {
     return new Promise(resolve => {
       const modal = $('modal'), inp = $('modalInput');
@@ -186,7 +186,7 @@
     return series;
   }
 
-  // Podobieństwo do profilu (archetyp, partia, osoba) — tylko na osiach z odpowiedziami.
+  // Podobieństwo do profilu (archetyp, partia, osoba) - tylko na osiach z odpowiedziami.
   function similarity(scores, count, v) {
     const used = AXES.filter(a => count[a.id]);
     if (!used.length) return 0;
@@ -211,7 +211,7 @@
     return t((q.type === 'dilemma' ? DILEMMA : LIKERT)[v]);
   }
   const impLabel = v => t((IMPORTANCE.find(([x]) => x === (v || 1)) || IMPORTANCE[1])[1]);
-  // Hasło Wikipedii w języku apki, a gdy go brak — po polsku.
+  // Hasło Wikipedii w języku apki, a gdy go brak - po polsku.
   const wikiLang = w => (w[state.lang] ? state.lang : 'pl');
   const wikiTitle = w => w[wikiLang(w)];
   const wikiUrl = w => `https://${wikiLang(w)}.wikipedia.org/wiki/${encodeURIComponent(wikiTitle(w).replace(/ /g, '_'))}`;
@@ -505,7 +505,7 @@
     if (hasArgs) {
       $('bProTitle').textContent = type === 'dilemma' ? t('bubbleProA') : t('bubblePro');
       $('bConTitle').textContent = type === 'dilemma' ? t('bubbleProB') : t('bubbleCon');
-      // W dylematach tekst argumentu zaczyna się od „Za A: …” — tytuł już to mówi.
+      // W dylematach tekst argumentu zaczyna się od „Za A: …” - tytuł już to mówi.
       const strip = s => s.replace(/^(Za|For) [AB]: /, '');
       $('bPro').textContent = strip(tr(q.pro));
       $('bCon').textContent = strip(tr(q.con));
@@ -516,7 +516,7 @@
     $('btnPrev').disabled = state.pos === 0;
     $('btnClear').style.display = cur == null ? 'none' : '';
 
-    // Nie pokazujemy, w którą stronę przesuwa odpowiedź — żeby nie sugerować wyboru.
+    // Nie pokazujemy, w którą stronę przesuwa odpowiedź - żeby nie sugerować wyboru.
     // W trybie „Tematy” po ostatnim pytaniu pokazujemy podsumowanie tematu.
     $('fxLine').innerHTML = state.justFinished && state.mode === 'topic' ? topicDoneHtml() : '';
   }
@@ -785,10 +785,10 @@
     const answered = Object.keys(state.answers);
     const li = items => `<ul>${items.map(x => `<li>${x}</li>`).join('')}</ul>`;
     const parties = enoughAnswers()
-      ? li(partyResults(scores, count).map(({ region, best }) => `<b>${tr(region.name)}:</b> ${best.pct >= PARTY_THRESHOLD ? `${esc(best.x.name)} (${tr(best.x.country)}) — ${best.pct}%` : t('partyNone')}`))
+      ? li(partyResults(scores, count).map(({ region, best }) => `<b>${tr(region.name)}:</b> ${best.pct >= PARTY_THRESHOLD ? `${esc(best.x.name)} (${tr(best.x.country)}) - ${best.pct}%` : t('partyNone')}`))
       : `<p>${t('partyNeedMore', { n: MIN_FOR_MATCH })}</p>`;
     const people = enoughAnswers()
-      ? li(peoplePicks(scores, count).map(r => `<b>${t(r.kind)}:</b> ${esc(r.x.name)} — ${r.pct}%`)) : '';
+      ? li(peoplePicks(scores, count).map(r => `<b>${t(r.kind)}:</b> ${esc(r.x.name)} - ${r.pct}%`)) : '';
     const cs = campStats();
     const camps = cs.total
       ? li(CAMP_GROUPS.map(g => `${tr(g.name)}: ${cs.groups[g.id]} (${pct(cs.groups[g.id], cs.total)}%)`))
@@ -799,7 +799,7 @@
       <h2>${t('liveTitle')}</h2><p>${summaryHtml(scores, count, consistency) || t('summaryEmpty')}</p>
       <div class="rep-imgs"><div><img src="${$('compass').toDataURL()}"></div><div><img src="${$('radar').toDataURL()}"></div></div>
       <div class="rep-cols">
-        <div><h2>${t('matchTitle')}</h2>${li(rank(ARCHETYPES, scores, count).slice(0, 5).map(r => `${tr(r.x.name)} — ${r.pct}%`))}</div>
+        <div><h2>${t('matchTitle')}</h2>${li(rank(ARCHETYPES, scores, count).slice(0, 5).map(r => `${tr(r.x.name)} - ${r.pct}%`))}</div>
         <div><h2>${t('peopleTitle')}</h2>${people}</div>
       </div>
       <h2>${t('partyTitle')}</h2>${parties}<p class="rep-note">${t('partyHint')}</p>
@@ -849,7 +849,7 @@
       const x = 580 + (i % 2) * 300, y = 422 + Math.floor(i / 2) * 43, v = scores[a.id], lvl = intensity(v);
       g.fillStyle = '#8a94a8'; g.font = `12px ${F}`; g.fillText(tr(a.name).toUpperCase(), x, y);
       g.font = `700 15px ${F}`;
-      if (!count[a.id]) { g.fillStyle = '#4b5563'; g.fillText('—', x, y + 16); return; }
+      if (!count[a.id]) { g.fillStyle = '#4b5563'; g.fillText('-', x, y + 16); return; }
       g.fillStyle = !lvl ? '#e7ebf3' : v < 0 ? a.negColor : a.posColor;
       g.fillText(!lvl ? t('center') : `${lvl} ${tr(v < 0 ? a.neg : a.pos)}`, x, y + 16);
     });
@@ -1079,7 +1079,7 @@
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
     navigator.serviceWorker.register('sw.js').catch(() => { /* bez SW apka też działa */ });
   }
-  // Ekran startowy (wybór wersji) pokazuje voice.js; bez niego — instrukcja przy pierwszym uruchomieniu.
+  // Ekran startowy (wybór wersji) pokazuje voice.js; bez niego - instrukcja przy pierwszym uruchomieniu.
   // DOMContentLoaded, a nie setTimeout: dopiero wtedy na pewno wczytały się wszystkie skrypty.
   document.addEventListener('DOMContentLoaded', () => {
     if (SZ.Voice) return SZ.Voice.boot();

@@ -18,17 +18,17 @@
     startRemember: 'Zapamiętaj mój wybór (zmienisz go przyciskiem 🎙️ Asystent)',
     setupTitle: 'Ustawienia asystenta',
     setupVoice: 'Głos asystenta', optBrowserVoice: 'Przeglądarka (darmowy)', optEleven: 'ElevenLabs (naturalny)',
-    setupStt: 'Rozpoznawanie mowy', optBrowserStt: 'Przeglądarka (Chrome / Edge)', optElevenStt: 'ElevenLabs Scribe', optTypeOnly: 'Bez mikrofonu — wpisuję odpowiedzi',
+    setupStt: 'Rozpoznawanie mowy', optBrowserStt: 'Przeglądarka (Chrome / Edge)', optElevenStt: 'ElevenLabs Scribe', optTypeOnly: 'Bez mikrofonu - wpisuję odpowiedzi',
     setupAi: 'Rozumienie swobodnych odpowiedzi przez AI (Claude)',
     setupRate: 'Tempo mowy',
     setupNoServer: 'Głos ElevenLabs i AI wymagają uruchomienia apki przez <b>start.bat</b> (lokalny serwer z kluczami w pliku <code>.env</code>). Teraz działa darmowy głos przeglądarki.',
     setupWeb: 'W wersji internetowej asystent używa darmowego głosu i rozpoznawania mowy przeglądarki. Naturalny głos ElevenLabs i rozumienie przez AI działają w wersji uruchamianej na komputerze (start.bat).',
     setupNoEleven: 'ElevenLabs: brak klucza <code>ELEVENLABS_API_KEY</code> w pliku <code>.env</code>.',
-    setupNoClaude: 'AI: niedostępne — {hint}.',
+    setupNoClaude: 'AI: niedostępne - {hint}.',
     setupNoStt: 'Ta przeglądarka nie rozpoznaje mowy. Użyj Chrome lub Edge albo wpisuj odpowiedzi.',
-    setupPrivacy: 'Rozpoznawanie mowy w Chrome działa przez serwery Google, a w Edge — Microsoftu.',
+    setupPrivacy: 'Rozpoznawanie mowy w Chrome działa przez serwery Google, a w Edge - Microsoftu.',
     setupStart: '▶ Start',
-    vIntro: 'Cześć! Jestem Twoim asystentem. Przy każdym pytaniu przeczytam kilka stanowisk: lewicy, centrum i prawicy. Wybierz to, które jest Ci najbliższe — powiedz jego numer albo nazwę obozu, na przykład: centrum. Możesz też powiedzieć: powtórz, wyjaśnij, pomiń, wstecz albo stop. Jeśli sprawa jest dla Ciebie szczególnie ważna, dodaj: bardzo ważne. Zaczynamy!',
+    vIntro: 'Cześć! Jestem Twoim asystentem. Przy każdym pytaniu przeczytam kilka stanowisk: lewicy, centrum i prawicy. Wybierz to, które jest Ci najbliższe - powiedz jego numer albo nazwę obozu, na przykład: centrum. Możesz też powiedzieć: powtórz, wyjaśnij, pomiń, wstecz albo stop. Jeśli sprawa jest dla Ciebie szczególnie ważna, dodaj: bardzo ważne. Zaczynamy!',
     vIntroShort: 'Wracamy do pytań. Wybieraj stanowisko: powiedz numer albo nazwę obozu.',
     vPosOption: 'Stanowisko {n}, {camp}: {text}.',
     vSayPos: 'Które jest Ci najbliższe?',
@@ -60,17 +60,17 @@
     startRemember: 'Remember my choice (change it with the 🎙️ Assistant button)',
     setupTitle: 'Assistant settings',
     setupVoice: 'Assistant voice', optBrowserVoice: 'Browser (free)', optEleven: 'ElevenLabs (natural)',
-    setupStt: 'Speech recognition', optBrowserStt: 'Browser (Chrome / Edge)', optElevenStt: 'ElevenLabs Scribe', optTypeOnly: 'No microphone — I will type',
+    setupStt: 'Speech recognition', optBrowserStt: 'Browser (Chrome / Edge)', optElevenStt: 'ElevenLabs Scribe', optTypeOnly: 'No microphone - I will type',
     setupAi: 'Understand free-form answers with AI (Claude)',
     setupRate: 'Speech rate',
     setupNoServer: 'ElevenLabs voice and AI need the app started with <b>start.bat</b> (a local server with keys in the <code>.env</code> file). The free browser voice works now.',
     setupWeb: 'In the web version the assistant uses the browser\'s free voice and speech recognition. The natural ElevenLabs voice and AI understanding work in the version run on your computer (start.bat).',
     setupNoEleven: 'ElevenLabs: no <code>ELEVENLABS_API_KEY</code> in the <code>.env</code> file.',
-    setupNoClaude: 'AI: unavailable — {hint}.',
+    setupNoClaude: 'AI: unavailable - {hint}.',
     setupNoStt: 'This browser cannot recognise speech. Use Chrome or Edge, or type your answers.',
     setupPrivacy: 'Speech recognition in Chrome goes through Google servers, in Edge through Microsoft.',
     setupStart: '▶ Start',
-    vIntro: 'Hi! I am your assistant. For each question I will read a few positions: left, centre and right. Pick the one closest to you — say its number or the camp, for example: centre. You can also say: repeat, explain, skip, back or stop. If an issue is especially important to you, add: very important. Let\'s begin!',
+    vIntro: 'Hi! I am your assistant. For each question I will read a few positions: left, centre and right. Pick the one closest to you - say its number or the camp, for example: centre. You can also say: repeat, explain, skip, back or stop. If an issue is especially important to you, add: very important. Let\'s begin!',
     vIntroShort: 'Back to the questions. Pick a position: say its number or the camp.',
     vPosOption: 'Position {n}, {camp}: {text}.',
     vSayPos: 'Which one is closest to you?',
@@ -152,7 +152,7 @@
     if (!('speechSynthesis' in window)) return;
     const voice = pickVoice(await getVoices());
     if (!voice && !V.warnedVoice) { V.warnedVoice = true; notice(t('vNoLangVoice')); }
-    // Chrome potrafi uciąć długie wypowiedzi — mówimy zdanie po zdaniu.
+    // Chrome potrafi uciąć długie wypowiedzi - mówimy zdanie po zdaniu.
     const parts = text.match(/[^.!?]+[.!?]*/g) || [text];
     for (const part of parts) {
       if (tk.cancelled) return;
@@ -210,7 +210,7 @@
       tk.onCancel(() => finish(null));
       if (useElevenStt()) stopRec = recordEleven(finish);
       else if (V.prefs.stt === 'browser' && SR) stopRec = recognizeBrowser(finish);
-      // tryb „wpisuję” — czekamy tylko na pole tekstowe
+      // tryb „wpisuję” - czekamy tylko na pole tekstowe
     });
   }
 
@@ -334,7 +334,7 @@
     [5, /\b(5|piec|piatk\w*|piat\w*|five|fifth)\b/]
   ];
   const firstNumber = s => { const m = NUMBERS.find(([, re]) => re.test(s)); return m ? m[0] : null; };
-  // Wzorce muszą łapać całe słowa — inaczej „mnie bardzo” pasuje do „nie bardzo”.
+  // Wzorce muszą łapać całe słowa - inaczej „mnie bardzo” pasuje do „nie bardzo”.
   const wordBound = list => list.map(([v, re]) => [v, new RegExp(`(?:^|\\b)(?:${re.source})`)]);
   COMMANDS.splice(0, COMMANDS.length, ...wordBound(COMMANDS));
   LIKERT.splice(0, LIKERT.length, ...wordBound(LIKERT));
@@ -536,7 +536,7 @@
     if (!V.running) loop();
   }
 
-  // Użytkownik kliknął odpowiedź lub zmienił pytanie ręcznie — asystent przechodzi do bieżącego pytania.
+  // Użytkownik kliknął odpowiedź lub zmienił pytanie ręcznie - asystent przechodzi do bieżącego pytania.
   window.addEventListener('kompas:change', e => {
     if (!V.active || V.paused || e.detail.source === 'voice') return;
     V.holdUntil = Date.now() + 450;
@@ -642,7 +642,7 @@
     if (!s.elevenlabs) { if (p.tts === 'eleven') p.tts = 'browser'; if (p.stt === 'eleven') p.stt = SR ? 'browser' : 'type'; }
     if (!SR && p.stt === 'browser') p.stt = 'type';
     const notes = [];
-    // Na stronie w internecie (np. GitHub Pages) nie ma lokalnego serwera z kluczami — to normalne.
+    // Na stronie w internecie (np. GitHub Pages) nie ma lokalnego serwera z kluczami - to normalne.
     const local = location.protocol === 'file:' || /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
     if (!s.up) notes.push(t(local ? 'setupNoServer' : 'setupWeb'));
     else {

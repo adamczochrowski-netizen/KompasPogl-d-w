@@ -1,19 +1,19 @@
 // Pytania w formie stanowisk: wybierasz to, które jest Ci najbliższe.
 // Każde stanowisko: camp (obóz), text, why (dlaczego), example (przykład z życia), wiki (hasło Wikipedii PL/EN),
-// effects = „adres” stanowiska na osiach (-1..1). Centrum nie zawsze leży w 0 — adres wynika z treści.
+// effects = „adres” stanowiska na osiach (-1..1). Centrum nie zawsze leży w 0 - adres wynika z treści.
 // Stanowiska to typowe postawy w Polsce ok. 2025–2026, nie poglądy konkretnych osób.
 window.SZ = window.SZ || {};
 
 SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
   { id: 'x_tax', type: 'positions',
     text: { pl: 'Jak powinny wyglądać podatki dochodowe?', en: 'What should income tax look like?' },
-    what: { pl: 'Chodzi o to, czy bogatsi mają płacić wyższy procent, czy wszyscy ten sam — i komu dawać ulgi.',
-            en: 'Whether the better-off should pay a higher rate or everyone the same — and who should get tax breaks.' },
+    what: { pl: 'Chodzi o to, czy bogatsi mają płacić wyższy procent, czy wszyscy ten sam - i komu dawać ulgi.',
+            en: 'Whether the better-off should pay a higher rate or everyone the same - and who should get tax breaks.' },
     options: [
       { camp: 'left', effects: { econ: -0.9 },
         text: { pl: 'Bogatsi powinni oddawać wyraźnie większy procent dochodu', en: 'The better-off should pay a clearly higher share of income' },
         why: { pl: 'Progresja zmniejsza nierówności i finansuje usługi publiczne, z których korzystają wszyscy.', en: 'Progressive tax reduces inequality and funds public services everyone uses.' },
-        example: { pl: 'Szwecja i Dania — najwyższe stawki podatku dochodowego przekraczają 50%.', en: 'Sweden and Denmark — top income tax rates exceed 50%.' },
+        example: { pl: 'Szwecja i Dania - najwyższe stawki podatku dochodowego przekraczają 50%.', en: 'Sweden and Denmark - top income tax rates exceed 50%.' },
         wiki: { pl: 'Podatek progresywny', en: 'Progressive tax' } },
       { camp: 'center', effects: { econ: -0.1 },
         text: { pl: 'Niewiele stawek i wysoka kwota wolna, która chroni najmniej zarabiających', en: 'A few rates and a high tax-free allowance that protects low earners' },
@@ -23,10 +23,10 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
       { camp: 'right_cons', effects: { econ: 0.2, soc: 0.4 },
         text: { pl: 'Najważniejsze są ulgi i niższe podatki dla rodzin z dziećmi', en: 'What matters most is tax breaks and lower taxes for families with children' },
         why: { pl: 'Rodzina to fundament społeczeństwa, a wychowanie dzieci to wkład w przyszłość kraju, który podatki powinny docenić.', en: 'The family is the foundation of society, and raising children is a contribution to the country\'s future that taxes should reward.' },
-        example: { pl: 'Węgry — matki co najmniej czworga dzieci nie płacą podatku dochodowego.', en: 'Hungary — mothers of four or more children pay no income tax.' },
+        example: { pl: 'Węgry - matki co najmniej czworga dzieci nie płacą podatku dochodowego.', en: 'Hungary - mothers of four or more children pay no income tax.' },
         wiki: { pl: 'Polityka prorodzinna', en: 'Family policy' } },
       { camp: 'right_free', effects: { econ: 1 },
-        text: { pl: 'Jedna niska stawka dla wszystkich — podatek liniowy', en: 'One low rate for everyone — a flat tax' },
+        text: { pl: 'Jedna niska stawka dla wszystkich - podatek liniowy', en: 'One low rate for everyone - a flat tax' },
         why: { pl: 'Nie karze za sukces, jest prosty i trudny do obejścia, a niskie podatki napędzają gospodarkę.', en: 'It does not punish success, is simple and hard to dodge, and low taxes drive the economy.' },
         example: { pl: 'Estonia ma podatek liniowy od 1994 r.', en: 'Estonia has had a flat tax since 1994.' },
         wiki: { pl: 'Podatek liniowy', en: 'Flat tax' } }
@@ -39,7 +39,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
       { camp: 'left', effects: { power: -0.6 },
         text: { pl: 'Tylko w wyjątkowych sprawach, z nakazem sądu i silną kontrolą społeczną', en: 'Only in exceptional cases, with a court warrant and strong public oversight' },
         why: { pl: 'Inwigilację łatwo wykorzystać przeciw opozycji, dziennikarzom i mniejszościom.', en: 'Surveillance is easily turned against the opposition, journalists and minorities.' },
-        example: { pl: 'Afera Pegasusa — w Polsce podsłuchiwano m.in. polityków opozycji (ujawniona w 2021 r.).', en: 'The Pegasus affair — in Poland, opposition politicians among others were spied on (revealed in 2021).' },
+        example: { pl: 'Afera Pegasusa - w Polsce podsłuchiwano m.in. polityków opozycji (ujawniona w 2021 r.).', en: 'The Pegasus affair - in Poland, opposition politicians among others were spied on (revealed in 2021).' },
         wiki: { pl: 'Pegasus (oprogramowanie szpiegujące)', en: 'Pegasus (spyware)' } },
       { camp: 'center', effects: { power: 0, just: 0.2 },
         text: { pl: 'Tak, przy terroryzmie i poważnych przestępstwach, zawsze pod nadzorem sądu', en: 'Yes, for terrorism and serious crime, always under court supervision' },
@@ -47,12 +47,12 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
         example: { pl: 'W większości krajów UE podsłuch wymaga zgody sądu i dotyczy poważnych przestępstw.', en: 'In most EU countries a wiretap needs court approval and is limited to serious crime.' },
         wiki: { pl: 'Prywatność', en: 'Privacy' } },
       { camp: 'right_cons', effects: { power: 0.7, just: 0.5 },
-        text: { pl: 'Tak, szeroko — bezpieczeństwo obywateli jest ważniejsze od prywatności', en: 'Yes, broadly — citizens\' safety matters more than privacy' },
+        text: { pl: 'Tak, szeroko - bezpieczeństwo obywateli jest ważniejsze od prywatności', en: 'Yes, broadly - citizens\' safety matters more than privacy' },
         why: { pl: 'Przestępcy i obce służby korzystają z tych samych narzędzi; państwo nie może być bezbronne.', en: 'Criminals and foreign agents use the same tools; the state cannot be defenceless.' },
         example: { pl: 'Wielka Brytania ma jeden z najgęstszych w Europie systemów miejskiego monitoringu.', en: 'The United Kingdom has one of the densest urban CCTV networks in Europe.' },
         wiki: { pl: 'Telewizja przemysłowa', en: 'Closed-circuit television' } },
       { camp: 'right_free', effects: { power: -0.9 },
-        text: { pl: 'Nie — państwo nie ma prawa zaglądać ludziom w prywatne sprawy', en: 'No — the state has no right to look into people\'s private lives' },
+        text: { pl: 'Nie - państwo nie ma prawa zaglądać ludziom w prywatne sprawy', en: 'No - the state has no right to look into people\'s private lives' },
         why: { pl: 'Im więcej władza wie o obywatelach, tym bardziej może ich kontrolować; wolność jest ważniejsza.', en: 'The more those in power know about citizens, the more they can control them; freedom comes first.' },
         example: { pl: 'Libertarianie w USA sprzeciwiają się masowemu zbieraniu danych przez NSA, ujawnionemu w 2013 r.', en: 'US libertarians oppose the NSA\'s mass data collection revealed in 2013.' },
         wiki: { pl: 'Libertarianizm', en: 'Libertarianism' } }
@@ -60,7 +60,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
 
   { id: 'x_unions', type: 'positions',
     text: { pl: 'Jak państwo powinno traktować pary tej samej płci?', en: 'How should the state treat same-sex couples?' },
-    what: { pl: 'Pytanie o prawa takich par: dziedziczenie, informacja medyczna, wspólne rozliczenie, a także o definicję małżeństwa.', en: 'About the rights of such couples — inheritance, medical information, joint taxes — and the definition of marriage.' },
+    what: { pl: 'Pytanie o prawa takich par: dziedziczenie, informacja medyczna, wspólne rozliczenie, a także o definicję małżeństwa.', en: 'About the rights of such couples - inheritance, medical information, joint taxes - and the definition of marriage.' },
     options: [
       { camp: 'left', effects: { soc: -1 },
         text: { pl: 'Pełna równość: prawo do małżeństwa, także do adopcji', en: 'Full equality: the right to marry, including adoption' },
@@ -85,16 +85,16 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
     options: [
       { camp: 'left', effects: { world: -0.7, econ: -0.3 },
         text: { pl: 'Więcej wspólnej polityki socjalnej i klimatycznej, wspólne standardy pracy', en: 'More common social and climate policy, shared labour standards' },
-        why: { pl: 'Problemy takie jak klimat czy wyzysk pracowników przekraczają granice — razem łatwiej je rozwiązać.', en: 'Problems like climate change and worker exploitation cross borders — they are easier to solve together.' },
+        why: { pl: 'Problemy takie jak klimat czy wyzysk pracowników przekraczają granice - razem łatwiej je rozwiązać.', en: 'Problems like climate change and worker exploitation cross borders - they are easier to solve together.' },
         example: { pl: 'Unijna dyrektywa o adekwatnych płacach minimalnych z 2022 r.', en: 'The EU directive on adequate minimum wages of 2022.' },
         wiki: { pl: 'Unia Europejska', en: 'European Union' } },
       { camp: 'center', effects: { world: -0.9 },
-        text: { pl: 'Silna Polska w silnej Unii — pogłębiać integrację, także w obronności', en: 'A strong Poland in a strong Union — deepen integration, including defence' },
+        text: { pl: 'Silna Polska w silnej Unii - pogłębiać integrację, także w obronności', en: 'A strong Poland in a strong Union - deepen integration, including defence' },
         why: { pl: 'Wspólny rynek, fundusze i bezpieczeństwo dają Polsce więcej, niż kosztuje oddanie części decyzji.', en: 'The single market, funds and security give Poland more than ceding some decisions costs.' },
         example: { pl: 'Wspólne pożyczki UE na zbrojenia (program SAFE z 2025 r.), z których Polska jest największym beneficjentem.', en: 'Joint EU loans for defence (the SAFE programme of 2025), with Poland as the largest beneficiary.' },
         wiki: { pl: 'Integracja europejska', en: 'European integration' } },
       { camp: 'right', effects: { world: 0.9 },
-        text: { pl: 'Europa ojczyzn — mniej władzy Brukseli, prawo weta dla każdego kraju', en: 'A Europe of nations — less power for Brussels, a veto for every country' },
+        text: { pl: 'Europa ojczyzn - mniej władzy Brukseli, prawo weta dla każdego kraju', en: 'A Europe of nations - less power for Brussels, a veto for every country' },
         why: { pl: 'Decyzje powinny zapadać jak najbliżej obywateli, a narody nie mogą być przegłosowywane w ważnych sprawach.', en: 'Decisions should be made as close to citizens as possible, and nations must not be outvoted on key issues.' },
         example: { pl: 'Węgry i część polskiej prawicy sprzeciwiają się odchodzeniu od jednomyślności w UE.', en: 'Hungary and part of the Polish right oppose moving away from unanimity in the EU.' },
         wiki: { pl: 'Eurosceptycyzm', en: 'Euroscepticism' } }
@@ -107,7 +107,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
       { camp: 'left_soc', effects: { eco: -0.4, econ: -0.6 },
         text: { pl: 'Odchodzić, ale dopiero gdy górnicy i ich regiony mają nową, dobrą pracę', en: 'Phase it out, but only once miners and their regions have new, good jobs' },
         why: { pl: 'Koszt transformacji nie może spaść na robotników; najpierw nowe miejsca pracy, potem zamykanie kopalń.', en: 'The cost of the transition must not fall on workers; new jobs first, then mine closures.' },
-        example: { pl: 'Umowa społeczna z górnikami z 2021 r. — zamykanie kopalń do 2049 r. z osłonami dla pracowników.', en: 'The 2021 social contract with miners — closing mines by 2049 with protection for workers.' },
+        example: { pl: 'Umowa społeczna z górnikami z 2021 r. - zamykanie kopalń do 2049 r. z osłonami dla pracowników.', en: 'The 2021 social contract with miners - closing mines by 2049 with protection for workers.' },
         wiki: { pl: 'Kopalnie węgla kamiennego w Polsce', en: 'Just transition' } },
       { camp: 'left_lib', effects: { eco: -1 },
         text: { pl: 'Odejść jak najszybciej, stawiając na wiatr i słońce, z pomocą dla górników', en: 'Phase out as fast as possible, betting on wind and solar, with help for miners' },
@@ -120,7 +120,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
         example: { pl: 'Polska planuje pierwszą elektrownię jądrową na Pomorzu (Lubiatowo-Kopalino).', en: 'Poland plans its first nuclear power plant in Pomerania (Lubiatowo-Kopalino).' },
         wiki: { pl: 'Energetyka jądrowa w Polsce', en: 'Nuclear power in Poland' } },
       { camp: 'right', effects: { eco: 0.8, world: 0.3 },
-        text: { pl: 'Węgiel jak najdłużej — to nasze bezpieczeństwo energetyczne i miejsca pracy', en: 'Keep coal as long as possible — it is our energy security and jobs' },
+        text: { pl: 'Węgiel jak najdłużej - to nasze bezpieczeństwo energetyczne i miejsca pracy', en: 'Keep coal as long as possible - it is our energy security and jobs' },
         why: { pl: 'Własny surowiec uniezależnia od importu, a unijne opłaty za CO₂ sztucznie podnoszą ceny prądu.', en: 'A domestic resource reduces dependence on imports, while EU CO₂ fees artificially raise power prices.' },
         example: { pl: 'Górnictwo daje dziesiątki tysięcy miejsc pracy na Śląsku, a opłaty z unijnego systemu ETS podnoszą koszt prądu z węgla.', en: 'Mining provides tens of thousands of jobs in Silesia, while EU ETS fees raise the cost of coal power.' },
         wiki: { pl: 'Europejski System Handlu Emisjami', en: 'European Union Emissions Trading System' } }
@@ -128,20 +128,20 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
 
   { id: 'x_religion', type: 'positions',
     text: { pl: 'Religia w szkole publicznej?', en: 'Religion in public schools?' },
-    what: { pl: 'Czy państwowa szkoła ma uczyć religii, a jeśli tak — na jakich zasadach.', en: 'Whether state schools should teach religion, and if so, on what terms.' },
+    what: { pl: 'Czy państwowa szkoła ma uczyć religii, a jeśli tak - na jakich zasadach.', en: 'Whether state schools should teach religion, and if so, on what terms.' },
     options: [
       { camp: 'left', effects: { relig: -1 },
-        text: { pl: 'Nie — katecheza w parafiach, a w szkole etyka lub wiedza o religiach', en: 'No — catechism in parishes, and ethics or religious studies at school' },
+        text: { pl: 'Nie - katecheza w parafiach, a w szkole etyka lub wiedza o religiach', en: 'No - catechism in parishes, and ethics or religious studies at school' },
         why: { pl: 'Szkoła jest dla wszystkich, także niewierzących; państwo powinno być neutralne światopoglądowo.', en: 'School is for everyone, including non-believers; the state should be neutral on worldview.' },
-        example: { pl: 'Francja — w szkołach publicznych nie ma lekcji religii (rozdział państwa i Kościoła od 1905 r.).', en: 'France — public schools have no religion classes (separation of church and state since 1905).' },
+        example: { pl: 'Francja - w szkołach publicznych nie ma lekcji religii (rozdział państwa i Kościoła od 1905 r.).', en: 'France - public schools have no religion classes (separation of church and state since 1905).' },
         wiki: { pl: 'Państwo świeckie', en: 'Secular state' } },
       { camp: 'center', effects: { relig: -0.2 },
         text: { pl: 'Tak, ale dobrowolnie, z realnym wyborem etyki i bez wliczania do średniej', en: 'Yes, but voluntary, with a real choice of ethics and not counted in the grade average' },
         why: { pl: 'Szanuje wolę rodziców, którzy chcą religii, i tych, którzy jej nie chcą.', en: 'It respects both parents who want religion and those who do not.' },
-        example: { pl: 'Niemcy — religia w szkole, a dla chętnych etyka jako przedmiot zamienny.', en: 'Germany — religion at school, with ethics as an alternative subject.' },
+        example: { pl: 'Niemcy - religia w szkole, a dla chętnych etyka jako przedmiot zamienny.', en: 'Germany - religion at school, with ethics as an alternative subject.' },
         wiki: { pl: 'Edukacja religijna', en: 'Religious education' } },
       { camp: 'right', effects: { relig: 0.9, soc: 0.4 },
-        text: { pl: 'Tak, w pełnym wymiarze — to część tożsamości i wychowania', en: 'Yes, in full — it is part of identity and upbringing' },
+        text: { pl: 'Tak, w pełnym wymiarze - to część tożsamości i wychowania', en: 'Yes, in full - it is part of identity and upbringing' },
         why: { pl: 'Chrześcijaństwo ukształtowało polską kulturę; większość rodziców chce, by dzieci poznały wiarę w szkole.', en: 'Christianity shaped Polish culture; most parents want their children to learn about faith at school.' },
         example: { pl: 'Religia wróciła do polskich szkół w 1990 r., a jej status potwierdza konkordat z 1993 r.', en: 'Religion returned to Polish schools in 1990, and its status is confirmed by the 1993 Concordat.' },
         wiki: { pl: 'Konkordat między Stolicą Apostolską i Rzecząpospolitą Polską (1993)', en: 'Concordat of 1993' } }
@@ -152,17 +152,17 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
     what: { pl: 'Od 2009 r. Polska ma armię zawodową. Po wybuchu wojny w Ukrainie wróciła dyskusja o poborze.', en: 'Poland has had a professional army since 2009. The war in Ukraine revived the debate on conscription.' },
     options: [
       { camp: 'left', effects: { sec: -0.5, power: -0.2 },
-        text: { pl: 'Nie — armia zawodowa plus obrona cywilna i schrony dla ludności', en: 'No — a professional army plus civil defence and shelters for the population' },
+        text: { pl: 'Nie - armia zawodowa plus obrona cywilna i schrony dla ludności', en: 'No - a professional army plus civil defence and shelters for the population' },
         why: { pl: 'Nowoczesna wojna wymaga specjalistów, a przymus odbiera młodym ludziom wybór drogi życia.', en: 'Modern warfare needs specialists, and compulsion takes away young people\'s choice of path.' },
         example: { pl: 'Niemcy (2011) i Francja (1997) zawiesiły pobór i postawiły na armie zawodowe.', en: 'Germany (2011) and France (1997) suspended conscription in favour of professional armies.' },
         wiki: { pl: 'Siły Zbrojne Rzeczypospolitej Polskiej', en: 'Polish Armed Forces' } },
       { camp: 'center', effects: { sec: 0.4 },
-        text: { pl: 'Dobrowolne, dobrze płatne szkolenia i większa rezerwa — bez przymusu', en: 'Voluntary, well-paid training and a larger reserve — without compulsion' },
+        text: { pl: 'Dobrowolne, dobrze płatne szkolenia i większa rezerwa - bez przymusu', en: 'Voluntary, well-paid training and a larger reserve - without compulsion' },
         why: { pl: 'Daje więcej przeszkolonych ludzi, a jednocześnie nie zmusza nikogo wbrew woli.', en: 'It produces more trained people without forcing anyone against their will.' },
-        example: { pl: 'Polska — dobrowolna zasadnicza służba wojskowa i Wojska Obrony Terytorialnej.', en: 'Poland — voluntary basic military service and the Territorial Defence Force.' },
+        example: { pl: 'Polska - dobrowolna zasadnicza służba wojskowa i Wojska Obrony Terytorialnej.', en: 'Poland - voluntary basic military service and the Territorial Defence Force.' },
         wiki: { pl: 'Wojska Obrony Terytorialnej', en: 'Territorial Defence Force (Poland)' } },
       { camp: 'right', effects: { sec: 0.9, power: 0.2 },
-        text: { pl: 'Tak — każdy młody mężczyzna, a może i kobieta, powinien przejść szkolenie', en: 'Yes — every young man, perhaps every woman too, should be trained' },
+        text: { pl: 'Tak - każdy młody mężczyzna, a może i kobieta, powinien przejść szkolenie', en: 'Yes - every young man, perhaps every woman too, should be trained' },
         why: { pl: 'Kraj, w którym każdy umie się bronić, jest zbyt kosztowny do zaatakowania.', en: 'A country where everyone can defend themselves is too costly to attack.' },
         example: { pl: 'Finlandia ma powszechny pobór, a Litwa przywróciła go w 2015 r.', en: 'Finland has universal conscription, and Lithuania reinstated it in 2015.' },
         wiki: { pl: 'Zasadnicza służba wojskowa (Polska)', en: 'Conscription' } }
@@ -174,7 +174,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
     options: [
       { camp: 'left', effects: { just: -0.9 },
         text: { pl: 'Resocjalizacja, terapia i kary alternatywne zamiast więzień', en: 'Rehabilitation, therapy and alternative sentences instead of prison' },
-        why: { pl: 'Prawie każdy skazany kiedyś wyjdzie — lepiej, żeby wyszedł jako sąsiad, a nie zawodowy przestępca.', en: 'Nearly every prisoner gets out one day — better as a neighbour than a career criminal.' },
+        why: { pl: 'Prawie każdy skazany kiedyś wyjdzie - lepiej, żeby wyszedł jako sąsiad, a nie zawodowy przestępca.', en: 'Nearly every prisoner gets out one day - better as a neighbour than a career criminal.' },
         example: { pl: 'Norwegia stawia na resocjalizację i ma jeden z najniższych odsetków powrotów do przestępstwa.', en: 'Norway focuses on rehabilitation and has one of the lowest reoffending rates.' },
         wiki: { pl: 'Resocjalizacja', en: 'Resocialization' } },
       { camp: 'center', effects: { just: 0.1 },
@@ -185,7 +185,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
       { camp: 'right', effects: { just: 0.9 },
         text: { pl: 'Zaostrzyć kary: dożywocie bez przedterminowego wyjścia, część chce kary śmierci', en: 'Tougher sentences: life without parole, some want the death penalty' },
         why: { pl: 'Sprawiedliwość należy się ofiarom, a surowe kary chronią społeczeństwo przed groźnymi przestępcami.', en: 'Victims deserve justice, and harsh sentences protect society from dangerous criminals.' },
-        example: { pl: 'USA — wysokie wyroki, a w części stanów kara śmierci.', en: 'The USA — long sentences, and the death penalty in some states.' },
+        example: { pl: 'USA - wysokie wyroki, a w części stanów kara śmierci.', en: 'The USA - long sentences, and the death penalty in some states.' },
         wiki: { pl: 'Kara śmierci', en: 'Capital punishment' } }
     ] },
 
@@ -205,11 +205,11 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
         wiki: { pl: 'AI Act', en: 'Artificial Intelligence Act' } },
       { camp: 'right_cons', effects: { tech: -0.3, soc: 0.3, world: 0.3 },
         text: { pl: 'Ostrożnie: chronić dzieci i rodziny, nie oddawać kontroli zagranicznym gigantom', en: 'Carefully: protect children and families, do not hand control to foreign tech giants' },
-        why: { pl: 'Technologia nie jest neutralna — zmienia wychowanie, obyczaje i daje ogromną władzę kilku firmom.', en: 'Technology is not neutral — it changes upbringing and customs and gives huge power to a few companies.' },
+        why: { pl: 'Technologia nie jest neutralna - zmienia wychowanie, obyczaje i daje ogromną władzę kilku firmom.', en: 'Technology is not neutral - it changes upbringing and customs and gives huge power to a few companies.' },
         example: { pl: 'Australia zakazała mediów społecznościowych dzieciom poniżej 16 lat (ustawa z 2024 r.).', en: 'Australia banned social media for children under 16 (a 2024 law).' },
         wiki: { pl: 'Sztuczna inteligencja', en: 'Artificial intelligence' } },
       { camp: 'right_free', effects: { tech: 1, econ: 0.5 },
-        text: { pl: 'Jak najmniej regulacji — niech firmy konkurują i rozwijają technologię', en: 'As little regulation as possible — let companies compete and develop the technology' },
+        text: { pl: 'Jak najmniej regulacji - niech firmy konkurują i rozwijają technologię', en: 'As little regulation as possible - let companies compete and develop the technology' },
         why: { pl: 'Przeregulowanie wypchnie innowacje do innych krajów, a konkurencja najlepiej chroni klientów.', en: 'Over-regulation drives innovation abroad, and competition protects customers best.' },
         example: { pl: 'USA stawiają głównie na samoregulację firm technologicznych.', en: 'The USA relies mainly on tech companies regulating themselves.' },
         wiki: { pl: 'Sztuczna inteligencja', en: 'Artificial intelligence' } }
@@ -220,7 +220,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
     what: { pl: 'Polska potrzebuje rąk do pracy, ale spiera się o skalę imigracji, integrację i ochronę granic.', en: 'Poland needs workers but argues about the scale of immigration, integration and border protection.' },
     options: [
       { camp: 'left_soc', effects: { world: -0.3, econ: -0.6 },
-        text: { pl: 'Imigracja tak, ale tylko z równą płacą i pełnymi prawami — żeby nie zbijać pensji', en: 'Immigration yes, but only with equal pay and full rights — so wages are not undercut' },
+        text: { pl: 'Imigracja tak, ale tylko z równą płacą i pełnymi prawami - żeby nie zbijać pensji', en: 'Immigration yes, but only with equal pay and full rights - so wages are not undercut' },
         why: { pl: 'Tani pracownik z zagranicy bywa używany do obniżania płac wszystkim; równe prawa chronią i migrantów, i miejscowych.', en: 'Cheap foreign workers are sometimes used to cut everyone\'s pay; equal rights protect both migrants and locals.' },
         example: { pl: 'Unijna dyrektywa o pracownikach delegowanych od 2018 r.: ta sama płaca za tę samą pracę w tym samym miejscu.', en: 'The EU posted workers directive since 2018: equal pay for equal work in the same place.' },
         wiki: { pl: 'Dumping socjalny', en: 'Posted Workers Directive' } },
@@ -237,7 +237,7 @@ SZ.QUESTIONS = (SZ.QUESTIONS || []).concat([
       { camp: 'right', effects: { world: 0.9, soc: 0.4 },
         text: { pl: 'Jak najmniej imigracji spoza Europy; najpierw dzietność, repatriacja i ochrona granic', en: 'As little immigration from outside Europe as possible; first birth rates, repatriation and border protection' },
         why: { pl: 'Masowa imigracja zmienia kulturę i rodzi napięcia; problem demograficzny trzeba rozwiązać we własnym kraju.', en: 'Mass immigration changes culture and causes tensions; the demographic problem must be solved at home.' },
-        example: { pl: 'Węgry — płot na granicy od 2015 r. i bardzo restrykcyjna polityka azylowa.', en: 'Hungary — a border fence since 2015 and a very restrictive asylum policy.' },
+        example: { pl: 'Węgry - płot na granicy od 2015 r. i bardzo restrykcyjna polityka azylowa.', en: 'Hungary - a border fence since 2015 and a very restrictive asylum policy.' },
         wiki: { pl: 'Kryzys migracyjny na granicy Białorusi z Unią Europejską', en: 'Belarus–European Union border crisis' } }
     ] }
 ]);

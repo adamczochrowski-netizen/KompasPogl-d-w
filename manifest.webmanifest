@@ -1,7 +1,7 @@
 {
   "name": "Kompas Poglądów",
   "short_name": "Kompas",
-  "description": "Zdefiniuj swoje poglądy — gospodarczo, politycznie, społecznie.",
+  "description": "Zdefiniuj swoje poglądy - gospodarczo, politycznie, społecznie.",
   "lang": "pl",
   "start_url": "./",
   "scope": "./",

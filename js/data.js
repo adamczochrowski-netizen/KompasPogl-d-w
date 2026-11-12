@@ -1,5 +1,5 @@
 // Dane aplikacji: osie i archetypy. Pytania są w js/questions-*.js.
-// Każdy tekst to obiekt { pl: '...', en: '...' } — brakujący język spada na polski.
+// Każdy tekst to obiekt { pl: '...', en: '...' } - brakujący język spada na polski.
 
 window.SZ = window.SZ || {};
 
@@ -102,7 +102,7 @@ SZ.CAMP_GROUPS = [
   { id: 'right', color: '#60a5fa', name: { pl: 'Prawica', en: 'Right' } }
 ];
 
-// Co oznacza każdy biegun — pokazywane po kliknięciu osi.
+// Co oznacza każdy biegun - pokazywane po kliknięciu osi.
 SZ.POLE_INFO = {
   econ: { neg: { pl: 'Państwo i wspólnota dbają o równość: wyższe podatki, publiczne usługi, kontrola nad kluczowymi branżami.', en: 'The state and community ensure equality: higher taxes, public services, control over key industries.' },
           pos: { pl: 'Każdy decyduje o swoich pieniądzach: niskie podatki, konkurencja, mało regulacji.', en: 'Everyone decides about their own money: low taxes, competition, little regulation.' } },
@@ -117,11 +117,11 @@ SZ.POLE_INFO = {
   relig: { neg: { pl: 'Religia to sprawa prywatna: państwo neutralne, prawo oparte na świeckich argumentach.', en: 'Religion is private: a neutral state, laws based on secular arguments.' },
            pos: { pl: 'Wiara i jej wartości powinny być obecne w prawie, szkole i życiu publicznym.', en: 'Faith and its values should be present in law, schools and public life.' } },
   sec: { neg: { pl: 'Bezpieczeństwo budują rozmowy, dyplomacja i pomoc innym, a nie broń.', en: 'Security is built through talks, diplomacy and helping others, not weapons.' },
-         pos: { pl: 'Pokój zapewnia silna armia i gotowość do obrony — „chcesz pokoju, szykuj się do wojny”.', en: 'Peace is secured by a strong army and readiness to fight — "if you want peace, prepare for war".' } },
+         pos: { pl: 'Pokój zapewnia silna armia i gotowość do obrony - „chcesz pokoju, szykuj się do wojny”.', en: 'Peace is secured by a strong army and readiness to fight - "if you want peace, prepare for war".' } },
   just: { neg: { pl: 'Kara ma przede wszystkim naprawiać: terapia, edukacja, druga szansa.', en: 'Punishment should mainly reform: therapy, education, a second chance.' },
           pos: { pl: 'Kara ma odstraszać i być sprawiedliwą odpłatą: surowe wyroki, silna policja.', en: 'Punishment should deter and be just retribution: harsh sentences, strong police.' } },
   tech: { neg: { pl: 'Nowe technologie wprowadzać ostrożnie, z regulacjami i myśleniem o skutkach.', en: 'Adopt new technologies carefully, with regulation and thought for consequences.' },
-          pos: { pl: 'Postęp technologiczny jak najszybciej — AI, geny, atom rozwiążą więcej problemów, niż stworzą.', en: 'Technological progress as fast as possible — AI, genes, nuclear will solve more than they create.' } },
+          pos: { pl: 'Postęp technologiczny jak najszybciej - AI, geny, atom rozwiążą więcej problemów, niż stworzą.', en: 'Technological progress as fast as possible - AI, genes, nuclear will solve more than they create.' } },
   local: { neg: { pl: 'Decyzje blisko ludzi: silne gminy i regiony, budżety obywatelskie.', en: 'Decisions close to people: strong towns and regions, participatory budgets.' },
            pos: { pl: 'Ważne sprawy decydowane centralnie: równe zasady dla wszystkich i sprawne wielkie projekty.', en: 'Important matters decided centrally: equal rules for all and efficient big projects.' } }
 };

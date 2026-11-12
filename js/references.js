@@ -102,17 +102,17 @@ window.SZ = window.SZ || {};
     'Adrian Zandberg', 'Karol Nawrocki', 'Rafał Trzaskowski', 'Szymon Hołownia', 'Leszek Balcerowicz', 'Jacek Kuroń', 'Roman Dmowski', 'Janusz Korwin-Mikke']);
   SZ.PEOPLE.forEach(p => { p.region = POLISH.has(p.name) ? 'pl' : 'world'; });
 
-  // Postacie fikcyjne — na wesoło. quip = żartobliwy komentarz.
+  // Postacie fikcyjne - na wesoło. quip = żartobliwy komentarz.
   const F = (name, from, quip, v) => ({ name, from, quip, v: vec(v) });
   SZ.FICTION = [
     F('Janosik', { pl: 'legenda góralska', en: 'Polish highland legend' },
-      { pl: 'Zabiera bogatym, daje biednym — podatek progresywny w wersji góralskiej.', en: 'Takes from the rich, gives to the poor — progressive tax, highland style.' },
+      { pl: 'Zabiera bogatym, daje biednym - podatek progresywny w wersji góralskiej.', en: 'Takes from the rich, gives to the poor - progressive tax, highland style.' },
       [-1.0, -0.7, 0.3, 0.2, -0.5, 0.2, 0.3, -0.5, -0.5, -1.0]),
     F('Ron Swanson', { pl: 'serial „Parks and Recreation”', en: '"Parks and Recreation"' },
       { pl: 'Najchętniej zlikwidowałby urząd, w którym pracuje.', en: 'Would happily abolish the office he works in.' },
       [1.0, -0.9, 0.4, 0.3, 0.6, 0.0, 0.3, 0.2, -0.6, -1.0]),
     F('Sknerus McKwacz', { pl: 'komiksy i bajki Disneya', en: 'Disney comics and cartoons' },
-      { pl: 'Każdy grosz na wagę złota. Dosłownie — ma go cały skarbiec.', en: 'Every penny counts. Literally — he has a vault full of them.' },
+      { pl: 'Każdy grosz na wagę złota. Dosłownie - ma go cały skarbiec.', en: 'Every penny counts. Literally - he has a vault full of them.' },
       [1.0, 0.0, 0.3, -0.3, 0.9, 0.0, 0.2, 0.5, 0.6, 0.0]),
     F('Lisa Simpson', { pl: 'serial „Simpsonowie”', en: '"The Simpsons"' },
       { pl: 'Wegetarianka, saksofonistka i sumienie całego Springfield.', en: 'Vegetarian, saxophonist and the conscience of Springfield.' },
@@ -148,7 +148,7 @@ window.SZ = window.SZ || {};
       { pl: 'Pacyfista, zwolennik spokojnego życia i miodu dla wszystkich.', en: 'A pacifist who backs a quiet life and honey for everyone.' },
       [-0.3, -0.8, 0.2, 0.0, -0.6, 0.0, -1.0, -0.8, -0.8, -0.5]),
     F('Ferdynand Kiepski', { pl: 'serial „Świat według Kiepskich”', en: 'Polish sitcom "Świat według Kiepskich"' },
-      { pl: 'Ma pomysł na każdy problem kraju — byle nie musiał przy tym wstawać z kanapy.', en: 'Has a fix for every national problem — as long as he need not leave the sofa.' },
+      { pl: 'Ma pomysł na każdy problem kraju - byle nie musiał przy tym wstawać z kanapy.', en: 'Has a fix for every national problem - as long as he need not leave the sofa.' },
       [-0.6, 0.0, 0.6, 0.5, 0.6, 0.3, 0.0, 0.4, -0.5, 0.0]),
     F('Gandalf', { pl: '„Władca Pierścieni”', en: '"The Lord of the Rings"' },
       { pl: 'Szanuje tradycję, kocha Shire i nie ufa nikomu, kto buduje zbyt wysokie wieże.', en: 'Respects tradition, loves the Shire and distrusts anyone building towers too tall.' },
@@ -163,7 +163,7 @@ window.SZ = window.SZ || {};
       { pl: 'Wolny rynek, wielka technologia i zbroja na każdą okazję.', en: 'Free market, big tech and a suit of armour for every occasion.' },
       [0.8, 0.0, -0.4, -0.3, 0.3, -0.7, 0.7, 0.4, 1.0, 0.3]),
     F('Onufry Zagłoba', { pl: 'Trylogia Sienkiewicza', en: 'Sienkiewicz\'s Trilogy' },
-      { pl: 'Szlachecka fantazja, patriotyzm i gotowość do bitwy — najlepiej po obiedzie.', en: 'Noble bravado, patriotism and readiness for battle — preferably after lunch.' },
+      { pl: 'Szlachecka fantazja, patriotyzm i gotowość do bitwy - najlepiej po obiedzie.', en: 'Noble bravado, patriotism and readiness for battle - preferably after lunch.' },
       [0.2, 0.0, 0.6, 0.8, 0.3, 0.6, 0.7, 0.3, -0.4, -0.3])
   ];
 })();
