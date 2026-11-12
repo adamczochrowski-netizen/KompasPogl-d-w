@@ -51,7 +51,7 @@ Przy kolejnych zmianach podbij numer `CACHE` w `sw.js` (np. `kompas-v2`), żeby 
 
 ## Pliki
 - `index.html`, `css/style.css`: wygląd
-- `js/positions.js`, `js/positions-2.js`: 40 pytań w formie stanowisk (aktualne)
+- `js/positions.js`, `js/positions-2.js`, `js/positions-3.js`: 45 pytań w formie stanowisk (aktualne)
 - `js/questions-1.js`, `js/questions-2.js`, `js/questions-3.js`: stare pytania ze skalą (do przerobienia)
 - `js/data.js`: osie, obozy, archetypy
 - `js/references.js`: partie i postacie (wektor 10 wartości od -1 do 1, w kolejności osi)
