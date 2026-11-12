@@ -20,11 +20,11 @@ SZ.TOPICS = [
   { id: 'religion', icon: '⛪', name: { pl: 'Religia i Kościół', en: 'Religion and church' },
     ids: ['x_religion', 'x_schoolrel', 'x_churchfund', 'x_blasphemy', 'x_crosses', 'p_sunday', 'p_euthanasia', 'x_ivf', 'x_abortion', 'p_concordat', 'p_abuse', 'p_headscarf', 'p_chaplains', 'p_churchproperty', 'p_ritual', 'p_pulpit', 'p_conscience', 'p_christeurope', 'p_holidays', 'p_pill'] },
   { id: 'security', icon: '🛡️', name: { pl: 'Wojsko i bezpieczeństwo', en: 'Defence and security' },
-    ids: ['x_draft', 'x_defense', 'x_guns', 'x_ukraine', 'x_surveil', 'x_border', 'x_nukes', 'x_usa', 'p_shooting', 'p_schengen'] },
+    ids: ['x_draft', 'x_defense', 'x_guns', 'x_ukraine', 'x_surveil', 'x_border', 'x_nukes', 'x_usa', 'p_shooting', 'p_schengen', 'x_china', 'p_wot', 'p_armysize', 'p_armsindustry', 'p_shelters', 'p_sabotage', 'p_peacekeepers', 'p_cyber', 'p_armsexport', 'p_womenarmy'] },
   { id: 'justice', icon: '⚖️', name: { pl: 'Prawo i kary', en: 'Law and punishment' },
-    ids: ['x_crime', 'x_death', 'x_juvenile', 'x_prison', 'x_cannabis', 'x_selfdefense', 'p_spanking', 'p_esbek', 'p_icc'] },
+    ids: ['x_crime', 'x_death', 'x_juvenile', 'x_prison', 'x_cannabis', 'x_selfdefense', 'p_spanking', 'p_esbek', 'p_icc', 'x_guns', 'p_protests', 'p_hatespeech', 'x_surveil', 'p_registry', 'p_castration', 'p_prisonwork', 'p_speeding', 'p_drunkcar', 'p_policeoversight', 'p_harddrugs'] },
   { id: 'tech', icon: '💻', name: { pl: 'Technologia', en: 'Technology' },
-    ids: ['x_ai', 'x_kidsonline', 'x_cash', 'x_nuclear', 'x_digitaltax', 'x_digitalid', 'p_aischool', 'p_phones', 'p_porn', 'p_evoting', 'p_ev', 'p_gmo'] },
+    ids: ['x_ai', 'x_kidsonline', 'x_cash', 'x_nuclear', 'x_digitaltax', 'x_digitalid', 'p_aischool', 'p_phones', 'p_porn', 'p_evoting', 'p_ev', 'p_gmo', 'p_vaccines', 'p_megaproj', 'p_robottax', 'p_crypto', 'p_facerec', 'p_repair', 'p_tiktok', 'p_selfdriving'] },
   { id: 'local', icon: '🏘️', name: { pl: 'Samorząd i miasto', en: 'Local government and cities' },
-    ids: ['x_localtax', 'x_partbudget', 'x_regions', 'x_curriculum', 'x_cars', 'x_housing', 'x_villagebus', 'x_mergegminy', 'p_megaproj', 'p_termlimits', 'p_stoves', 'p_windfarms'] }
+    ids: ['x_localtax', 'x_partbudget', 'x_regions', 'x_curriculum', 'x_cars', 'x_housing', 'x_villagebus', 'x_mergegminy', 'p_megaproj', 'p_termlimits', 'p_stoves', 'p_windfarms', 'p_alcohol', 'p_homeless', 'p_schoolfood', 'p_recall', 'p_parking', 'p_zoning', 'p_smallschools', 'p_citywatch'] }
 ];

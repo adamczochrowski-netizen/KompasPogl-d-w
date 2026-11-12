@@ -1,10 +1,10 @@
 // Service worker: apka działa bez internetu i da się ją zainstalować na telefonie.
 // Strategia „najpierw sieć”: zawsze świeża wersja, a bez internetu — kopia z pamięci.
-const CACHE = 'kompas-v13';
+const CACHE = 'kompas-v14';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css',
   'js/i18n.js', 'js/data.js', 'js/questions-1.js', 'js/questions-2.js', 'js/questions-3.js',
-  'js/positions.js', 'js/positions-2.js', 'js/positions-3.js', 'js/positions-4.js', 'js/pool-1.js', 'js/pool-2.js', 'js/pool-3.js', 'js/topics.js', 'js/references.js', 'js/charts.js', 'js/app.js', 'js/voice.js',
+  'js/positions.js', 'js/positions-2.js', 'js/positions-3.js', 'js/positions-4.js', 'js/pool-1.js', 'js/pool-2.js', 'js/pool-3.js', 'js/pool-4.js', 'js/topics.js', 'js/references.js', 'js/charts.js', 'js/app.js', 'js/voice.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png'
 ];
 
