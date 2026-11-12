@@ -405,6 +405,7 @@ body.voice-on { padding-bottom: 260px; }
 .as-notice[hidden] { display: none; }
 
 /* ── Test / Tematy ── */
+.qzone > .modebar, .qzone > .topics { grid-column: 1 / -1; }
 .modebar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 12px; }
 .modebar .seg button { padding: 8px 16px; font-weight: 600; }
 .topic-crumb { display: flex; align-items: center; gap: 10px; color: var(--muted); }
@@ -538,3 +539,31 @@ body.voice-on { padding-bottom: 260px; }
   body.voice-on { padding-bottom: calc(360px + env(safe-area-inset-bottom)); }
   .toast { bottom: calc(84px + env(safe-area-inset-bottom)); }
 }
+
+/* ── Mapa ideologii ── */
+.ideo-wrap { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.ideo-wrap canvas { width: 100%; aspect-ratio: 1; display: block; border-radius: 10px; }
+.ideo-best { border-left: 4px solid var(--c); background: var(--panel-2); border-radius: 10px; padding: 14px 16px; }
+.ideo-best .lbl { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+.ideo-best h3 { font-size: 22px; margin: 4px 0 6px; color: var(--c); }
+.ideo-best p { margin: 0; }
+.ideo-also { margin-top: 14px; display: grid; gap: 8px; }
+.ideo-also h4 { font-size: 12.5px; color: var(--muted); margin: 0; font-weight: 600; }
+.ideo-item { display: grid; grid-template-columns: 12px 1fr auto; gap: 10px; align-items: start; padding: 8px 10px; border-radius: 8px; background: var(--panel-2); }
+.ideo-item i { width: 12px; height: 12px; border-radius: 3px; margin-top: 4px; background: var(--c); }
+.ideo-item b { display: block; }
+.ideo-item span { font-size: 12.5px; color: var(--muted); }
+.ideo-item em { font-style: normal; font-weight: 700; color: var(--text); }
+@media (max-width: 900px) { .ideo-wrap { grid-template-columns: 1fr; } }
+
+/* Pulsująca obwódka wokół „Ty” na mapie ideologii */
+.ideo-canvas { position: relative; }
+.ideo-pulse { position: absolute; width: 16px; height: 16px; margin: -8px 0 0 -8px; border-radius: 50%; pointer-events: none;
+  border: 2px solid #fff; box-shadow: 0 0 0 0 rgba(255,255,255,.7); animation: ideoPulse 1.6s ease-out infinite; }
+.ideo-pulse[hidden] { display: none; }
+@keyframes ideoPulse {
+  0%   { transform: scale(1);   opacity: 1;  box-shadow: 0 0 0 0 rgba(255,255,255,.6); }
+  70%  { transform: scale(2.4); opacity: 0;  box-shadow: 0 0 0 6px rgba(255,255,255,0); }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .ideo-pulse { animation: none; } }

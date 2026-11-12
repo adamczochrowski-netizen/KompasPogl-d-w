@@ -111,6 +111,15 @@
     </section>
 
     <!-- Wykresy i wyniki (każdą sekcję da się zwinąć: data-sec) -->
+    <section class="panel wide" data-sec="ideo" data-view="results">
+      <div class="card-head"><h2 data-i18n="ideoTitle"></h2></div>
+      <div class="ideo-wrap">
+        <div class="ideo-canvas"><canvas id="ideoMap"></canvas><span class="ideo-pulse" id="ideoPulse" hidden></span></div>
+        <div id="ideoList"></div>
+      </div>
+      <p class="hint" data-i18n="ideoHint"></p>
+    </section>
+
     <section class="panel chart-card half" data-sec="compass" data-view="results">
       <div class="card-head">
         <h2 data-i18n="compassTitle"></h2>
@@ -231,6 +240,7 @@
   <script src="js/pool-4.js"></script>
   <script src="js/topics.js"></script>
   <script src="js/references.js"></script>
+  <script src="js/ideologies.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
   <!-- Asystent głosowy wyłączony (wrócimy do niego później): <script src="js/voice.js"></script> -->

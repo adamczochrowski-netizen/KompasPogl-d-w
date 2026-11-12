@@ -1,5 +1,5 @@
 (function () {
-  const { AXES, QUESTIONS, TOPICS = [], ARCHETYPES, PARTIES, PEOPLE, FICTION, REGIONS, POLE_INFO, CAMPS, CAMP_GROUPS, I18N, Charts } = SZ;
+  const { AXES, QUESTIONS, TOPICS = [], IDEOLOGIES = [], ARCHETYPES, PARTIES, PEOPLE, FICTION, REGIONS, POLE_INFO, CAMPS, CAMP_GROUPS, I18N, Charts } = SZ;
   const STORE_KEY = 'kompas-pogladow-v1';
   const DATA_VERSION = 2;   // 2 = pytania w formie stanowisk (1 = skala zgody)
   // Wersje list stanowisk: { pytanie: numer, pod który wstawiono nowe stanowisko } (patrz migrateOptions).
@@ -770,6 +770,96 @@
     }).join('');
   }
 
+  // ── Mapa ideologii: pola wg najbliższej ideologii na osiach Gospodarka × Władza ──
+  const IDEO_GRID = 24;   // liczba kratek na bok (jak w klasycznych mapach ideologii)
+  let ideoCache = null;   // { key, canvas, labels }
+  function ideoBackground(size) {
+    const key = `${size}|${state.lang}`;
+    if (ideoCache && ideoCache.key === key) return ideoCache;
+    const off = document.createElement('canvas');
+    off.width = off.height = size;
+    const g = off.getContext('2d'), cell = size / IDEO_GRID;
+    const sites = IDEOLOGIES.map(x => ({ x, ex: x.v.econ, py: x.v.power, sx: 0, sy: 0, n: 0 }));
+    for (let r = 0; r < IDEO_GRID; r++) for (let c = 0; c < IDEO_GRID; c++) {
+      const ex = -1 + (c + 0.5) * 2 / IDEO_GRID, py = 1 - (r + 0.5) * 2 / IDEO_GRID;
+      let best = sites[0], bd = Infinity;
+      sites.forEach(st => { const d = (st.ex - ex) ** 2 + (st.py - py) ** 2; if (d < bd) { bd = d; best = st; } });
+      best.sx += c; best.sy += r; best.n++;
+      g.fillStyle = best.x.color;
+      g.fillRect(Math.floor(c * cell), Math.floor(r * cell), Math.ceil(cell), Math.ceil(cell));
+    }
+    // Delikatna siatka i osie środka
+    g.strokeStyle = 'rgba(0,0,0,.18)'; g.lineWidth = 1;
+    for (let i = 1; i < IDEO_GRID; i++) {
+      const q = Math.round(i * cell) + .5;
+      g.beginPath(); g.moveTo(q, 0); g.lineTo(q, size); g.moveTo(0, q); g.lineTo(size, q); g.stroke();
+    }
+    g.strokeStyle = 'rgba(0,0,0,.55)'; g.lineWidth = 2;
+    g.beginPath(); g.moveTo(size / 2, 0); g.lineTo(size / 2, size); g.moveTo(0, size / 2); g.lineTo(size, size / 2); g.stroke();
+    const labels = sites.filter(st => st.n).map(st => ({ x: st.x, cx: (st.sx / st.n + 0.5) * cell, cy: (st.sy / st.n + 0.5) * cell, n: st.n }));
+    ideoCache = { key, canvas: off, labels };
+    return ideoCache;
+  }
+  function renderIdeo(scores, count) {
+    const canvas = $('ideoMap'), rect = canvas.getBoundingClientRect();
+    if (rect.width < 120) return;   // ukryta zakładka / zwinięta sekcja
+    const dpr = window.devicePixelRatio || 1, size = Math.round(rect.width * dpr);
+    canvas.width = canvas.height = size;
+    const g = canvas.getContext('2d'), pad = Math.round(26 * dpr), inner = size - pad * 2;
+    g.fillStyle = '#0d1017'; g.fillRect(0, 0, size, size);
+    const bg = ideoBackground(inner);
+    g.drawImage(bg.canvas, pad, pad);
+    const answered = Object.keys(state.answers).length;
+    const ranked = answered ? rank(IDEOLOGIES, scores, count) : [];
+    const top = answered >= MIN_FOR_MATCH ? ranked[0] : null;
+    // Napisy z nazwami ideologii
+    g.textAlign = 'center'; g.textBaseline = 'middle';
+    const small = rect.width < 480;   // telefon: mniejsze napisy i tylko większe pola
+    bg.labels.filter(l => !small || l.n >= 14 || (top && top.x.id === l.x.id)).forEach(l => {
+      const fs = Math.round((small ? 8.5 : l.n > 20 ? 11.5 : 10) * dpr);
+      g.font = `700 ${fs}px "Segoe UI", system-ui, sans-serif`;
+      const words = tr(l.x.name).split(' ');
+      const lines = words.length > 1 && tr(l.x.name).length > 12 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')] : [tr(l.x.name)];
+      lines.forEach((ln, i) => {
+        const y = pad + l.cy + (i - (lines.length - 1) / 2) * fs * 1.1;
+        g.lineWidth = 3 * dpr; g.strokeStyle = 'rgba(0,0,0,.75)'; g.strokeText(ln, pad + l.cx, y);
+        g.fillStyle = top && top.x.id === l.x.id ? '#fff59d' : '#fff'; g.fillText(ln, pad + l.cx, y);
+      });
+    });
+    // Podpisy osi
+    const ea = axisById('econ'), pa = axisById('power');
+    g.font = `600 ${Math.round(11 * dpr)}px "Segoe UI", system-ui, sans-serif`; g.fillStyle = '#8a94a8';
+    g.fillText(`▲ ${tr(pa.pos)}`, size / 2, pad / 2);
+    g.fillText(`▼ ${tr(pa.neg)}`, size / 2, size - pad / 2);
+    g.save(); g.translate(pad / 2, size / 2); g.rotate(-Math.PI / 2); g.fillText(`◀ ${tr(ea.neg)}`, 0, 0); g.restore();
+    g.save(); g.translate(size - pad / 2, size / 2); g.rotate(Math.PI / 2); g.fillText(`${tr(ea.pos)} ▶`, 0, 0); g.restore();
+    // Twoja kropka
+    const pulse = $('ideoPulse');
+    pulse.hidden = !(count.econ || count.power);
+    if (count.econ || count.power) {
+      const x = pad + (scores.econ + 1) / 2 * inner, y = pad + (1 - (scores.power + 1) / 2) * inner;
+      pulse.style.left = (x / dpr) + 'px'; pulse.style.top = (y / dpr) + 'px';
+      g.beginPath(); g.arc(x, y, 11 * dpr, 0, Math.PI * 2); g.fillStyle = 'rgba(255,255,255,.25)'; g.fill();
+      g.beginPath(); g.arc(x, y, 6.5 * dpr, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill();
+      g.lineWidth = 2.5 * dpr; g.strokeStyle = '#0d1017'; g.stroke();
+      g.font = `800 ${Math.round(12 * dpr)}px "Segoe UI", system-ui, sans-serif`;
+      g.lineWidth = 3 * dpr; g.strokeStyle = 'rgba(0,0,0,.8)'; g.strokeText(t('ideoYou'), x, y - 18 * dpr);
+      g.fillStyle = '#fff'; g.fillText(t('ideoYou'), x, y - 18 * dpr);
+    }
+    // Lista dopasowań
+    if (!top) { $('ideoList').innerHTML = `<p class="hint">${t('ideoEmpty', { n: MIN_FOR_MATCH })}</p>`; return; }
+    $('ideoList').innerHTML = `
+      <div class="ideo-best" style="--c:${top.x.color}">
+        <div class="lbl">${t('ideoBest')} · ${top.pct}%</div>
+        <h3>${esc(tr(top.x.name))}</h3>
+        <p>${esc(tr(top.x.desc))}</p>
+      </div>
+      <div class="ideo-also"><h4>${t('ideoAlso')}</h4>
+        ${ranked.slice(1, 4).map(r => `<div class="ideo-item" style="--c:${r.x.color}"><i></i>
+          <div><b>${esc(tr(r.x.name))}</b><span>${esc(tr(r.x.desc))}</span></div><em>${r.pct}%</em></div>`).join('')}
+      </div>`;
+  }
+
   function renderAll() {
     const { scores, count, consistency } = current();
     renderAxes(scores, count);
@@ -778,6 +868,7 @@
     // Błąd w rysowaniu wykresu nie może zatrzymać reszty apki.
     try { renderCharts(scores); } catch (e) { console.error(e); }
     renderMatches(scores, count);
+    try { renderIdeo(scores, count); } catch (e) { console.error(e); }
     renderConfidence(count, consistency);
     renderContra();
     renderParties(scores, count);
@@ -1048,7 +1139,7 @@
   let rz;
   window.addEventListener('resize', () => {
     clearTimeout(rz);
-    rz = setTimeout(() => renderCharts(current().scores), 120);
+    rz = setTimeout(() => { const c = current(); renderCharts(c.scores); renderIdeo(c.scores, c.count); }, 120);
   });
 
   // ── Interfejs dla asystenta głosowego (js/voice.js) ──
