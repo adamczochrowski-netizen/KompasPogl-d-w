@@ -1059,10 +1059,12 @@
   $('btnSnap').onclick = saveSnapshot;
   $('fileImport').onchange = e => { if (e.target.files[0]) importJson(e.target.files[0]); e.target.value = ''; };
   $('fileFriend').onchange = e => { if (e.target.files[0]) importFriend(e.target.files[0]); e.target.value = ''; };
+  $('btnReset2').onclick = () => $('btnReset').click();
   $('btnReset').onclick = async () => {
     if (!await confirmBox(t('resetConfirm'), t('reset'), true)) return;
     state.answers = {}; state.importance = {}; state.order = [];
-    buildDeck(); save(); renderAll();
+    state.mode = 'full'; state.topic = null;
+    buildDeck(); save(); setTab('quiz'); renderAll();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   // Menu „Więcej”: otwieranie, zamykanie po kliknięciu poza nim lub w pozycję.

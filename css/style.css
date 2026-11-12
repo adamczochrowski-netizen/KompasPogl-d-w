@@ -575,3 +575,9 @@ body.voice-on { padding-bottom: 260px; }
 /* Pasek postępu nad pytaniem: bez osi jest niski */
 .live { padding-top: 12px; padding-bottom: 12px; }
 .live .live-head { margin-bottom: 0; }
+
+/* Reset wyników na dole zakładki Wynik */
+.reset-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; border: 1px dashed var(--line); border-radius: var(--radius); }
+.reset-row .hint { margin: 0; }
+.reset-row .danger { color: var(--danger); border-color: rgba(248,113,113,.45); font-weight: 600; }

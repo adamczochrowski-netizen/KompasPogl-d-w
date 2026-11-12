@@ -1,6 +1,6 @@
 // Service worker: apka działa bez internetu i da się ją zainstalować na telefonie.
 // Strategia „najpierw sieć”: zawsze świeża wersja, a bez internetu — kopia z pamięci.
-const CACHE = 'kompas-v17';
+const CACHE = 'kompas-v18';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css',
   'js/i18n.js', 'js/data.js',
