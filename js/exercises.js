@@ -194,7 +194,10 @@ SZ.FALLACIES = {
           note: { pl: 'Część osób zobaczy napięcie z Twoim poparciem dla aborcji na życzenie. Warto umieć wyjaśnić, czym te sprawy się różnią.', en: 'Some will see a tension with your support for abortion on request. It is worth being able to explain how the issues differ.' } }] },
           N('Argument zasadniczy, wspierany też przez Kościół katolicki.', 'A principled argument, also backed by the Catholic Church.'))),
       A('e10', 'fallacy', 'Albo kara śmierci, albo morderca po kilku latach wyjdzie na wolność.',
-        'Either the death penalty, or the murderer walks free after a few years.', { fallacy: 'falsedilemma' })
+        'Either the death penalty, or the murderer walks free after a few years.', { fallacy: 'falsedilemma' }),
+      A('e11', 'good', 'Wykonany wyrok gwarantuje, że najgroźniejszy zbrodniarz nikogo już nie skrzywdzi - także współwięźniów czy strażników.',
+        'An executed sentence guarantees the most dangerous criminal will never harm anyone again - including fellow inmates or guards.',
+        Object.assign({ supports: ['right'] }, N('Argument z bezpieczeństwa - dożywocie nie chroni w pełni ludzi w więzieniu.', 'A safety argument - life imprisonment does not fully protect people inside prison.')))
     ], excludes: [['e4', 'e5', { pl: 'Jeden argument mówi, że kara śmierci nie odstrasza, drugi - że kraje z nią mają mniej morderstw. Oba naraz nie mogą być prawdą.', en: 'One says the death penalty does not deter, the other that countries with it have fewer murders. Both cannot be true at once.' }]] },
 
     { q: 'x_cannabis', args: [
@@ -231,5 +234,56 @@ SZ.FALLACIES = {
       A('f10', 'fallacy', 'Wszyscy młodzi i tak palą, więc zakaz nie ma sensu.',
         'All young people smoke it anyway, so the ban makes no sense.', { fallacy: 'popularity' })
     ], excludes: [['f4', 'f9', { pl: '„Dorosły sam decyduje o swoim ciele” wyklucza „państwo ma chronić przed używkami”.', en: '"Adults decide about their own bodies" rules out "the state must protect people from substances".' }]] }
+  ];
+
+  // ── Zmiana zdania: najmocniejszy fakt lub argument przeciw każdemu stanowisku ──
+  const C = (pl, en) => ({ pl, en });
+  SZ.CHALLENGES = {
+    x_tax: {
+      left: C('Francja zniosła w 2018 r. podatek od dużych majątków, bo przez lata kraj opuszczały tysiące zamożnych podatników.', 'In 2018 France abolished its wealth tax after years in which thousands of wealthy taxpayers left the country.'),
+      center: C('Wysoka kwota wolna kosztuje budżet wiele miliardów złotych rocznie i obniża podatek także najlepiej zarabiającym.', 'A high tax-free allowance costs the budget billions of zł a year and also cuts tax for the highest earners.'),
+      right_cons: C('Mimo ulg na dzieci i 800 plus liczba urodzeń w Polsce w 2024 r. była najniższa od II wojny światowej.', 'Despite child tax breaks and 800 plus, births in Poland in 2024 were the lowest since the Second World War.'),
+      right_free: C('W Estonii, która ma podatek liniowy od 1994 r., nierówności dochodowe są wyższe niż średnio w UE.', 'In Estonia, which has had a flat tax since 1994, income inequality is higher than the EU average.')
+    },
+    x_minwage: {
+      left: C('W biedniejszych powiatach płaca minimalna jest już blisko przeciętnej lokalnej pensji, więc duże podwyżki najmocniej uderzają w małe firmy właśnie tam.', 'In poorer counties the minimum wage is already close to the local average wage, so big rises hit small firms hardest exactly there.'),
+      center: C('Automatyczny wzór podwyżek może podnosić koszty firm właśnie w kryzysie, gdy najtrudniej im przetrwać.', 'An automatic formula can raise business costs right in a crisis, when it is hardest for firms to survive.'),
+      right: C('Niemcy wprowadziły płacę minimalną w 2015 r., a zapowiadany duży wzrost bezrobocia nie nastąpił.', 'Germany introduced a minimum wage in 2015, and the predicted big rise in unemployment did not happen.')
+    },
+    x_migration: {
+      left_soc: C('Gdy wymogi wobec zatrudniania cudzoziemców są zbyt surowe, firmy często w ogóle ich nie zatrudniają, a braki pracowników zostają.', 'When rules on hiring foreigners are too strict, firms often hire none at all, and labour shortages remain.'),
+      left_lib: C('Większość prób nielegalnego przekroczenia granicy z Białorusią organizowały białoruskie służby, używając migrantów jako narzędzia nacisku.', 'Most attempts to cross the Belarus border illegally were organised by Belarusian services using migrants as a pressure tool.'),
+      center: C('Polska w ostatnich latach wydawała najwięcej w UE pierwszych zezwoleń na pobyt dla osób spoza Unii - kontrolowana migracja już jest bardzo duża.', 'In recent years Poland has issued the most first residence permits to non-EU citizens in the EU - controlled migration is already very large.'),
+      right: C('Raport Deloitte i UNHCR z 2024 r. ocenił, że uchodźcy z Ukrainy zwiększają polskie PKB, a większość dorosłych z nich pracuje.', 'A 2024 Deloitte and UNHCR report found that Ukrainian refugees boost Polish GDP and most of the adults work.')
+    },
+    x_draft: {
+      left: C('Szwecja przywróciła pobór w 2017 r., a Łotwa w 2023 r., uznając, że wobec zagrożenia z Rosji sama armia zawodowa nie wystarczy.', 'Sweden reinstated conscription in 2017 and Latvia in 2023, concluding that a professional army alone is not enough against the Russian threat.'),
+      center: C('Wojna w Ukrainie pokazała, że w długim konflikcie potrzeba setek tysięcy przeszkolonych rezerwistów - samych ochotników może nie wystarczyć.', 'The war in Ukraine showed that a long conflict needs hundreds of thousands of trained reservists - volunteers alone may not be enough.'),
+      right: C('Szkolenie dziesiątek tysięcy poborowych rocznie kosztuje tyle, że wiele krajów NATO zawiesiło pobór i przeznaczyło pieniądze na nowoczesny sprzęt.', 'Training tens of thousands of conscripts a year costs so much that many NATO countries suspended conscription and spent the money on modern equipment.')
+    },
+    x_death: {
+      left: C('Zdarza się, że skazani na dożywocie zabijają ponownie już w więzieniu - współwięźniów albo strażników.', 'Prisoners serving life sometimes kill again inside prison - fellow inmates or guards.'),
+      center: C('Europejski Trybunał Praw Człowieka uznał w 2013 r., że dożywocie musi dawać możliwość ponownej oceny po latach.', 'In 2013 the European Court of Human Rights ruled that a life sentence must allow review after some years.'),
+      right: C('W USA od 1973 r. uniewinniono ponad 190 osób, które wcześniej skazano na śmierć.', 'In the USA more than 190 people sentenced to death have been exonerated since 1973.')
+    },
+    x_cannabis: {
+      left: C('Po legalizacji w Kanadzie wzrosła liczba wizyt na izbach przyjęć związanych z marihuaną, w tym zatruć małych dzieci jadalnymi produktami.', 'After legalisation in Canada, cannabis-related emergency visits rose, including poisonings of small children from edibles.'),
+      center: C('Dekryminalizacja posiadania bez legalnej sprzedaży zostawia cały handel w rękach przestępców.', 'Decriminalising possession without legal sales leaves the whole trade in criminals\' hands.'),
+      right_cons: C('Holandia toleruje sprzedaż marihuany od lat 70., a odsetek dorosłych, którzy jej używają, jest zbliżony do średniej europejskiej.', 'The Netherlands has tolerated cannabis sales since the 1970s, and its share of adult users is close to the European average.'),
+      right_free: C('Legalne firmy w USA sprzedają produkty o coraz wyższej zawartości THC, co zwiększa ryzyko uzależnienia i psychoz.', 'Legal firms in the USA sell products with ever higher THC content, raising the risk of addiction and psychosis.')
+    }
+  };
+
+  // ── Wybory z kosztem: dzielisz 100 mld zł; oczekiwanie wynika z Twoich osi ──
+  // signal: jak wynik na osi przekłada się na „chcę na to więcej” (+) albo „mniej” (-)
+  SZ.BUDGET = [
+    { id: 'army', icon: '🛡️', name: C('Wojsko', 'Defence'), signal: { sec: 1 } },
+    { id: 'health', icon: '🏥', name: C('Ochrona zdrowia', 'Healthcare'), signal: { econ: -0.8 } },
+    { id: 'family', icon: '👨‍👩‍👧', name: C('Świadczenia dla rodzin (800 plus)', 'Family benefits (800 plus)'), signal: { soc: 0.6, econ: -0.4 } },
+    { id: 'taxcut', icon: '💸', name: C('Obniżka podatków', 'Tax cuts'), signal: { econ: 1 } },
+    { id: 'school', icon: '🎓', name: C('Edukacja i nauka', 'Education and science'), signal: { econ: -0.5, tech: 0.3 } },
+    { id: 'climate', icon: '🌳', name: C('Klimat i czysta energia', 'Climate and clean energy'), signal: { eco: -1 } },
+    { id: 'police', icon: '⚖️', name: C('Policja i sądy', 'Police and courts'), signal: { just: 0.8 } },
+    { id: 'debt', icon: '📉', name: C('Spłata długu', 'Paying off debt'), signal: { econ: 0.6 } }
   ];
 })();

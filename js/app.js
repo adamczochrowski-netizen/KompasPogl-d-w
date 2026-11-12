@@ -1136,6 +1136,7 @@
     get state() { return state; },
     save, curQ, answerLabel, fxHtml, setTab,
     renderAll: () => renderAll(),
+    scores: () => current(),
     // Odpowiedź z zakładki Ćwiczenia - liczy się tak samo jak w teście.
     setAnswer(id, v) { state.answers[id] = v; state.order = state.order.filter(x => x !== id).concat(id); save(); renderAll(); },
     answer: asVoice(answer),
