@@ -6,7 +6,8 @@
 window.SZ = window.SZ || {};
 
 (function () {
-  const App = SZ.App, { CAMPS, CAMP_GROUPS, FALLACIES, EXERCISES, CHALLENGES = {}, BUDGET = [] } = SZ;
+  const App = SZ.App, { CAMPS, CAMP_GROUPS, FALLACIES, EXERCISES, DEVIL = [], CHALLENGES = {}, BUDGET = [] } = SZ;
+  const MIND = Object.keys(CHALLENGES).map(q => ({ q }));   // Zmiana zdania ma własne pytania
   const Q = Object.fromEntries(SZ.QUESTIONS.map(q => [q.id, q]));
   const AX = Object.fromEntries(SZ.AXES.map(a => [a.id, a]));
   const $ = id => document.getElementById(id);
@@ -23,8 +24,8 @@ window.SZ = window.SZ || {};
       tBudget: '💰 Wybory z kosztem', dBudget: 'Podziel 100 mld zł i sprawdź, czy budżet zgadza się z Twoimi poglądami.',
       menu: '← Wszystkie ćwiczenia', back: '← Lista pytań',
       introDefense: 'Sprawdź, czy umiesz obronić swoje poglądy. Wybierz do 5 argumentów, którymi przekonałbyś kogoś do swojego stanowiska. Uwaga: część brzmi dobrze, ale zawiera błąd logiczny, nieprawdziwy fakt albo przemawia za czymś innym.',
-      introDevil: 'Prawdziwe zrozumienie sporu zaczyna się wtedy, gdy umiesz przedstawić najmocniejszą wersję poglądów drugiej strony. Wybierz stanowisko, którego nie podzielasz, i znajdź do 3 najlepszych argumentów za nim.',
-      introMind: 'Każde stanowisko ma swoje słabe punkty. Zobacz najmocniejszy fakt przeciw temu, co wybrałeś, i uczciwie odpowiedz, czy coś zmienia.',
+      introDevil: 'Prawdziwe zrozumienie sporu zaczyna się wtedy, gdy umiesz rozpoznać najmocniejsze argumenty drugiej strony. Wybierz stanowisko, którego nie podzielasz. Dostaniesz talię kart: przy każdej zdecyduj, czy to dobry argument za tą stroną, czy pułapka.',
+      introMind: 'Każde stanowisko ma słabe punkty. Najpierw zaznacz, jak mocno jesteś przekonany. Potem zobaczysz najmocniejszy fakt przeciw Twojemu stanowisku i zaznaczysz to jeszcze raz.',
       introBudget: 'Masz 100 mld zł do rozdzielenia. Dodawaj i odejmuj po 5 mld. Na końcu porównamy Twój budżet z wynikami na osiach.',
       done: 'Zrobione', todo: 'Do zrobienia', strong: 'mocnych',
       yourPos: 'Twoje stanowisko', pickPos: 'Najpierw wybierz swoje stanowisko:', changePos: 'zmień',
@@ -51,7 +52,16 @@ window.SZ = window.SZ || {};
       bNeed: 'Rozdziel całe 100 mld zł, żeby porównać.', bExpect: 'Wg Twoich odpowiedzi', bMore: 'raczej więcej', bLess: 'raczej mniej', bSame: 'mniej więcej tyle',
       bNoData: 'brak danych', bOk: '✅ zgodne', bHi: '⬆️ dałeś dużo więcej, niż wynika z Twoich poglądów', bLo: '⬇️ dałeś dużo mniej, niż wynika z Twoich poglądów',
       bSummary: 'Zgodność budżetu z poglądami: {k} z {n} pozycji.', bTip: 'Rozbieżność nie jest błędem - pokazuje, gdzie Twoje priorytety są inne, niż sugerowałyby same poglądy. Warto się zastanowić, dlaczego.',
-      bReset: '🔁 Zacznij od nowa', bAxes: 'Na podstawie osi: {axes}'
+      bReset: '🔁 Zacznij od nowa', bAxes: 'Na podstawie osi: {axes}',
+      dvCorrect: 'trafnych', dvCard: 'Karta {i} z {n}', dvQ: 'Czy to dobry argument za stanowiskiem: {camp}?',
+      dvYes: 'Dobry argument', dvNo: 'Odrzucam', dvHit: '✓ Trafnie!', dvMiss: '✗ Pudło',
+      dvWasGood: 'To był dobry argument dla tej strony.', dvWasBad: 'To nie był dobry argument dla tej strony.',
+      dvNext: 'Następna karta →', dvFinish: 'Zobacz wynik', dvScore: 'Trafnych ocen: {k} z {n}', dvMistakes: 'Gdzie się pomyliłeś',
+      mLow: 'wcale', mHigh: 'całkowicie', mBefore: 'Jak mocno jesteś przekonany do swojego stanowiska?', mShowFact: 'Pokaż fakt przeciw',
+      mAfter: 'A teraz - jak mocno jesteś przekonany?', mSave: 'Zapisz', mLowConf: 'Twoja pewność mocno spadła. Chcesz zmienić stanowisko?',
+      mStay: 'Zostaję przy swoim', mResult: 'Pewność: {a}% → {b}% ({d} pkt)', mBeforeL: 'Przed', mAfterL: 'Po',
+      mWeaker: 'Zostajesz przy swoim, ale z mniejszą pewnością - to też uczciwy wynik.', mSwitched: 'zmiana zdania',
+      mStats: 'Ćwiczeń: {n} · średnia zmiana pewności: {d} pkt · nieznanych faktów: {u} · zmian zdania: {c}'
     },
     en: {
       title: '🧠 Exercises',
@@ -62,8 +72,8 @@ window.SZ = window.SZ || {};
       tBudget: '💰 Choices with a cost', dBudget: 'Split 100 billion zł and check whether the budget matches your views.',
       menu: '← All exercises', back: '← Question list',
       introDefense: 'Check whether you can defend your views. Pick up to 5 arguments you would use to convince someone. Careful: some sound good but contain a logical fallacy, a false fact, or support something else.',
-      introDevil: 'Real understanding of a debate starts when you can present the strongest version of the other side. Choose a position you do not hold and find up to 3 of its best arguments.',
-      introMind: 'Every position has weak spots. See the strongest fact against your choice and answer honestly whether it changes anything.',
+      introDevil: 'Real understanding of a debate starts when you can recognise the other side\'s strongest arguments. Choose a position you do not hold. You get a deck of cards: for each, decide whether it is a good argument for that side or a trap.',
+      introMind: 'Every position has weak spots. First mark how convinced you are. Then you will see the strongest fact against your position and mark it again.',
       introBudget: 'You have 100 billion zł to split. Add and remove in steps of 5 billion. At the end we compare your budget with your results on the axes.',
       done: 'Done', todo: 'To do', strong: 'strong',
       yourPos: 'Your position', pickPos: 'First choose your position:', changePos: 'change',
@@ -90,7 +100,16 @@ window.SZ = window.SZ || {};
       bNeed: 'Allocate the full 100 billion to compare.', bExpect: 'From your answers', bMore: 'rather more', bLess: 'rather less', bSame: 'about this much',
       bNoData: 'no data', bOk: '✅ consistent', bHi: '⬆️ you gave much more than your views suggest', bLo: '⬇️ you gave much less than your views suggest',
       bSummary: 'Budget matches your views in {k} of {n} items.', bTip: 'A mismatch is not a mistake - it shows where your priorities differ from what your views alone would suggest. Worth thinking about why.',
-      bReset: '🔁 Start over', bAxes: 'Based on the axes: {axes}'
+      bReset: '🔁 Start over', bAxes: 'Based on the axes: {axes}',
+      dvCorrect: 'correct', dvCard: 'Card {i} of {n}', dvQ: 'Is this a good argument for: {camp}?',
+      dvYes: 'Good argument', dvNo: 'Reject', dvHit: '✓ Correct!', dvMiss: '✗ Miss',
+      dvWasGood: 'This was a good argument for this side.', dvWasBad: 'This was not a good argument for this side.',
+      dvNext: 'Next card →', dvFinish: 'See result', dvScore: 'Correct judgements: {k} of {n}', dvMistakes: 'Where you went wrong',
+      mLow: 'not at all', mHigh: 'completely', mBefore: 'How convinced are you of your position?', mShowFact: 'Show the counter-fact',
+      mAfter: 'And now - how convinced are you?', mSave: 'Save', mLowConf: 'Your confidence dropped a lot. Do you want to change position?',
+      mStay: 'I keep my position', mResult: 'Confidence: {a}% → {b}% ({d} pts)', mBeforeL: 'Before', mAfterL: 'After',
+      mWeaker: 'You keep your position, but with less certainty - that is an honest result too.', mSwitched: 'changed mind',
+      mStats: 'Exercises: {n} · average change in confidence: {d} pts · unknown facts: {u} · changes of mind: {c}'
     }
   };
   const tx = (k, vars = {}) => ((TXT[App.state.lang] || TXT.pl)[k] || k).replace(/\{(\w+)\}/g, (_, v) => vars[v] != null ? vars[v] : '');
@@ -136,7 +155,7 @@ window.SZ = window.SZ || {};
     }).join('');
   }
   const gradeOf = (good, total) => { const r = total ? good / total : 0; return r >= 1 ? 'grade3' : r >= .6 ? 'grade2' : r >= .3 ? 'grade1' : 'grade0'; };
-  const qList = (statusFn) => `<div class="ex-list">${EXERCISES.map(ex => {
+  const qList = (list, statusFn) => `<div class="ex-list">${list.map(ex => {
       const st = statusFn(ex);
       return `<button class="ex-card ${st.done ? 'done' : ''}" data-ex="${ex.q}"><span class="ex-q">${esc(tr(Q[ex.q].text))}</span>
         <span class="ex-status">${st.done ? '✓ ' + st.text : tx('todo')}</span></button>`;
@@ -148,7 +167,7 @@ window.SZ = window.SZ || {};
     return { good: picks.filter(id => verdict(ex.args.find(a => a.id === id), camp) === 'good').length, total: picks.length };
   };
   const defense = {
-    list: () => `<p class="ex-intro">${tx('introDefense')}</p>` + qList(ex => {
+    list: () => `<p class="ex-intro">${tx('introDefense')}</p>` + qList(EXERCISES, ex => {
       const st = defStats(ex); return { done: S().checked[ex.q], text: `${tx('done')} · ${st.good}/${st.total} ${tx('strong')}` };
     }),
     view(ex) {
@@ -184,16 +203,17 @@ window.SZ = window.SZ || {};
   };
   function toggleIn(list, id, max) { if (list.includes(id)) list.splice(list.indexOf(id), 1); else if (list.length < max) list.push(id); }
 
-  // ═══════════ 2. Adwokat diabła ═══════════
-  const devilState = q => { const s = S(); return s.devil[q] = s.devil[q] || { target: null, picks: [], checked: false }; };
+  // ═══════════ 2. Adwokat diabła - talia kart: 👍 dobry argument dla tej strony / 👎 odrzuć ═══════════
+  const devilState = q => { const s = S(); return s.devil[q] = s.devil[q] || { target: null, idx: 0, ans: {}, reveal: false }; };
+  const devilCorrect = (a, target) => a.kind === 'good' && supports(a, target);
   const devilStats = ex => {
-    const d = devilState(ex.q);
-    return { good: d.picks.filter(id => verdict(ex.args.find(a => a.id === id), d.target) === 'good').length, total: d.picks.length };
+    const d = devilState(ex.q), ids = Object.keys(d.ans);
+    return { ok: ids.filter(id => d.ans[id] === devilCorrect(ex.args.find(a => a.id === id), d.target)).length, total: ex.args.length, done: ids.length === ex.args.length };
   };
   const devil = {
-    list: () => `<p class="ex-intro">${tx('introDevil')}</p>` + qList(ex => {
-      const d = devilState(ex.q), st = devilStats(ex);
-      return { done: d.checked, text: `${campName(d.target)} · ${st.good}/${st.total} ${tx('strong')}` };
+    list: () => `<p class="ex-intro">${tx('introDevil')}</p>` + qList(DEVIL, ex => {
+      const st = devilStats(ex), d = devilState(ex.q);
+      return { done: st.done, text: `${campName(d.target)} · ${st.ok}/${st.total} ${tx('dvCorrect')}` };
     }),
     view(ex) {
       const q = Q[ex.q], d = devilState(ex.q), mine = campOf(ex.q);
@@ -202,68 +222,95 @@ window.SZ = window.SZ || {};
         return html + `<p class="ex-sub">${tx('devilPick')}</p><div class="ex-pos-pick">${q.options.map((o, i) =>
           posCard(o, i, o.camp === mine ? 'disabled' : `data-target="${o.camp}"`, o.camp === mine ? 'mine' : '')).join('')}</div>`;
       }
-      const o = q.options.find(x => x.camp === d.target);
+      const o = q.options.find(x => x.camp === d.target), deck = order(ex);
       html += `<div class="ex-mypos devil" style="--camp:${CAMPS[d.target].color}"><span class="lbl">😈 ${tx('devilTarget')} · <b style="color:var(--camp)">${campName(d.target)}</b></span>
         ${esc(tr(o.text))} <button class="linkish" data-act="retarget">${tx('changePos')}</button></div>`;
-      if (!d.checked) return html + argButtons(ex, d.picks, MAX.devil);
       const st = devilStats(ex);
-      const best = ex.args.filter(a => a.kind === 'good' && supports(a, d.target));
-      const missed = best.filter(a => !d.picks.includes(a.id));
-      const msg = st.good === st.total && st.total ? 'devilGood' : st.good ? 'devilMid' : 'devilBad';
-      return html + `<div class="ex-score"><b>${tx('score', { g: st.good, k: st.total })}</b><span>${tx(msg)}</span></div>
-        <div class="ex-results">${argResults(ex, d.target, d.picks)}</div>
-        ${missed.length ? `<h4 class="ex-h">${tx('missedT')}</h4><ul class="ex-missed">${missed.map(a => `<li>${esc(tr(a.text))}</li>`).join('')}</ul>` : ''}
+      if (!st.done || d.reveal) {
+        const a = deck[d.idx], mineAns = d.ans[a.id], right = devilCorrect(a, d.target);
+        let card = `<div class="dv-progress">${tx('dvCard', { i: d.idx + 1, n: deck.length })}</div>
+          <div class="dv-card ${d.reveal ? (mineAns === right ? 'hit' : 'miss') : ''}"><p>„${esc(tr(a.text))}”</p></div>`;
+        if (!d.reveal) {
+          card += `<p class="ex-sub center">${tx('dvQ', { camp: campName(d.target) })}</p>
+            <div class="dv-btns"><button class="dv-no" data-dv="0">👎 ${tx('dvNo')}</button><button class="dv-yes" data-dv="1">👍 ${tx('dvYes')}</button></div>`;
+        } else {
+          const v = verdict(a, d.target);
+          let why = v === 'fallacy' ? `<b>${tr(FALLACIES[a.fallacy])}</b> - ${tr(FALLACIES[a.fallacy].d)}`
+            : v === 'other' ? `${tx('supportsOther', { camps: (a.supports || []).map(campName).join(', ') })} ${a.note ? tr(a.note) : ''}` : (a.note ? tr(a.note) : '');
+          card += `<div class="dv-feedback ${mineAns === right ? 'hit' : 'miss'}"><b>${mineAns === right ? tx('dvHit') : tx('dvMiss')}</b>
+              <span>${right ? tx('dvWasGood') : tx('dvWasBad')}</span><p>${why}</p></div>
+            <button class="primary ex-check" data-act="dvnext">${d.idx + 1 < deck.length ? tx('dvNext') : tx('dvFinish')}</button>`;
+        }
+        return html + card;
+      }
+      const wrong = deck.filter(a => d.ans[a.id] !== devilCorrect(a, d.target));
+      const r = st.ok / st.total;
+      return html + `<div class="ex-score"><b>${tx('dvScore', { k: st.ok, n: st.total })}</b><span>${tx(r >= .85 ? 'devilGood' : r >= .6 ? 'devilMid' : 'devilBad')}</span></div>
+        ${wrong.length ? `<h4 class="ex-h">${tx('dvMistakes')}</h4><div class="ex-results">${wrong.map(a => {
+          const right = devilCorrect(a, d.target);
+          return `<div class="ex-res ${right ? 'v-good' : 'v-false'}"><div class="ex-res-head">${right ? tx('dvWasGood') : tx('dvWasBad')}</div>
+            <p class="ex-res-arg">„${esc(tr(a.text))}”</p></div>`;
+        }).join('')}</div>` : ''}
         <button class="ghost" data-act="again">${tx('again')}</button>`;
     },
     act(a, ex) {
       const d = devilState(ex.q);
-      if (a === 'check') d.checked = true;
-      if (a === 'again') { d.checked = false; d.picks = []; }
-      if (a === 'retarget') { d.target = null; d.checked = false; d.picks = []; }
-    },
-    toggle(ex, id) { toggleIn(devilState(ex.q).picks, id, MAX.devil); }
+      if (a === 'again') Object.assign(d, { idx: 0, ans: {}, reveal: false });
+      if (a === 'retarget') Object.assign(d, { target: null, idx: 0, ans: {}, reveal: false });
+      if (a === 'dvnext') { d.reveal = false; if (d.idx + 1 < ex.args.length) d.idx++; }
+    }
   };
 
-  // ═══════════ 3. Zmiana zdania ═══════════
-  const mindState = q => { const s = S(); return s.mind[q] = s.mind[q] || { knew: null, choice: null, from: null, to: null }; };
+  // ═══════════ 3. Zmiana zdania - suwak pewności przed faktem i po nim ═══════════
+  const mindState = q => { const s = S(); return s.mind[q] = s.mind[q] || { before: null, knew: null, after: null, from: null, to: null, done: false }; };
+  const slider = (id, val) => `<div class="mind-slider"><input type="range" min="0" max="100" step="5" value="${val}" data-slider="${id}">
+      <div class="mind-scale"><span>${tx('mLow')}</span><b data-out="${id}">${val}%</b><span>${tx('mHigh')}</span></div></div>`;
   const mind = {
     list() {
-      const done = EXERCISES.map(ex => mindState(ex.q)).filter(m => m.choice != null);
-      const c = k => done.filter(m => m.choice === k).length;
+      const done = MIND.map(ex => mindState(ex.q)).filter(m => m.done);
+      const avg = done.length ? Math.round(done.reduce((s, m) => s + (m.after - m.before), 0) / done.length) : 0;
       const summary = done.length ? `<div class="ex-score"><b>${tx('mindSummary')}</b>
-          <span>${tx('mindStats', { n: done.length, a: c(0), b: c(1), c: c(2), d: done.filter(m => m.knew === false).length })}</span>
-          <span>${tx(c(2) / done.length > .5 ? 'mindNote2' : c(0) === done.length ? 'mindNote0' : 'mindNote1')}</span></div>` : '';
-      return `<p class="ex-intro">${tx('introMind')}</p>` + summary + qList(ex => {
-        const m = mindState(ex.q); return { done: m.choice != null, text: tx('mind' + m.choice) };
+          <span>${tx('mStats', { n: done.length, d: (avg > 0 ? '+' : '') + avg, u: done.filter(m => m.knew === false).length, c: done.filter(m => m.to).length })}</span>
+          <span>${tx(avg <= -25 ? 'mindNote2' : avg > -5 ? 'mindNote0' : 'mindNote1')}</span></div>` : '';
+      return `<p class="ex-intro">${tx('introMind')}</p>` + summary + qList(MIND, ex => {
+        const m = mindState(ex.q); return { done: m.done, text: `${m.before}% → ${m.after}%${m.to ? ' · ' + tx('mSwitched') : ''}` };
       });
     },
     view(ex) {
-      const q = Q[ex.q], m = mindState(ex.q), s = S();
+      const q = Q[ex.q], m = mindState(ex.q), s = S(), camp = campOf(ex.q);
       let html = header() + `<h3 class="ex-title">${esc(tr(q.text))}</h3>`;
-      const camp = campOf(ex.q);
-      if ((!camp || s.changing === ex.q) && m.choice == null) return html + pickOwnPos(q);
-      const from = m.choice != null ? m.from : camp;
-      const fact = (CHALLENGES[ex.q] || {})[from];
+      if ((!camp || s.changing === ex.q) && !m.done) return html + pickOwnPos(q);
+      const from = m.from || camp;
       html += `<div class="ex-mypos" style="--camp:${CAMPS[from].color}"><span class="lbl">${tx('yourPos')} · <b style="color:var(--camp)">${campName(from)}</b></span>
-        ${esc(tr(q.options.find(o => o.camp === from).text))}</div>
-        <div class="ex-fact"><span class="lbl">⚡ ${tx('mindFact')}</span><p>${esc(tr(fact))}</p></div>`;
-      if (m.choice == null) {
-        if (m.knew == null) return html + `<p class="ex-sub">${tx('mindKnew')}</p><div class="ex-choices">
+        ${esc(tr(q.options.find(o => o.camp === from).text))}</div>`;
+      // Krok 1: pewność przed faktem
+      if (m.before == null) return html + `<p class="ex-sub">${tx('mBefore')}</p>${slider('before', 70)}
+        <button class="primary ex-check" data-act="mbefore">${tx('mShowFact')}</button>`;
+      const fact = (CHALLENGES[ex.q] || {})[from];
+      html += `<div class="ex-fact"><span class="lbl">⚡ ${tx('mindFact')}</span><p>${esc(tr(fact))}</p></div>`;
+      // Krok 2: czy znałeś fakt
+      if (m.knew == null) return html + `<p class="ex-sub">${tx('mindKnew')}</p><div class="ex-choices">
           <button class="ghost" data-knew="1">${tx('yes')}</button><button class="ghost" data-knew="0">${tx('no')}</button></div>`;
-        if (m.picking) return html + `<p class="ex-sub">${tx('mindNew')}</p><div class="ex-pos-pick">${q.options.filter(o => o.camp !== from)
-          .map(o => posCard(o, 0, `data-to="${o.camp}"`)).join('')}</div>`;
-        return html + `<p class="ex-sub">${tx('mindQ')}</p><div class="ex-choices col">
-          <button class="ghost" data-choice="0">${tx('mind0')}</button>
-          <button class="ghost" data-choice="1">${tx('mind1')}</button>
-          <button class="ghost" data-choice="2">${tx('mind2')}</button></div>`;
-      }
-      const res = m.choice === 2 ? tx('mindChanged', { p: campName(m.to) }) : tx('mindKept');
-      return html + `<div class="ex-score"><b>${tx('mind' + m.choice)}</b><span>${res}</span></div>
+      // Krok 3: pewność po fakcie
+      if (m.after == null) return html + `<p class="ex-sub">${tx('mAfter')}</p>${slider('after', m.before)}
+        <button class="primary ex-check" data-act="mafter">${tx('mSave')}</button>`;
+      // Krok 4: przy niskiej pewności - propozycja zmiany stanowiska
+      if (!m.done) return html + `<p class="ex-sub">${tx('mLowConf')}</p><div class="ex-pos-pick">${q.options.filter(o => o.camp !== from)
+          .map(o => posCard(o, 0, `data-to="${o.camp}"`)).join('')}</div>
+        <button class="ghost" data-act="mstay">${tx('mStay')}</button>`;
+      const delta = m.after - m.before;
+      return html + `<div class="ex-score"><b>${tx('mResult', { a: m.before, b: m.after, d: (delta > 0 ? '+' : '') + delta })}</b>
+          <div class="mind-bars"><div><span>${tx('mBeforeL')}</span><i style="width:${m.before}%"></i></div><div><span>${tx('mAfterL')}</span><i style="width:${m.after}%"></i></div></div>
+          <span>${m.to ? tx('mindChanged', { p: campName(m.to) }) : delta < 0 ? tx('mWeaker') : tx('mindKept')}</span></div>
         <button class="ghost" data-act="again">${tx('again')}</button>`;
     },
     act(a, ex) {
-      if (a === 'again') { const s = S(); s.mind[ex.q] = { knew: null, choice: null, from: null, to: null }; }
-      if (a === 'changepos') S().changing = ex.q;
+      const m = mindState(ex.q), root = $('exRoot');
+      const val = id => Number((root.querySelector(`[data-slider="${id}"]`) || {}).value);
+      if (a === 'mbefore') { m.before = val('before'); m.from = campOf(ex.q); }
+      if (a === 'mafter') { m.after = val('after'); if (m.after > 40) m.done = true; }
+      if (a === 'mstay') m.done = true;
+      if (a === 'again') S().mind[ex.q] = { before: null, knew: null, after: null, from: null, to: null, done: false };
     }
   };
 
@@ -315,18 +362,23 @@ window.SZ = window.SZ || {};
   // ── Menu i nawigacja ──
   const TYPES = [['defense', 'tDefense', 'dDefense'], ['devil', 'tDevil', 'dDevil'], ['mind', 'tMind', 'dMind'], ['budget', 'tBudget', 'dBudget']];
   const H = { defense, devil, mind };
+  const SETS = { defense: EXERCISES, devil: DEVIL, mind: MIND };
   function typeDone(type) {
     const s = S();
     if (type === 'budget') return s.budget.checked ? 1 : 0;
     if (type === 'defense') return EXERCISES.filter(ex => s.checked[ex.q]).length;
-    if (type === 'devil') return EXERCISES.filter(ex => s.devil[ex.q] && s.devil[ex.q].checked).length;
-    return EXERCISES.filter(ex => s.mind[ex.q] && s.mind[ex.q].choice != null).length;
+    if (type === 'devil') return DEVIL.filter(ex => devilStats(ex).done).length;
+    return MIND.filter(ex => s.mind[ex.q] && s.mind[ex.q].done).length;
   }
   function menuHtml() {
     return `<p class="ex-intro">${tx('menuIntro')}</p><div class="ex-types">${TYPES.map(([id, t, d]) => {
-      const n = typeDone(id), total = id === 'budget' ? 1 : EXERCISES.length;
-      return `<button class="ex-type" data-type="${id}"><span class="ex-type-t">${tx(t)}</span><span class="ex-type-d">${tx(d)}</span>
+      const n = typeDone(id), total = id === 'budget' ? 1 : SETS[id].length;
+      return `<button class="ex-type ex-theme-${id}" data-type="${id}"><span class="ex-type-t">${tx(t)}</span><span class="ex-type-d">${tx(d)}</span>
         <span class="ex-status">${n ? `✓ ${n}/${total}` : tx('todo')}</span></button>`;
+    }).join('')}${(SZ.EX2_TYPES || []).map(([id, t, d]) => {
+      const m = SZ.EX2[id], n = m.done();
+      return `<button class="ex-type ex-theme-${id}" data-type="${id}"><span class="ex-type-t">${SZ.EX2_TX(t)}</span><span class="ex-type-d">${SZ.EX2_TX(d)}</span>
+        <span class="ex-status">${n ? `✓ ${n}/${m.total}` : tx('todo')}</span></button>`;
     }).join('')}</div>`;
   }
 
@@ -334,17 +386,31 @@ window.SZ = window.SZ || {};
     const root = $('exRoot'); if (!root) return;
     $('exTitle').textContent = tx('title');
     const s = S();
+    root.className = s.type ? `ex-theme-${s.type}` : '';
     if (!s.type) { root.innerHTML = menuHtml(); return; }
     if (s.type === 'budget') { root.innerHTML = budget.view(); return; }
-    const h = H[s.type] || defense, ex = EXERCISES.find(e => e.q === s.cur);
+    // Ćwiczenia z części 2 (js/exercises-ui-2.js)
+    const m2 = SZ.EX2 && SZ.EX2[s.type];
+    if (m2) {
+      const title = SZ.EX2_TYPES.find(t => t[0] === s.type)[1];
+      const inner = m2.view();
+      root.innerHTML = (s.type === 'why' && s.whyCur ? '' : header('menu') + `<h3 class="ex-title">${SZ.EX2_TX(title)}</h3>`) + inner;
+      return;
+    }
+    const h = H[s.type] || defense, ex = (SETS[s.type] || []).find(e => e.q === s.cur);
     root.innerHTML = ex ? h.view(ex) : header('menu') + `<h3 class="ex-title">${tx(TYPES.find(t => t[0] === s.type)[1])}</h3>` + h.list();
   }
 
   function onClick(e) {
-    const s = S(), h = H[s.type], ex = EXERCISES.find(x => x.q === s.cur);
+    const s = S(), h = H[s.type], ex = (SETS[s.type] || []).find(x => x.q === s.cur);
     const el = sel => e.target.closest(sel);
     let scroll = false;
-    if (el('[data-type]')) { s.type = el('[data-type]').dataset.type; s.cur = null; scroll = true; }
+    if (el('[data-type]')) { s.type = el('[data-type]').dataset.type; s.cur = null; s.whyCur = null; scroll = true; }
+    else if (SZ.EX2 && SZ.EX2[s.type] && !(el('[data-act]') && el('[data-act]').dataset.act === 'menu')) {
+      const r = SZ.EX2[s.type].click(el, s);
+      if (!r) return;
+      scroll = r === 'scroll';
+    }
     else if (el('[data-ex]')) { s.cur = el('[data-ex]').dataset.ex; scroll = true; }
     else if (el('[data-act]')) {
       const a = el('[data-act]').dataset.act;
@@ -356,15 +422,15 @@ window.SZ = window.SZ || {};
     }
     else if (el('[data-pos]') && ex) { App.setAnswer(ex.q, Number(el('[data-pos]').dataset.pos)); s.changing = null; }
     else if (el('[data-arg]') && ex && h.toggle) h.toggle(ex, el('[data-arg]').dataset.arg);
-    else if (el('[data-target]') && ex) { devilState(ex.q).target = el('[data-target]').dataset.target; }
-    else if (el('[data-knew]') && ex) { mindState(ex.q).knew = el('[data-knew]').dataset.knew === '1'; }
-    else if (el('[data-choice]') && ex) {
-      const m = mindState(ex.q), c = Number(el('[data-choice]').dataset.choice);
-      if (c === 2) m.picking = true; else { m.choice = c; m.from = campOf(ex.q); }
+    else if (el('[data-target]') && ex) { Object.assign(devilState(ex.q), { target: el('[data-target]').dataset.target, idx: 0, ans: {}, reveal: false }); }
+    else if (el('[data-dv]') && ex) {
+      const d = devilState(ex.q), card = order(ex)[d.idx];
+      d.ans[card.id] = el('[data-dv]').dataset.dv === '1'; d.reveal = true;
     }
+    else if (el('[data-knew]') && ex) { mindState(ex.q).knew = el('[data-knew]').dataset.knew === '1'; }
     else if (el('[data-to]') && ex) {
       const m = mindState(ex.q), to = el('[data-to]').dataset.to, q = Q[ex.q];
-      m.from = campOf(ex.q); m.to = to; m.choice = 2; m.picking = false;
+      m.to = to; m.done = true;
       App.setAnswer(ex.q, q.options.findIndex(o => o.camp === to));   // zmiana zdania zmienia też odpowiedź w teście
     }
     else if (el('[data-b]')) {
@@ -377,7 +443,16 @@ window.SZ = window.SZ || {};
     App.save(); render();
     if (scroll) window.scrollTo(0, 0);
   }
+  // Suwaki: pokazuj wartość na bieżąco, bez przerysowywania (żeby nie przerywać przeciągania).
+  function onInput(e) {
+    const sl = e.target.closest('[data-slider]'); if (!sl) return;
+    const out = $('exRoot').querySelector(`[data-out="${sl.dataset.slider}"]`);
+    if (out) out.textContent = sl.value + '%';
+  }
 
-  document.addEventListener('DOMContentLoaded', () => { const r = $('exRoot'); if (r) { r.addEventListener('click', onClick); render(); } });
+  document.addEventListener('DOMContentLoaded', () => {
+    const r = $('exRoot');
+    if (r) { r.addEventListener('click', onClick); r.addEventListener('input', onInput); render(); }
+  });
   SZ.ExUI = { render };
 })();

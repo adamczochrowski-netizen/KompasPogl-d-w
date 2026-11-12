@@ -678,3 +678,113 @@ body.voice-on { padding-bottom: 260px; }
 .ex-bverdict { margin: 4px 0 0; font-weight: 600; }
 .ex-bres .hint { margin: 2px 0 0; }
 @media (max-width: 760px) { .ex-brow { grid-template-columns: 1fr 36px 74px 36px; } }
+
+/* ── Ćwiczenia: kolor każdego rodzaju (--ex) ── */
+.ex-theme-defense { --ex: #60a5fa; } .ex-theme-devil { --ex: #f87171; } .ex-theme-mind { --ex: #fbbf24; } .ex-theme-budget { --ex: #4ade80; }
+.ex-type { border-top: 4px solid var(--ex); }
+.ex-type:hover { border-color: var(--ex); }
+#exRoot[class*="ex-theme"] .ex-title { color: var(--ex); }
+#exRoot[class*="ex-theme"] .ex-check { background: var(--ex); border-color: var(--ex); color: #0d1017; }
+#exRoot[class*="ex-theme"] .ex-card { border-left: 4px solid var(--ex); }
+#exRoot[class*="ex-theme"] .ex-arg.sel { border-color: var(--ex); box-shadow: inset 4px 0 0 var(--ex); background: color-mix(in srgb, var(--ex) 14%, transparent); }
+#exRoot[class*="ex-theme"] .ex-score { border-left: 4px solid var(--ex); }
+
+/* Adwokat diabła: talia kart */
+.dv-progress { margin: 16px 0 8px; color: var(--muted); font-size: 13px; text-align: center; }
+.dv-card { max-width: 560px; margin: 0 auto; min-height: 150px; display: grid; place-items: center; padding: 26px 24px; border-radius: 18px;
+  background: linear-gradient(160deg, var(--panel-2), #241a2a); border: 2px solid var(--ex); box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  font-size: 18px; text-align: center; line-height: 1.45; transition: border-color .2s; }
+.dv-card p { margin: 0; }
+.dv-card.hit { border-color: #4ade80; } .dv-card.miss { border-color: #f87171; }
+.ex-sub.center { justify-content: center; text-align: center; }
+.dv-btns { display: flex; gap: 14px; justify-content: center; margin-top: 6px; }
+.dv-btns button { flex: 0 1 220px; padding: 16px 12px; border-radius: 14px; font-size: 16px; font-weight: 700; cursor: pointer; border: 2px solid; background: var(--panel-2); color: var(--text); }
+.dv-no { border-color: #f87171 !important; } .dv-no:hover { background: rgba(248,113,113,.15); }
+.dv-yes { border-color: #4ade80 !important; } .dv-yes:hover { background: rgba(74,222,128,.15); }
+.dv-feedback { max-width: 560px; margin: 14px auto 0; padding: 12px 16px; border-radius: 12px; background: var(--panel-2); border-left: 4px solid; }
+.dv-feedback.hit { border-color: #4ade80; } .dv-feedback.miss { border-color: #f87171; }
+.dv-feedback b { display: block; margin-bottom: 2px; } .dv-feedback span { color: var(--muted); font-size: 13.5px; }
+.dv-feedback p { margin: 6px 0 0; font-size: 13.5px; color: var(--muted); }
+.ex-theme-devil .ex-check[data-act="dvnext"] { display: block; margin: 14px auto 0; }
+
+/* Zmiana zdania: suwak pewności */
+.mind-slider { max-width: 560px; margin: 4px 0 6px; }
+.mind-slider input[type="range"] { width: 100%; accent-color: var(--ex); height: 28px; cursor: pointer; }
+.mind-scale { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 12.5px; }
+.mind-scale b { font-size: 22px; color: var(--ex); }
+.mind-bars { display: grid; gap: 6px; margin: 8px 0; max-width: 420px; }
+.mind-bars div { display: grid; grid-template-columns: 50px 1fr; align-items: center; gap: 8px; font-size: 12.5px; color: var(--muted); }
+.mind-bars i { display: block; height: 10px; border-radius: 99px; background: var(--ex); }
+.mind-bars div:first-child i { opacity: .45; }
+@media (max-width: 760px) { .dv-card { font-size: 16px; min-height: 130px; padding: 20px 16px; } .dv-btns button { padding: 14px 8px; font-size: 15px; } }
+
+/* ── Ćwiczenia część 2 ── */
+.ex-theme-why { --ex: #c084fc; } .ex-theme-blind { --ex: #2dd4bf; } .ex-theme-mirror { --ex: #f472b6; } .ex-theme-veil { --ex: #fb923c; } .ex-theme-calib { --ex: #38bdf8; }
+/* 5 razy dlaczego */
+.why-chain { display: grid; gap: 4px; margin: 6px 0 14px; max-width: 640px; }
+.why-node { padding: 10px 14px; border-radius: 10px; background: var(--panel-2); border-left: 4px solid var(--ex); }
+.why-node span { display: block; font-size: 12.5px; color: var(--ex); margin-top: 2px; font-weight: 600; }
+.why-node.pos { border-left-color: var(--camp); } .why-node.pos b { color: var(--camp); margin-right: 6px; }
+.why-node.root { background: color-mix(in srgb, var(--ex) 18%, var(--panel-2)); }
+.why-arrow { font-size: 12.5px; color: var(--muted); padding-left: 14px; }
+.why-ask { padding: 16px; border-radius: 14px; border: 2px dashed var(--ex); max-width: 640px; }
+.why-ask h4 { margin: 4px 0 12px; font-size: 17px; }
+.why-step { font-size: 12px; color: var(--ex); font-weight: 700; text-transform: uppercase; }
+.why-opts { display: grid; gap: 8px; }
+.why-opt { text-align: left; padding: 11px 14px; border-radius: 22px; background: var(--panel-2); border: 1px solid var(--line); cursor: pointer; }
+.why-opt:hover { border-color: var(--ex); }
+.why-opt.stop { border-style: dashed; color: var(--muted); }
+.why-bars { display: grid; gap: 6px; margin: 6px 0; }
+.why-bars div { display: grid; grid-template-columns: 220px 1fr; gap: 8px; align-items: center; font-size: 13px; }
+.why-bars i { display: block; height: 10px; border-radius: 99px; background: var(--ex); }
+/* Ślepa próba */
+.blind-card { max-width: 560px; margin: 0 auto; padding: 22px; border-radius: 16px; background: var(--panel-2); border: 2px solid var(--ex); text-align: center; }
+.blind-card p { font-size: 18px; margin: 10px 0 6px; }
+.blind-label { display: inline-block; padding: 4px 12px; border-radius: 99px; background: var(--c); color: #0d1017; font-weight: 800; font-size: 12.5px; text-transform: uppercase; }
+.blind-label.hidden { background: var(--line); color: var(--muted); }
+.blind-rate { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.blind-rate button { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 96px; padding: 10px 6px; border-radius: 12px; background: var(--panel-2); border: 1px solid var(--line); cursor: pointer; }
+.blind-rate button:hover { border-color: var(--ex); }
+.blind-rate b { font-size: 26px; } .blind-rate span { font-size: 11.5px; color: var(--muted); }
+.blind-rows { display: grid; gap: 8px; }
+.blind-row { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 10px 14px; border-radius: 10px; background: var(--panel-2); border-left: 4px solid var(--ex); }
+.blind-row.fake { border-left-color: #fbbf24; }
+.blind-row p { margin: 0; grid-column: 1 / -1; } .blind-row span { font-size: 12.5px; color: var(--muted); } .blind-row b { justify-self: end; }
+/* Lustro zasad */
+.mir-card { max-width: 560px; margin: 0 auto; padding: 22px; border-radius: 16px; background: var(--panel-2); border: 2px solid var(--ex); text-align: center; }
+.mir-sit { font-size: 17px; margin: 0 0 12px; } .mir-q { margin: 0; font-weight: 700; color: var(--ex); }
+.mir-btns { display: flex; gap: 14px; justify-content: center; margin-top: 14px; }
+.mir-btns button { width: 140px; padding: 18px 0; border-radius: 14px; font-size: 20px; font-weight: 800; cursor: pointer; background: var(--panel-2); color: var(--text); border: 2px solid; }
+.mir-yes { border-color: #4ade80 !important; } .mir-no { border-color: #f87171 !important; }
+.mir-pairs { display: grid; gap: 10px; }
+.mir-pair { padding: 12px 14px; border-radius: 12px; background: var(--panel-2); border-left: 4px solid #4ade80; }
+.mir-pair.diff { border-left-color: var(--ex); }
+.mir-pair-h { font-weight: 700; margin-bottom: 8px; }
+.mir-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mir-sides div { padding: 8px 10px; border-radius: 8px; background: var(--bg); } .mir-sides p { margin: 0 0 4px; font-size: 13.5px; }
+/* Zasłona niewiedzy */
+.veil-rules { display: grid; gap: 10px; }
+.veil-rule { padding: 10px 14px; border-radius: 12px; background: var(--panel-2); }
+.veil-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; margin-top: 8px; }
+.veil-opts button { padding: 9px 8px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); cursor: pointer; font-size: 13px; }
+.veil-opts button.sel { border-color: var(--ex); background: color-mix(in srgb, var(--ex) 20%, transparent); font-weight: 700; }
+.veil-draw { font-size: 17px; }
+.veil-person { text-align: center; margin: 8px 0 12px; } .veil-person span { color: var(--muted); }
+.veil-avatar { font-size: 64px; line-height: 1.2; animation: veilPop .5s ease-out; } .veil-person b { font-size: 18px; color: var(--ex); }
+@keyframes veilPop { 0% { transform: scale(.3) rotate(-30deg); opacity: 0; } 100% { transform: none; opacity: 1; } }
+.veil-life.veilGood { color: #4ade80; } .veil-life.veilMid { color: #fbbf24; } .veil-life.veilBad { color: #f87171; }
+.veil-impacts { display: grid; gap: 6px; margin-bottom: 10px; }
+.veil-imp { display: flex; justify-content: space-between; gap: 10px; padding: 8px 12px; border-radius: 8px; background: var(--panel-2); font-size: 13.5px; }
+.veil-imp .d2, .veil-imp .d1 { color: #4ade80; } .veil-imp .d-1, .veil-imp .d-2 { color: #f87171; } .veil-imp .d0 { color: var(--muted); }
+/* Kalibracja */
+.cal-card { max-width: 640px; padding: 18px; border-radius: 14px; background: var(--panel-2); border: 1px solid var(--line); }
+.cal-card h4 { margin: 0 0 12px; font-size: 17px; }
+.cal-opts { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 8px; }
+.cal-opts button, .cal-conf button { padding: 10px; border-radius: 10px; background: var(--bg); border: 1px solid var(--line); cursor: pointer; font-weight: 600; }
+.cal-opts button.sel, .cal-conf button.sel { border-color: var(--ex); background: color-mix(in srgb, var(--ex) 22%, transparent); }
+.cal-conf { display: flex; flex-wrap: wrap; gap: 6px; }
+.cal-buckets { margin: 6px 0 0; padding-left: 18px; color: var(--muted); }
+@media (max-width: 760px) {
+  .why-bars div { grid-template-columns: 1fr; } .blind-rate button { width: 62px; } .blind-rate span { display: none; }
+  .mir-sides { grid-template-columns: 1fr; } .veil-opts { grid-template-columns: 1fr; } .mir-btns button { width: 120px; }
+}

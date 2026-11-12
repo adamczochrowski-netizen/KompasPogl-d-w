@@ -236,41 +236,118 @@ SZ.FALLACIES = {
     ], excludes: [['f4', 'f9', { pl: '„Dorosły sam decyduje o swoim ciele” wyklucza „państwo ma chronić przed używkami”.', en: '"Adults decide about their own bodies" rules out "the state must protect people from substances".' }]] }
   ];
 
-  // ── Zmiana zdania: najmocniejszy fakt lub argument przeciw każdemu stanowisku ──
+  // ── Adwokat diabła: osobne pytania; dla każdego stanowiska 2 dobre argumenty + pułapki ──
+  // Talia kart: przy każdej karcie decydujesz, czy to dobry argument za wybraną stroną.
+  const G = (id, camps, pl, en, npl, nen) => ({ id, kind: 'good', supports: camps, text: { pl, en }, note: { pl: npl, en: nen } });
+  const F = (id, fallacy, pl, en) => ({ id, kind: 'fallacy', fallacy, text: { pl, en } });
+  const X = (id, pl, en, npl, nen) => ({ id, kind: 'false', text: { pl, en }, note: { pl: npl, en: nen } });
+  SZ.DEVIL = [
+    { q: 'x_eu', args: [
+      G('u1', ['left'], 'Wspólne standardy pracy w UE utrudniają firmom przenoszenie produkcji tam, gdzie najbardziej da się zaniżyć pensje.', 'Common EU labour standards make it harder for firms to move production to wherever wages can be pushed lowest.', 'Argument lewicy za wspólną polityką socjalną.', 'The left\'s argument for a common social policy.'),
+      G('u2', ['left', 'center'], 'Zmiany klimatu nie znają granic - jedno państwo samo niewiele zdziała, cała Unia już tak.', 'Climate change knows no borders - one country alone can do little, the whole Union much more.', 'Argument za wspólną polityką klimatyczną.', 'An argument for a common climate policy.'),
+      G('u3', ['center', 'left'], 'Do innych krajów UE trafia ok. trzech czwartych polskiego eksportu - silna Unia to silniejsza polska gospodarka.', 'About three quarters of Polish exports go to other EU countries - a strong Union means a stronger Polish economy.', 'Prawda - jednolity rynek to główny rynek polskich firm.', 'True - the single market is Polish firms\' main market.'),
+      G('u4', ['center'], 'Wspólne zakupy uzbrojenia są tańsze, a Unia z 450 mln ludzi odstrasza skuteczniej niż pojedyncze państwo.', 'Joint arms purchases are cheaper, and a Union of 450 million deters better than a single country.', 'Argument za integracją w obronności.', 'An argument for defence integration.'),
+      G('u5', ['right'], 'Decyzje podejmowane bliżej obywateli lepiej pasują do lokalnych potrzeb i łatwiej je rozliczyć.', 'Decisions taken closer to citizens fit local needs better and are easier to hold to account.', 'Zasada pomocniczości - najmocniejszy argument „Europy ojczyzn”.', 'The subsidiarity principle - the strongest "Europe of nations" argument.'),
+      G('u6', ['right'], 'Prawo weta chroni mniejsze państwa przed przegłosowaniem w sprawach dla nich kluczowych.', 'The veto protects smaller states from being outvoted on issues vital to them.', 'Rzeczowy argument za jednomyślnością.', 'A solid argument for unanimity.'),
+      F('u7', 'popularity', 'Większość Polaków popiera UE, więc każda nowa kompetencja dla Brukseli jest dobra.', 'Most Poles support the EU, so every new power for Brussels is good.'),
+      X('u8', 'Polska wpłaca do budżetu UE więcej, niż z niego dostaje.', 'Poland pays more into the EU budget than it gets back.', 'Nieprawda: Polska jest największym beneficjentem netto budżetu UE.', 'False: Poland is the largest net beneficiary of the EU budget.'),
+      F('u9', 'slippery', 'Każde oddanie kompetencji Brukseli to krok do likwidacji Polski jako państwa.', 'Every transfer of powers to Brussels is a step towards abolishing Poland as a state.')
+    ] },
+    { q: 'x_coal', args: [
+      G('k1', ['left_soc'], 'Zamykanie kopalń bez nowych miejsc pracy zamienia miasta w biedne sypialnie - tak było w Wałbrzychu w latach 90.', 'Closing mines without new jobs turns towns into poor dormitories - as in Wałbrzych in the 1990s.', 'Prawdziwa lekcja z historii - argument za sprawiedliwą transformacją.', 'A real lesson from history - an argument for a just transition.'),
+      G('k2', ['left_soc', 'center'], 'Transformacja musi mieć poparcie górników, inaczej zablokują ją protesty.', 'The transition needs miners\' support, or protests will block it.', 'Argument polityczny za odejściem z osłonami.', 'A political argument for a cushioned phase-out.'),
+      G('k3', ['left_lib'], 'Smog z węgla przyczynia się w Polsce do dziesiątek tysięcy przedwczesnych zgonów rocznie.', 'Coal smog contributes to tens of thousands of premature deaths in Poland every year.', 'Prawda - tak szacuje m.in. Europejska Agencja Środowiska.', 'True - as estimated by the European Environment Agency, among others.'),
+      G('k4', ['left_lib'], 'Prąd z wiatru i słońca należy dziś do najtańszych w przeliczeniu na koszt wytworzenia.', 'Wind and solar power are now among the cheapest per unit of generation cost.', 'Prawda - choć dochodzi koszt magazynowania i sieci.', 'True - although storage and grid costs come on top.'),
+      G('k5', ['center'], 'Atom daje stały prąd bez emisji, gdy nie wieje i nie świeci - samo OZE tego nie zapewni.', 'Nuclear gives steady zero-emission power when there is no wind or sun - renewables alone cannot.', 'Główny argument za drogą „węgiel → atom + OZE”.', 'The main argument for "coal → nuclear + renewables".'),
+      G('k6', ['center', 'left_soc'], 'Stopniowe odejście daje czas na przekwalifikowanie ludzi i budowę zastępczych elektrowni.', 'A gradual exit gives time to retrain people and build replacement plants.', 'Argument za tempem rozłożonym w czasie.', 'An argument for a phased pace.'),
+      G('k7', ['right'], 'Węgiel jest nasz - nie musimy go od nikogo kupować, więc nikt nie może nas nim szantażować.', 'Coal is ours - we do not have to buy it from anyone, so no one can blackmail us with it.', 'Argument z bezpieczeństwa energetycznego.', 'An energy-security argument.'),
+      G('k8', ['right'], 'Rosnące opłaty za emisje CO2 przy szybkim odejściu od węgla podnoszą rachunki rodzin.', 'Rising CO2 charges during a fast coal exit push up household bills.', 'Rzeczowy argument kosztowy.', 'A solid cost argument.'),
+      X('k9', 'Polska wytwarza dziś ponad 90% prądu z węgla.', 'Poland currently makes over 90% of its electricity from coal.', 'Nieprawda: udział węgla spadł już poniżej 60%.', 'False: coal\'s share has already fallen below 60%.'),
+      F('k10', 'tradition', 'Polska od zawsze stoi na węglu i tak powinno zostać.', 'Poland has always run on coal and it should stay that way.'),
+      F('k11', 'adhominem', 'Za węglem są tylko lobbyści spółek węglowych.', 'Only coal-company lobbyists support coal.')
+    ] },
+    { q: 'x_guns', args: [
+      G('g1', ['left'], 'Tam, gdzie broni jest dużo i łatwo ją kupić, częściej dochodzi do strzelanin i samobójstw z jej użyciem.', 'Where guns are plentiful and easy to buy, shootings and gun suicides happen more often.', 'Dobrze udokumentowana zależność.', 'A well-documented relationship.'),
+      G('g2', ['left'], 'Broń trzymana w domu częściej kończy się wypadkiem lub tragedią w rodzinie niż obroną przed napastnikiem.', 'A gun kept at home more often ends in an accident or family tragedy than in self-defence.', 'Argument z badań nad bezpieczeństwem w domu.', 'An argument from research on home safety.'),
+      G('g3', ['center'], 'Badania psychologiczne i egzamin odsiewają osoby niebezpieczne, a odpowiedzialni ludzie i tak mogą mieć broń.', 'Psychological tests and an exam screen out dangerous people, while responsible people can still own guns.', 'Argument za obecnym, kontrolowanym systemem.', 'An argument for the current controlled system.'),
+      G('g4', ['center'], 'Przestępstwa z użyciem legalnie posiadanej broni są w Polsce bardzo rzadkie - obecny system działa.', 'Crimes with legally owned guns are very rare in Poland - the current system works.', 'Prawda - większość przestępstw z bronią dotyczy broni nielegalnej.', 'True - most gun crime involves illegal weapons.'),
+      G('g5', ['right'], 'Uzbrojeni i przeszkoleni obywatele utrudniają życie przestępcom i ewentualnemu najeźdźcy.', 'Armed, trained citizens make life harder for criminals and any invader.', 'Argument z odstraszania i obrony totalnej.', 'An argument from deterrence and total defence.'),
+      G('g6', ['right'], 'Czechy mają łatwiejszy dostęp do broni niż Polska i należą do najbezpieczniejszych krajów Europy.', 'Czechia has easier access to guns than Poland and is among Europe\'s safest countries.', 'Prawda - dobry przykład z regionu.', 'True - a good regional example.'),
+      X('g7', 'W Polsce w ogóle nie można legalnie mieć broni palnej.', 'In Poland you cannot legally own a firearm at all.', 'Nieprawda: można, po zdaniu egzaminu i badaniach, np. do sportu lub kolekcji.', 'False: you can, after an exam and checks, e.g. for sport or collecting.'),
+      F('g8', 'emotion', 'Wyobraź sobie strzelaninę w szkole Twojego dziecka - to wystarczy, żeby zakazać broni.', 'Imagine a shooting at your child\'s school - that is enough reason to ban guns.'),
+      F('g9', 'falsedilemma', 'Albo każdy ma broń, albo jesteśmy bezbronni wobec bandytów.', 'Either everyone has a gun, or we are defenceless against criminals.')
+    ] },
+    { q: 'x_nuclear', args: [
+      G('n1', ['left_soc'], 'Budowa i obsługa elektrowni jądrowej to tysiące stabilnych, dobrze płatnych miejsc pracy na dziesięciolecia.', 'Building and running a nuclear plant means thousands of stable, well-paid jobs for decades.', 'Argument socjalny za atomem.', 'A social argument for nuclear.'),
+      G('n2', ['left_soc'], 'Państwowa elektrownia może sprzedawać prąd po przewidywalnej cenie przez kilkadziesiąt lat.', 'A state-owned plant can sell power at a predictable price for decades.', 'Argument za publiczną własnością energetyki.', 'An argument for public ownership of energy.'),
+      G('n3', ['left_lib'], 'Elektrownie jądrowe w Europie często powstają wiele lat dłużej i dużo drożej, niż planowano.', 'Nuclear plants in Europe often take many years longer and cost much more than planned.', 'Prawda - np. Olkiluoto 3 w Finlandii i Flamanville we Francji.', 'True - e.g. Olkiluoto 3 in Finland and Flamanville in France.'),
+      G('n4', ['left_lib'], 'Farmy wiatrowe, słoneczne i magazyny energii można postawić znacznie szybciej niż jedną elektrownię jądrową.', 'Wind and solar farms and storage can be built much faster than a single nuclear plant.', 'Rzeczowy argument o tempie transformacji.', 'A solid argument about the pace of transition.'),
+      G('n5', ['center', 'left_soc', 'right'], 'Atom nie emituje CO2 i pracuje niezależnie od pogody, więc dobrze uzupełnia OZE.', 'Nuclear emits no CO2 and runs regardless of weather, so it complements renewables well.', 'Najczęstszy argument za atomem.', 'The most common argument for nuclear.'),
+      G('n6', ['center', 'right'], 'Francja dzięki atomowi ma jeden z najczystszych miksów energii w Europie.', 'Thanks to nuclear, France has one of Europe\'s cleanest power mixes.', 'Prawda - ok. 70% prądu z atomu.', 'True - about 70% of its power is nuclear.'),
+      G('n7', ['right'], 'Duży program jądrowy to niezależność od importowanego gazu i szantażu energetycznego.', 'A big nuclear programme means independence from imported gas and energy blackmail.', 'Argument z bezpieczeństwa.', 'A security argument.'),
+      X('n8', 'Elektrownie jądrowe emitują więcej CO2 niż węglowe.', 'Nuclear plants emit more CO2 than coal plants.', 'Nieprawda: emisje atomu w całym cyklu życia są kilkadziesiąt razy niższe niż węgla.', 'False: nuclear\'s life-cycle emissions are dozens of times lower than coal\'s.'),
+      F('n9', 'generalization', 'Czarnobyl pokazał, że każda elektrownia jądrowa to tykająca bomba.', 'Chernobyl showed that every nuclear plant is a ticking bomb.'),
+      F('n10', 'popularity', 'Większość Polaków popiera atom, więc to na pewno najlepsze rozwiązanie.', 'Most Poles support nuclear, so it must be the best solution.')
+    ] },
+    { q: 'x_schoolrel', args: [
+      G('s1', ['left'], 'Szkoła publiczna jest dla dzieci wszystkich wyznań i niewierzących, więc nie powinna uczyć jednej wiary.', 'A state school serves children of all faiths and none, so it should not teach one faith.', 'Argument z neutralności państwa.', 'An argument from state neutrality.'),
+      G('s2', ['left'], 'Nauka o wielu religiach uczy tolerancji i rozumienia świata lepiej niż katecheza jednego wyznania.', 'Learning about many religions teaches tolerance and understanding better than one faith\'s catechism.', 'Argument edukacyjny.', 'An educational argument.'),
+      G('s3', ['center'], 'Dobrowolna religia na pierwszej lub ostatniej lekcji nie zabiera czasu tym, którzy na nią nie chodzą.', 'Voluntary religion in the first or last period takes no time from those who do not attend.', 'Praktyczny argument za kompromisem.', 'A practical argument for compromise.'),
+      G('s4', ['center'], 'Wielu rodziców chce religii w szkole, a dobrowolność szanuje też tych, którzy nie chcą.', 'Many parents want religion at school, and making it voluntary respects those who do not.', 'Argument z poszanowania obu stron.', 'An argument from respecting both sides.'),
+      G('s5', ['right', 'center'], 'Chrześcijaństwo ukształtowało polską kulturę - bez jego znajomości trudno zrozumieć historię i sztukę.', 'Christianity shaped Polish culture - without knowing it, history and art are hard to understand.', 'Argument kulturowy.', 'A cultural argument.'),
+      G('s6', ['right'], 'Obowiązkowy wybór religii albo etyki sprawia, że każdy uczeń dostaje jakieś wychowanie moralne.', 'A compulsory choice of religion or ethics means every pupil gets some moral education.', 'Argument za obowiązkowym wyborem.', 'An argument for a compulsory choice.'),
+      X('s7', 'Lekcje religii w polskich szkołach są obowiązkowe dla wszystkich uczniów.', 'Religion lessons in Polish schools are compulsory for all pupils.', 'Nieprawda: religia jest dobrowolna, o udziale decydują rodzice lub pełnoletni uczniowie.', 'False: religion is voluntary; parents or adult pupils decide.'),
+      F('s8', 'tradition', 'Religia była w szkołach od wieków, więc musi zostać.', 'Religion has been in schools for centuries, so it must stay.'),
+      F('s9', 'adhominem', 'Religii w szkole chcą tylko ci, którzy chcą indoktrynować dzieci.', 'Only people who want to indoctrinate children want religion at school.')
+    ] },
+    { q: 'x_courts', args: [
+      G('j1', ['left'], 'Sąd musi móc orzekać przeciw rządowi, a to łatwiejsze, gdy politycy nie decydują o karierach sędziów.', 'A court must be able to rule against the government, which is easier when politicians do not decide judges\' careers.', 'Argument z trójpodziału władzy.', 'An argument from the separation of powers.'),
+      G('j2', ['left'], 'Trybunał Sprawiedliwości UE orzekał, że reforma KRS z 2017 r. naruszyła niezależność sądów.', 'The EU Court of Justice ruled that the 2017 judicial council reform violated judicial independence.', 'Prawda - argument z orzecznictwa europejskiego.', 'True - an argument from European case law.'),
+      G('j3', ['center'], 'Wymóg dużej większości w parlamencie zmusza rząd i opozycję do porozumienia przy wyborze sędziów.', 'Requiring a large majority in parliament forces government and opposition to agree on judges.', 'Argument za modelem kompromisowym.', 'An argument for the compromise model.'),
+      G('j4', ['center'], 'W Niemczech sędziów trybunału konstytucyjnego wybiera parlament większością 2/3, a sąd cieszy się dużym zaufaniem.', 'In Germany parliament elects constitutional judges by a two-thirds majority, and the court is widely trusted.', 'Prawda - dobry przykład z zagranicy.', 'True - a good example from abroad.'),
+      G('j5', ['right'], 'Sędziowie, którzy sami wybierają swoich następców, mogą stać się zamkniętą kastą bez kontroli obywateli.', 'Judges who choose their own successors can become a closed caste beyond citizens\' control.', 'Argument za demokratyczną kontrolą sądów.', 'An argument for democratic control of courts.'),
+      G('j6', ['right'], 'W wielu stanach USA sędziów wybierają obywatele w wyborach.', 'In many US states citizens elect judges.', 'Prawda - przykład większego wpływu wyborców.', 'True - an example of greater voter influence.'),
+      X('j7', 'W Polsce sędziów wybierają obywatele w wyborach powszechnych.', 'In Poland citizens elect judges in general elections.', 'Nieprawda: sędziów powołuje prezydent na wniosek Krajowej Rady Sądownictwa.', 'False: judges are appointed by the president on the motion of the National Council of the Judiciary.'),
+      F('j8', 'adhominem', 'Sędziowie bronią swojej niezależności tylko dlatego, że boją się utraty przywilejów.', 'Judges defend their independence only because they fear losing their privileges.'),
+      F('j9', 'slippery', 'Jeśli politycy wybiorą choć jednego sędziego, za rok będziemy mieć dyktaturę.', 'If politicians pick even one judge, within a year we will have a dictatorship.')
+    ] }
+  ];
+
+  // ── Zmiana zdania: osobne pytania; najmocniejszy fakt lub argument przeciw każdemu stanowisku ──
   const C = (pl, en) => ({ pl, en });
   SZ.CHALLENGES = {
-    x_tax: {
-      left: C('Francja zniosła w 2018 r. podatek od dużych majątków, bo przez lata kraj opuszczały tysiące zamożnych podatników.', 'In 2018 France abolished its wealth tax after years in which thousands of wealthy taxpayers left the country.'),
-      center: C('Wysoka kwota wolna kosztuje budżet wiele miliardów złotych rocznie i obniża podatek także najlepiej zarabiającym.', 'A high tax-free allowance costs the budget billions of zł a year and also cuts tax for the highest earners.'),
-      right_cons: C('Mimo ulg na dzieci i 800 plus liczba urodzeń w Polsce w 2024 r. była najniższa od II wojny światowej.', 'Despite child tax breaks and 800 plus, births in Poland in 2024 were the lowest since the Second World War.'),
-      right_free: C('W Estonii, która ma podatek liniowy od 1994 r., nierówności dochodowe są wyższe niż średnio w UE.', 'In Estonia, which has had a flat tax since 1994, income inequality is higher than the EU average.')
+    x_health: {
+      left: C('W brytyjskiej, w pełni publicznej służbie zdrowia NHS kolejka na planowe leczenie przekroczyła w 2023 r. 7 mln przypadków.', 'In Britain\'s fully public NHS, the waiting list for planned treatment exceeded 7 million cases in 2023.'),
+      center: C('Gdy prywatne placówki leczą za publiczne pieniądze, często wybierają najbardziej opłacalne zabiegi, a trudne przypadki zostają w szpitalach publicznych.', 'When private providers treat with public money, they often pick the most profitable procedures, leaving difficult cases to public hospitals.'),
+      right: C('Szwajcarski system z konkurującymi prywatnymi ubezpieczycielami należy do najdroższych na świecie, a składki są dużym obciążeniem dla rodzin.', 'The Swiss system with competing private insurers is among the world\'s most expensive, and premiums are a heavy burden for families.')
     },
-    x_minwage: {
-      left: C('W biedniejszych powiatach płaca minimalna jest już blisko przeciętnej lokalnej pensji, więc duże podwyżki najmocniej uderzają w małe firmy właśnie tam.', 'In poorer counties the minimum wage is already close to the local average wage, so big rises hit small firms hardest exactly there.'),
-      center: C('Automatyczny wzór podwyżek może podnosić koszty firm właśnie w kryzysie, gdy najtrudniej im przetrwać.', 'An automatic formula can raise business costs right in a crisis, when it is hardest for firms to survive.'),
-      right: C('Niemcy wprowadziły płacę minimalną w 2015 r., a zapowiadany duży wzrost bezrobocia nie nastąpił.', 'Germany introduced a minimum wage in 2015, and the predicted big rise in unemployment did not happen.')
+    x_crime: {
+      left: C('Kary alternatywne słabo chronią ofiary przemocy domowej, gdy sprawca zostaje w tym samym mieście, a czasem w tym samym domu.', 'Alternative sentences protect domestic violence victims poorly when the offender stays in the same town, sometimes the same home.'),
+      center: C('Pewność kary zależy od wykrywalności, a przy niektórych przestępstwach, np. włamaniach, sprawców wykrywa się rzadko.', 'Certainty of punishment depends on detection, and for some crimes, such as burglary, offenders are rarely caught.'),
+      right: C('USA mają jeden z najwyższych na świecie odsetków więźniów i bardzo surowe kary, a przestępczość z użyciem przemocy wciąż jest tam wyższa niż w Europie.', 'The USA has one of the world\'s highest incarceration rates and very harsh sentences, yet violent crime is still higher there than in Europe.')
     },
-    x_migration: {
-      left_soc: C('Gdy wymogi wobec zatrudniania cudzoziemców są zbyt surowe, firmy często w ogóle ich nie zatrudniają, a braki pracowników zostają.', 'When rules on hiring foreigners are too strict, firms often hire none at all, and labour shortages remain.'),
-      left_lib: C('Większość prób nielegalnego przekroczenia granicy z Białorusią organizowały białoruskie służby, używając migrantów jako narzędzia nacisku.', 'Most attempts to cross the Belarus border illegally were organised by Belarusian services using migrants as a pressure tool.'),
-      center: C('Polska w ostatnich latach wydawała najwięcej w UE pierwszych zezwoleń na pobyt dla osób spoza Unii - kontrolowana migracja już jest bardzo duża.', 'In recent years Poland has issued the most first residence permits to non-EU citizens in the EU - controlled migration is already very large.'),
-      right: C('Raport Deloitte i UNHCR z 2024 r. ocenił, że uchodźcy z Ukrainy zwiększają polskie PKB, a większość dorosłych z nich pracuje.', 'A 2024 Deloitte and UNHCR report found that Ukrainian refugees boost Polish GDP and most of the adults work.')
+    x_ai: {
+      left: C('Surowe regulacje mogą sprawić, że firmy AI będą powstawać w USA i Chinach, a Europa będzie tylko kupować ich produkty.', 'Strict regulation may mean AI companies are founded in the USA and China, with Europe merely buying their products.'),
+      center: C('Nowe zastosowania AI pojawiają się szybciej, niż urzędnicy zdążą ocenić ich ryzyko - podział na kategorie może nie nadążyć.', 'New AI uses appear faster than officials can assess their risk - risk categories may not keep up.'),
+      right_cons: C('Polska nie ma własnego modelu AI na skalę światową - bez współpracy z zagranicznymi firmami trudno korzystać z najlepszych narzędzi.', 'Poland has no world-class AI model of its own - without foreign companies it is hard to use the best tools.'),
+      right_free: C('Bez reguł algorytmy już dyskryminowały: system rekrutacyjny Amazona faworyzował mężczyzn i został wycofany w 2018 r.', 'Without rules algorithms have already discriminated: Amazon\'s hiring system favoured men and was scrapped in 2018.')
     },
-    x_draft: {
-      left: C('Szwecja przywróciła pobór w 2017 r., a Łotwa w 2023 r., uznając, że wobec zagrożenia z Rosji sama armia zawodowa nie wystarczy.', 'Sweden reinstated conscription in 2017 and Latvia in 2023, concluding that a professional army alone is not enough against the Russian threat.'),
-      center: C('Wojna w Ukrainie pokazała, że w długim konflikcie potrzeba setek tysięcy przeszkolonych rezerwistów - samych ochotników może nie wystarczyć.', 'The war in Ukraine showed that a long conflict needs hundreds of thousands of trained reservists - volunteers alone may not be enough.'),
-      right: C('Szkolenie dziesiątek tysięcy poborowych rocznie kosztuje tyle, że wiele krajów NATO zawiesiło pobór i przeznaczyło pieniądze na nowoczesny sprzęt.', 'Training tens of thousands of conscripts a year costs so much that many NATO countries suspended conscription and spent the money on modern equipment.')
+    x_surveil: {
+      left: C('Europejskie służby wielokrotnie udaremniały zamachy dzięki szybkiemu dostępowi do komunikatorów podejrzanych.', 'European security services have repeatedly foiled attacks thanks to fast access to suspects\' messaging.'),
+      center: C('Polskie sądy zatwierdzają niemal wszystkie wnioski służb o kontrolę operacyjną - nadzór sądu bywa formalnością.', 'Polish courts approve almost all service requests for surveillance - court oversight can be a formality.'),
+      right_cons: C('Afera Pegasusa pokazała, że szerokie uprawnienia służb mogą zostać użyte przeciw opozycji i dziennikarzom.', 'The Pegasus affair showed that broad surveillance powers can be used against the opposition and journalists.'),
+      right_free: C('Bez kontroli komunikacji trudno wykryć siatki szpiegów i sabotażystów - w Polsce zatrzymano ich w ostatnich latach dziesiątki.', 'Without monitoring communication it is hard to detect spy and sabotage networks - dozens have been arrested in Poland in recent years.')
     },
-    x_death: {
-      left: C('Zdarza się, że skazani na dożywocie zabijają ponownie już w więzieniu - współwięźniów albo strażników.', 'Prisoners serving life sometimes kill again inside prison - fellow inmates or guards.'),
-      center: C('Europejski Trybunał Praw Człowieka uznał w 2013 r., że dożywocie musi dawać możliwość ponownej oceny po latach.', 'In 2013 the European Court of Human Rights ruled that a life sentence must allow review after some years.'),
-      right: C('W USA od 1973 r. uniewinniono ponad 190 osób, które wcześniej skazano na śmierć.', 'In the USA more than 190 people sentenced to death have been exonerated since 1973.')
+    x_housing: {
+      left: C('Limit czynszów w Berlinie z 2020 r. zmniejszył liczbę mieszkań na wynajem - część właścicieli wycofała je z rynku, a w 2021 r. sąd uchylił przepisy.', 'Berlin\'s 2020 rent cap reduced the number of rental flats - some landlords withdrew them, and in 2021 a court struck the law down.'),
+      center: C('Gdy pieniądze rozkłada się na wiele małych programów, żaden nie ma dość siły, by realnie zmienić rynek.', 'When money is spread over many small programmes, none is strong enough to really change the market.'),
+      right_cons: C('Po starcie „Bezpiecznego kredytu 2%” w 2023 r. ceny mieszkań w dużych miastach szybko wzrosły, więc część dopłaty zjadły wyższe ceny.', 'After the "Safe 2% Loan" began in 2023, flat prices in big cities rose fast, so higher prices ate up part of the subsidy.'),
+      right_free: C('Nawet w miastach, gdzie buduje się dużo, ceny rosną, bo mieszkania kupują też inwestorzy na wynajem.', 'Even in cities that build a lot, prices rise because investors also buy flats to let.')
     },
-    x_cannabis: {
-      left: C('Po legalizacji w Kanadzie wzrosła liczba wizyt na izbach przyjęć związanych z marihuaną, w tym zatruć małych dzieci jadalnymi produktami.', 'After legalisation in Canada, cannabis-related emergency visits rose, including poisonings of small children from edibles.'),
-      center: C('Dekryminalizacja posiadania bez legalnej sprzedaży zostawia cały handel w rękach przestępców.', 'Decriminalising possession without legal sales leaves the whole trade in criminals\' hands.'),
-      right_cons: C('Holandia toleruje sprzedaż marihuany od lat 70., a odsetek dorosłych, którzy jej używają, jest zbliżony do średniej europejskiej.', 'The Netherlands has tolerated cannabis sales since the 1970s, and its share of adult users is close to the European average.'),
-      right_free: C('Legalne firmy w USA sprzedają produkty o coraz wyższej zawartości THC, co zwiększa ryzyko uzależnienia i psychoz.', 'Legal firms in the USA sell products with ever higher THC content, raising the risk of addiction and psychosis.')
+    x_euro: {
+      left: C('Grecja w strefie euro nie mogła osłabić własnej waluty w kryzysie i przeszła wieloletnią, bolesną recesję.', 'Greece, in the euro area, could not devalue its own currency in the crisis and went through a long, painful recession.'),
+      center: C('Czekanie na zrównanie płac może trwać dekady, a Słowacja i państwa bałtyckie dobrze rozwijały się po przyjęciu euro.', 'Waiting for wages to catch up could take decades, while Slovakia and the Baltic states did well after adopting the euro.'),
+      right: C('Wahania kursu złotego podnoszą koszty firm handlujących z UE, a przy euro znika koszt wymiany waluty dla firm i turystów.', 'Złoty exchange-rate swings raise costs for firms trading with the EU, while the euro removes currency-exchange costs for firms and tourists.')
     }
   };
 
