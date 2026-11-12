@@ -244,15 +244,9 @@
   if (!deckOk) buildDeck();
   if (!(state.pos >= 0 && state.pos < state.deck.length)) state.pos = 0;
   const curQ = () => Q[state.deck[state.pos]];
-  // Kolejność kart stanowisk: losowa, ale stała dla danej osoby i pytania (ziarno zapisane w stanie).
-  if (!state.seed) { state.seed = Math.floor(Math.random() * 1e9); save(); }
-  function cardOrder(q) {
-    let h = state.seed;
-    for (const ch of q.id) h = (Math.imul(h ^ ch.charCodeAt(0), 2654435761) >>> 0);
-    const idx = q.options.map((_, i) => i);
-    for (let i = idx.length - 1; i > 0; i--) { h = (Math.imul(h, 1103515245) + 12345) >>> 0; const j = h % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
-    return idx;
-  }
+  // Kolejność kart stanowisk: stała, jak w danych (lewica → centrum → prawica; odłamy obozu obok siebie).
+  // (Losowe tasowanie było testowane i wycofane - rozdzielało odłamy tego samego obozu.)
+  const cardOrder = q => q.options.map((_, i) => i);
   const compareProfile = () => state.snapshots.find(s => s.id === state.compare) || null;
 
   // ── Statyczne napisy ──
@@ -484,7 +478,7 @@
 
     const scale = $('scale');
     if (type === 'positions') {
-      // Karty stanowisk w losowej kolejności (stałej dla danej osoby), żeby pierwsza karta nie miała przewagi.
+      // Karty stanowisk w stałej kolejności: lewica → centrum → prawica.
       scale.className = 'scale positions';
       scale.innerHTML = cardOrder(q).map(i => { const o = q.options[i];
         const c = CAMPS[o.camp];

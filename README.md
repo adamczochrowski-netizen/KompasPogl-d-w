@@ -17,7 +17,7 @@ Odpowiedzi zapisują się w przeglądarce, na danym urządzeniu.
 ## Co jest w środku
 - **📝 Test:** stałe 60 pytań, po kilka z każdego tematu.
 - **🗂️ Tematy:** 12 dziedzin po 20 pytań; przy każdym podejściu losuje się 10, najpierw te bez odpowiedzi. Odpowiedzi są wspólne z testem.
-- **Pytania w formie stanowisk:** wybierasz stanowisko najbliższe Tobie. Lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową tam, gdzie się różnią. Karty są w losowej kolejności (stałej dla danej osoby).
+- **Pytania w formie stanowisk:** wybierasz stanowisko najbliższe Tobie. Lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową tam, gdzie się różnią. Karty są zawsze w kolejności lewica → centrum → prawica.
 - **Dymek „i”:** o co chodzi, ważność odpowiedzi oraz dlaczego dany obóz tak uważa, przykład i link do Wikipedii.
 - **Wynik:** mapa ideologii (30 ideologii, najbliższe dopasowania), Twoje osie (niepewne są wyszarzone) i Twój rozkład lewica / centrum / prawica.
 - **Dopasowanie:** partie (Polska, Europa, Ameryki, Azja, Afryka) i 3 postacie (z Polski, ze świata i z fikcji).
