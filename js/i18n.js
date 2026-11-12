@@ -19,6 +19,12 @@ SZ.I18N = {
     bubbleProA: 'Za opcją A', bubbleProB: 'Za opcją B',
     bubbleHide: 'Schowaj', bubbleShow: 'Pokaż wyjaśnienie',
     modeQuick: 'Szybki', modeFull: 'Pełny', shuffle: '🔀 Przelosuj',
+    modeTest: '📝 Test', modeTopics: '🗂️ Tematy',
+    topicsTitle: 'Wybierz temat',
+    topicsHint: 'Odpowiadasz tylko na pytania z wybranej dziedziny. Odpowiedzi liczą się też do pełnego testu i wyniku.',
+    topicChange: '← Tematy', topicQuestions: 'pytań', topicNone: 'jeszcze bez odpowiedzi',
+    topicDone: 'Temat „{name}” ukończony', topicMost: 'W tym temacie najczęściej wybierasz:',
+    topicPick: '🗂️ Wybierz inny temat', topicSeeResults: '📊 Zobacz cały wynik',
     compassTitle: 'Kompas 2D', compassHint: 'Ślad pokazuje, jak przesuwał się Twój pogląd z każdą odpowiedzią. Pusty okrąg to wybrane porównanie.',
     radarTitle: 'Profil biegunów', radarHint: 'Im dalej od środka, tym mocniej ciągnie Cię do danego bieguna. Przerywana linia to porównanie.',
     historyTitle: 'Ewolucja poglądów', historyHint: 'Wartość każdej osi po kolejnych odpowiedziach.',
@@ -58,12 +64,12 @@ SZ.I18N = {
     peoplePl: '🇵🇱 Z Polski', peopleWorld: '🌍 Ze świata', peopleFiction: '🎬 Z fikcji (na wesoło)',
     posWhy: 'Dlaczego:', posExample: 'Przykład:',
     campsTitle: 'Twój rozkład', campsHint: 'Ile razy wybierasz stanowisko lewicy, centrum i prawicy — ogółem i w każdej dziedzinie. Kliknij wyjątek, aby wrócić do pytania.',
-    campsMost: 'Najczęściej wybierasz:', campsRightSplit: 'W tym prawica', campsByDomain: 'Według dziedzin',
+    campsMost: 'Najczęściej wybierasz:', campsRightSplit: 'W tym prawica', campsLeftSplit: 'W tym lewica', campsByDomain: 'Według dziedzin',
     campsExceptions: 'Twoje wyjątki — tu nie wybierasz stanowiska: {camp}',
     guideHtml: `<h3>Jak to działa?</h3>
       <ol>
         <li><b>Odpowiadaj szczerze, nie „jak wypada”.</b> Nie ma dobrych ani złych odpowiedzi.</li>
-        <li><b>Przy każdym pytaniu masz kilka konkretnych stanowisk:</b> typowe dla lewicy, centrum i prawicy (czasem prawica dzieli się na konserwatywną i wolnorynkową). Wybierz to, które jest Ci <b>najbliższe</b> — nie musi pasować w 100%.</li>
+        <li><b>Przy każdym pytaniu masz kilka konkretnych stanowisk:</b> typowe dla lewicy, centrum i prawicy (czasem lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową). Wybierz to, które jest Ci <b>najbliższe</b> — nie musi pasować w 100%.</li>
         <li>Jeśli żadne Ci nie pasuje albo nie masz zdania, kliknij <b>„Pomiń”</b>.</li>
         <li><b>Dymek „i”</b> wyjaśnia, dlaczego każdy obóz tak uważa, podaje przykład z życia i link do Wikipedii.</li>
         <li><b>Ważność:</b> wybierz „Bardzo”, jeśli sprawa jest dla Ciebie kluczowa — liczy się podwójnie. „Mało” liczy się o połowę słabiej.</li>
@@ -89,6 +95,12 @@ SZ.I18N = {
     bubbleProA: 'For option A', bubbleProB: 'For option B',
     bubbleHide: 'Hide', bubbleShow: 'Show explanation',
     modeQuick: 'Quick', modeFull: 'Full', shuffle: '🔀 Shuffle',
+    modeTest: '📝 Test', modeTopics: '🗂️ Topics',
+    topicsTitle: 'Choose a topic',
+    topicsHint: 'You only answer questions from the chosen area. Your answers also count towards the full test and your results.',
+    topicChange: '← Topics', topicQuestions: 'questions', topicNone: 'no answers yet',
+    topicDone: 'Topic "{name}" complete', topicMost: 'In this topic you most often choose:',
+    topicPick: '🗂️ Choose another topic', topicSeeResults: '📊 See full results',
     compassTitle: '2D compass', compassHint: 'The trail shows how your view moved with each answer. The hollow ring is the selected comparison.',
     radarTitle: 'Pole profile', radarHint: 'The further from the centre, the stronger the pull to that pole. The dashed line is the comparison.',
     historyTitle: 'Evolution', historyHint: 'Each axis value after successive answers.',
@@ -128,12 +140,12 @@ SZ.I18N = {
     peoplePl: '🇵🇱 From Poland', peopleWorld: '🌍 From the world', peopleFiction: '🎬 From fiction (just for fun)',
     posWhy: 'Why:', posExample: 'Example:',
     campsTitle: 'Your distribution', campsHint: 'How often you pick the left, centre and right position — overall and in each area. Click an exception to go back to the question.',
-    campsMost: 'You most often pick:', campsRightSplit: 'Of which right', campsByDomain: 'By area',
+    campsMost: 'You most often pick:', campsRightSplit: 'Of which right', campsLeftSplit: 'Of which left', campsByDomain: 'By area',
     campsExceptions: 'Your exceptions — here you did not pick: {camp}',
     guideHtml: `<h3>How it works</h3>
       <ol>
         <li><b>Answer honestly, not "as you should".</b> There are no right or wrong answers.</li>
-        <li><b>Each question offers a few concrete positions:</b> typical of the left, centre and right (sometimes the right splits into conservative and free-market). Pick the one <b>closest</b> to you — it does not have to fit 100%.</li>
+        <li><b>Each question offers a few concrete positions:</b> typical of the left, centre and right (sometimes the left splits into social and progressive, and the right into conservative and free-market). Pick the one <b>closest</b> to you — it does not have to fit 100%.</li>
         <li>If none fits or you have no opinion, click <b>"Skip"</b>.</li>
         <li><b>The "i" bubble</b> explains why each camp thinks so, with an everyday example and a Wikipedia link.</li>
         <li><b>Importance:</b> pick "Very" if the issue is key for you — it counts double. "A little" counts half.</li>

@@ -14,7 +14,8 @@ Działa na komputerze i na telefonie. Na telefonie można ją zainstalować jak 
 Odpowiedzi zapisują się w przeglądarce, na danym urządzeniu.
 
 ## Co jest w środku
-- **Pytania w formie stanowisk:** przy każdym pytaniu wybierasz stanowisko najbliższe Tobie, typowe dla lewicy, centrum albo prawicy. Prawica dzieli się na konserwatywną i wolnorynkową tam, gdzie się różnią.
+- **Pytania w formie stanowisk:** przy każdym pytaniu wybierasz stanowisko najbliższe Tobie, typowe dla lewicy, centrum albo prawicy. Lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową, tam gdzie się różnią.
+- **Dwa tryby:** 📝 Test (wszystkie pytania) i 🗂️ Tematy (12 dziedzin, np. gospodarka, edukacja, klimat — odpowiadasz tylko na pytania z wybranej). Odpowiedzi są wspólne dla obu trybów.
 - **Dymek „i”:** dlaczego dany obóz tak uważa, przykład z prawdziwego świata i link do Wikipedii.
 - **Ważność** każdej odpowiedzi: mało / normalnie / bardzo (waga ×0,5 / ×1 / ×2).
 - **Wyniki:**
@@ -52,6 +53,7 @@ Przy kolejnych zmianach podbij numer `CACHE` w `sw.js` (np. `kompas-v2`), żeby 
 ## Pliki
 - `index.html`, `css/style.css`: wygląd
 - `js/positions.js`, `js/positions-2.js`, `js/positions-3.js`: 45 pytań w formie stanowisk (aktualne)
+- `js/topics.js`: przypisanie pytań do tematów (tryb Tematy)
 - `js/questions-1.js`, `js/questions-2.js`, `js/questions-3.js`: stare pytania ze skalą (do przerobienia)
 - `js/data.js`: osie, obozy, archetypy
 - `js/references.js`: partie i postacie (wektor 10 wartości od -1 do 1, w kolejności osi)

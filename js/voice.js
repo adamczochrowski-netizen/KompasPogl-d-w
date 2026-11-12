@@ -377,6 +377,8 @@
   const CAMP_WORDS = [
     ['right_free', /(wolnoryn|wolny rynek|libertar|free market|free-market)/],
     ['right_cons', /(konserwat|conservative)/],
+    ['left_soc', /(socjal|social left|socialist)/],
+    ['left_lib', /(progres|liberalna lew|progressive|liberal left)/],
     ['left', /\b(lew\w*|left\w*)\b/],
     ['center', /\b(centr\w*|po ?srodku|srodk\w*|cent(er|re)\w*|middle)\b/],
     ['right', /\b(praw\w*|right\w*)\b/]
@@ -385,9 +387,10 @@
     if (firstNumber(s)) return null;   // „trzecie” ma pierwszeństwo przed nazwą obozu
     for (const [camp, re] of CAMP_WORDS) {
       if (!re.test(s)) continue;
-      if (camp === 'right') {
-        const rights = q.options.map((o, i) => [o.camp, i]).filter(([c]) => c.startsWith('right'));
-        return rights.length === 1 ? rights[0][1] : null;
+      if (camp === 'right' || camp === 'left') {
+        // Samo „prawica”/„lewica” wystarcza tylko, gdy w pytaniu jest jedno takie stanowisko.
+        const same = q.options.map((o, i) => [o.camp, i]).filter(([c]) => c.startsWith(camp));
+        return same.length === 1 ? same[0][1] : null;
       }
       const i = q.options.findIndex(o => o.camp === camp);
       if (i >= 0) return i;

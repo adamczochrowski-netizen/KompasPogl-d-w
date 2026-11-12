@@ -86,9 +86,11 @@ SZ.AXES = [
   }
 ];
 
-// Obozy, do których należą stanowiska w pytaniach. Prawica dzieli się tylko tam, gdzie jej odłamy się różnią.
+// Obozy, do których należą stanowiska w pytaniach. Lewica i prawica dzielą się tylko tam, gdzie ich odłamy się różnią.
 SZ.CAMPS = {
   left:       { group: 'left',   color: '#f87171', name: { pl: 'Lewica', en: 'Left' } },
+  left_soc:   { group: 'left',   color: '#f87171', name: { pl: 'Lewica socjalna', en: 'Social left' } },
+  left_lib:   { group: 'left',   color: '#f472b6', name: { pl: 'Lewica progresywna', en: 'Progressive left' } },
   center:     { group: 'center', color: '#fbbf24', name: { pl: 'Centrum', en: 'Centre' } },
   right:      { group: 'right',  color: '#60a5fa', name: { pl: 'Prawica', en: 'Right' } },
   right_cons: { group: 'right',  color: '#60a5fa', name: { pl: 'Prawica konserwatywna', en: 'Conservative right' } },

@@ -1,13 +1,17 @@
 (function () {
-  const { AXES, QUESTIONS, ARCHETYPES, PARTIES, PEOPLE, FICTION, REGIONS, POLE_INFO, CAMPS, CAMP_GROUPS, I18N, Charts } = SZ;
+  const { AXES, QUESTIONS, TOPICS = [], ARCHETYPES, PARTIES, PEOPLE, FICTION, REGIONS, POLE_INFO, CAMPS, CAMP_GROUPS, I18N, Charts } = SZ;
   const STORE_KEY = 'kompas-pogladow-v1';
   const DATA_VERSION = 2;   // 2 = pytania w formie stanowisk (1 = skala zgody)
+  // Wersje list stanowisk: { pytanie: numer, pod który wstawiono nowe stanowisko } (patrz migrateOptions).
+  const OPTION_INSERTS = {
+    2: { x_coal: 0, x_nuclear: 0, x_migration: 0, x_cars: 0, x_cash: 0, x_stateco: 1 }   // podział lewicy
+  };
+  const OPTIONS_VERSION = 2;
   const VALUES = [-2, -1, 0, 1, 2];
   const LIKERT = { '-2': 'a_m2', '-1': 'a_m1', '0': 'a_0', '1': 'a_p1', '2': 'a_p2' };
   const DILEMMA = { '-2': 'd_m2', '-1': 'd_m1', '0': 'd_0', '1': 'd_p1', '2': 'd_p2' };
   const IMPORTANCE = [[0.5, 'imp_low'], [1, 'imp_mid'], [2, 'imp_high']];
   const ANSWER_COLORS = ['#f87171', '#fca5a5', '#a1a1aa', '#86efac', '#4ade80'];
-  const QUICK_PER_AXIS = 2;
   const MIN_FOR_MATCH = Math.min(10, Math.ceil(SZ.QUESTIONS.length * 0.6));   // tyle odpowiedzi, zanim pokażemy partie i ludzi
   const PARTY_THRESHOLD = 65;   // % podobieństwa, od którego partia "pasuje"
   const $ = id => document.getElementById(id);
@@ -18,7 +22,7 @@
 
   // ── Stan ──
   const defaults = {
-    lang: 'pl', answers: {}, importance: {}, order: [], deck: null, pos: 0, mode: 'full',
+    lang: 'pl', answers: {}, importance: {}, order: [], deck: null, pos: 0, mode: 'full', topic: null,
     bubble: true, cx: 'econ', cy: 'power', snapshots: [], compare: null,
     collapsed: { history: true, snap: true, table: true }, seenGuide: false, tab: 'quiz'
   };
@@ -28,8 +32,14 @@
   if (!Array.isArray(state.snapshots)) state.snapshots = [];
   if (!Array.isArray(state.order)) state.order = [];
   migrateLegacy();
+  migrateOptions();
   Object.keys(state.answers).forEach(id => { if (!Q[id]) delete state.answers[id]; });
   state.order = state.order.filter(id => state.answers[id] != null);
+  // Tryby: 'full' = Test (wszystkie pytania), 'topic' = pytania z jednego tematu. Dawny tryb 'quick' → Test.
+  if (state.mode !== 'topic') state.mode = 'full';
+  const TOPIC = Object.fromEntries(TOPICS.map(x => [x.id, x]));
+  if (state.topic && !TOPIC[state.topic]) state.topic = null;
+  const topicIds = id => TOPIC[id] ? TOPIC[id].ids.filter(q => Q[q]) : [];
   if (!AXES.some(a => a.id === state.cx)) state.cx = 'econ';
   if (!AXES.some(a => a.id === state.cy)) state.cy = 'power';
 
@@ -52,6 +62,20 @@
     }
     state.answers = {}; state.importance = {}; state.order = []; state.deck = null; state.pos = 0;
     state.version = DATA_VERSION;
+    save();
+  }
+  // Odpowiedź to numer stanowiska. Gdy dopisujemy nowe stanowisko w środku listy,
+  // przesuwamy zapisane numery, żeby wskazywały to samo stanowisko co wcześniej.
+  // Klucz: wersja opcji → { pytanie: numer, pod który wstawiono nowe stanowisko }.
+  function migrateOptions() {
+    const from = state.optVersion || 1;
+    if (from >= OPTIONS_VERSION) return;
+    for (let v = from + 1; v <= OPTIONS_VERSION; v++) {
+      Object.entries(OPTION_INSERTS[v] || {}).forEach(([id, at]) => {
+        if (typeof state.answers[id] === 'number' && state.answers[id] >= at) state.answers[id]++;
+      });
+    }
+    state.optVersion = OPTIONS_VERSION;
     save();
   }
   function save() {
@@ -197,21 +221,18 @@
     for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
     return a;
   }
+  function wantIds() {
+    return state.mode === 'topic' && state.topic ? topicIds(state.topic) : QUESTIONS.map(q => q.id);
+  }
   function buildDeck() {
-    let ids;
-    if (state.mode === 'quick') {
-      ids = [];
-      AXES.forEach(a => ids.push(...shuffle(QUESTIONS.filter(q => primaryAxis(q) === a.id).map(q => q.id)).slice(0, QUICK_PER_AXIS)));
-    } else {
-      ids = QUESTIONS.map(q => q.id);
-    }
+    const ids = wantIds();
     state.deck = shuffle(ids);
     const i = state.deck.findIndex(id => state.answers[id] == null);
     state.pos = i < 0 ? 0 : i;
     state.justFinished = false;
   }
-  const deckOk = Array.isArray(state.deck) && state.deck.length && state.deck.every(id => Q[id]) &&
-    (state.mode !== 'full' || state.deck.length === QUESTIONS.length);
+  const deckOk = Array.isArray(state.deck) && state.deck.every(id => Q[id]) &&
+    state.deck.length === wantIds().length && wantIds().every(id => state.deck.includes(id));
   if (!deckOk) buildDeck();
   if (!(state.pos >= 0 && state.pos < state.deck.length)) state.pos = 0;
   const curQ = () => Q[state.deck[state.pos]];
@@ -223,13 +244,8 @@
     document.title = t('appTitle');
     document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
     document.querySelectorAll('#lang button').forEach(b => b.classList.toggle('on', b.dataset.lang === state.lang));
-    const quick = document.querySelector('#mode [data-mode="quick"]'), full = document.querySelector('#mode [data-mode="full"]');
-    const quickSize = AXES.reduce((n, a) => n + Math.min(QUICK_PER_AXIS, QUESTIONS.filter(q => primaryAxis(q) === a.id).length), 0);
-    quick.textContent = `${t('modeQuick')} (${quickSize})`;
-    full.textContent = `${t('modeFull')} (${QUESTIONS.length})`;
-    document.querySelectorAll('#mode button').forEach(b => b.classList.toggle('on', b.dataset.mode === state.mode));
-    // Wersja trybu w menu (telefon): pokazuje bieżący tryb i przełącza na drugi.
-    $('mMode').textContent = `⚙️ ${t('modeLabel')}: ${(state.mode === 'quick' ? quick : full).textContent} → ${(state.mode === 'quick' ? full : quick).textContent}`;
+    document.querySelector('#mode [data-mode="full"]').textContent = `${t('modeTest')} (${QUESTIONS.length})`;
+    document.querySelector('#mode [data-mode="topic"]').textContent = `${t('modeTopics')} (${TOPICS.length})`;
     ['selX', 'selY'].forEach(id => {
       $(id).innerHTML = AXES.map(a => `<option value="${a.id}">${tr(a.name)}</option>`).join('');
     });
@@ -366,7 +382,66 @@
   }
 
   // ── Pytanie + dymek ──
+  // ── Tematy: kafelki z postępem i rozkładem obozów w danym temacie ──
+  function topicStats(id) {
+    const ids = topicIds(id), counts = { left: 0, center: 0, right: 0 };
+    let n = 0;
+    ids.forEach(qid => {
+      const q = Q[qid], o = q.options && q.options[state.answers[qid]];
+      if (!o) return;
+      n++; counts[CAMPS[o.camp].group]++;
+    });
+    const dominant = n ? CAMP_GROUPS.slice().sort((a, b) => counts[b.id] - counts[a.id])[0] : null;
+    return { ids, counts, n, dominant };
+  }
+  const pickingTopic = () => state.mode === 'topic' && !state.topic;
+  function renderTopics() {
+    const picking = pickingTopic();
+    $('topics').hidden = !picking;
+    $('qcard').hidden = picking;
+    $('bubble').style.display = picking ? 'none' : '';
+    const crumb = $('topicCrumb'), tp = state.mode === 'topic' && TOPIC[state.topic];
+    crumb.hidden = !tp;
+    if (tp) crumb.innerHTML = `<button class="ghost" id="btnTopics">${t('topicChange')}</button> <b>${tp.icon} ${esc(tr(tp.name))}</b>`;
+    document.querySelectorAll('#mode button').forEach(b => b.classList.toggle('on', b.dataset.mode === state.mode));
+    if (!picking) return;
+    $('topicGrid').innerHTML = TOPICS.map(x => {
+      const st = topicStats(x.id);
+      return `<button class="topic-tile" data-topic="${x.id}">
+        <span class="topic-icon">${x.icon}</span>
+        <span class="topic-name">${esc(tr(x.name))}</span>
+        <span class="topic-count">${st.n} / ${st.ids.length} ${t('topicQuestions')}</span>
+        ${st.n ? stackBar(st.counts, st.n) : `<span class="topic-none">${t('topicNone')}</span>`}
+      </button>`;
+    }).join('');
+  }
+  function topicDoneHtml() {
+    const tp = TOPIC[state.topic], st = topicStats(state.topic);
+    if (!tp || !st.n) return '';
+    return `<div class="topic-done">
+      <p><b>${t('topicDone', { name: esc(tr(tp.name)) })}</b></p>
+      <p>${t('topicMost')} <b style="color:${st.dominant.color}">${tr(st.dominant.name)}</b> (${pct(st.counts[st.dominant.id], st.n)}%)</p>
+      ${stackBar(st.counts, st.n, true)}
+      <div class="topic-done-actions">
+        <button class="ghost" data-topic-act="pick">${t('topicPick')}</button>
+        <button class="ghost" data-topic-act="results">${t('topicSeeResults')}</button>
+      </div></div>`;
+  }
+  function setMode(mode) {
+    if (mode === state.mode && mode === 'full') return;
+    state.mode = mode;
+    if (mode === 'topic') state.topic = null;
+    buildDeck(); save(); renderAll();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  function pickTopic(id) {
+    state.mode = 'topic'; state.topic = id;
+    buildDeck(); save(); renderAll();
+    $('qcard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
   function renderQuestion() {
+    renderTopics();
     const q = curQ(), cur = state.answers[q.id], type = q.type || 'likert';
     const card = $('qcard');
     card.classList.toggle('done', !!state.justFinished);
@@ -442,7 +517,8 @@
     $('btnClear').style.display = cur == null ? 'none' : '';
 
     // Nie pokazujemy, w którą stronę przesuwa odpowiedź — żeby nie sugerować wyboru.
-    $('fxLine').innerHTML = '';
+    // W trybie „Tematy” po ostatnim pytaniu pokazujemy podsumowanie tematu.
+    $('fxLine').innerHTML = state.justFinished && state.mode === 'topic' ? topicDoneHtml() : '';
   }
 
   // Informacja zwrotna: w którą stronę przesuwa Cię dana odpowiedź.
@@ -536,13 +612,14 @@
   function renderContra() {
     const s = campStats();
     if (!s.total) { $('contra').innerHTML = `<p class="hint">${t('summaryEmpty')}</p>`; return; }
-    const rightSub = ['right_cons', 'right_free'].filter(c => s.sub[c])
-      .map(c => `${tr(CAMPS[c].name).toLowerCase()} ${s.sub[c]}`).join(', ');
+    const subList = ids => ids.filter(c => s.sub[c]).map(c => `${tr(CAMPS[c].name).toLowerCase()} ${s.sub[c]}`).join(', ');
+    const leftSub = subList(['left_soc', 'left_lib']), rightSub = subList(['right_cons', 'right_free']);
     const exceptions = s.picks.filter(p => p.group !== s.dominant.id).slice(0, 8);
     $('contra').innerHTML = `
       <p class="camp-main">${t('campsMost')} <b style="color:${s.dominant.color}">${tr(s.dominant.name)}</b> (${pct(s.groups[s.dominant.id], s.total)}%)</p>
       ${stackBar(s.groups, s.total, true)}
       <div class="camp-legend">${CAMP_GROUPS.map(g => `<span><i style="background:${g.color}"></i>${tr(g.name)} ${s.groups[g.id]}</span>`).join('')}</div>
+      ${leftSub ? `<p class="hint">${t('campsLeftSplit')}: ${leftSub}</p>` : ''}
       ${rightSub ? `<p class="hint">${t('campsRightSplit')}: ${rightSub}</p>` : ''}
       <h4 class="camp-sub">${t('campsByDomain')}</h4>
       ${AXES.filter(a => s.byAxis[a.id]).map(a => {
@@ -810,7 +887,7 @@
       if (state.answers[state.deck[i]] == null) { go(i); return; }
     }
     state.justFinished = true; renderQuestion();
-    if (isPhone()) toast(t('doneSeeResults'));
+    if (isPhone() && state.mode !== 'topic') toast(t('doneSeeResults'));
   }
 
   function go(i) {
@@ -840,7 +917,8 @@
   function exportJson() {
     const { scores } = current();
     const data = { app: 'kompas-pogladow', version: 2, date: new Date().toISOString(), scores,
-      answers: state.answers, importance: state.importance, order: state.order, snapshots: state.snapshots };
+      answers: state.answers, importance: state.importance, order: state.order, snapshots: state.snapshots,
+      optVersion: OPTIONS_VERSION };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -856,6 +934,7 @@
         const d = JSON.parse(reader.result);
         state.answers = {};
         Object.entries(d.answers || {}).forEach(([id, v]) => { if (Q[id]) state.answers[id] = v; });
+        state.optVersion = d.optVersion || 1; migrateOptions();   // starszy plik: przesuń numery stanowisk
         state.importance = d.importance || {};
         state.order = (d.order || Object.keys(state.answers)).filter(id => state.answers[id] != null);
         if (Array.isArray(d.snapshots)) {
@@ -910,13 +989,19 @@
     state.lang = b.dataset.lang; save(); applyI18n(); renderAll();
   });
   $('mode').addEventListener('click', e => {
-    const b = e.target.closest('button'); if (!b || b.dataset.mode === state.mode) return;
-    state.mode = b.dataset.mode; buildDeck(); save(); applyI18n(); renderAll();
+    const b = e.target.closest('button[data-mode]'); if (b) setMode(b.dataset.mode);
+  });
+  $('topicGrid').addEventListener('click', e => {
+    const b = e.target.closest('[data-topic]'); if (b) pickTopic(b.dataset.topic);
+  });
+  $('topicCrumb').addEventListener('click', e => { if (e.target.closest('#btnTopics')) setMode('topic'); });
+  $('fxLine').addEventListener('click', e => {
+    const b = e.target.closest('[data-topic-act]'); if (!b) return;
+    if (b.dataset.topicAct === 'pick') setMode('topic'); else setTab('results');
   });
   $('tabbar').addEventListener('click', e => {
     const b = e.target.closest('button[data-tab]'); if (b) setTab(b.dataset.tab);
   });
-  $('mMode').onclick = () => { state.mode = state.mode === 'quick' ? 'full' : 'quick'; buildDeck(); save(); applyI18n(); renderAll(); };
   $('mShuffle').onclick = () => $('btnShuffle').click();
   $('selX').onchange = e => { state.cx = e.target.value; save(); renderAll(); };
   $('selY').onchange = e => { state.cy = e.target.value; save(); renderAll(); };
