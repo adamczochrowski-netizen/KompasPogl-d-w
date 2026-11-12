@@ -567,3 +567,11 @@ body.voice-on { padding-bottom: 260px; }
   100% { transform: scale(2.4); opacity: 0; }
 }
 @media (prefers-reduced-motion: reduce) { .ideo-pulse { animation: none; } }
+
+/* Oś z niespójnymi odpowiedziami - wynik niepewny */
+.axis-row.unsure { opacity: .45; }
+/* Ważność odpowiedzi w dymku */
+.bubble .importance { margin: 0 0 14px; padding-bottom: 12px; border-bottom: 1px dashed var(--line); }
+/* Pasek postępu nad pytaniem: bez osi jest niski */
+.live { padding-top: 12px; padding-bottom: 12px; }
+.live .live-head { margin-bottom: 0; }

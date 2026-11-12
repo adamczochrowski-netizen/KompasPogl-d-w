@@ -26,13 +26,11 @@
       <div class="seg" id="lang">
         <button data-lang="pl">PL</button><button data-lang="en">EN</button>
       </div>
-      <button class="ghost" id="btnShuffle" data-i18n="shuffle"></button>
       <div class="menu">
         <button class="ghost" id="btnMenu">⋯<span class="btn-txt" data-i18n="moreTxt"></span></button>
         <div class="menu-pop" id="menuPop" hidden>
-          <!-- Na telefonie tryb i losowanie są tutaj, żeby nie zajmowały górnego paska -->
-          <button class="mobile-only" id="mShuffle" data-i18n="shuffle"></button>
-          <hr class="mobile-only">
+          <button id="mShuffle" data-i18n="shuffle"></button>
+          <hr>
           <button id="btnReport" data-i18n="report"></button>
           <button id="btnImage" data-i18n="image"></button>
           <button id="btnExport" data-i18n="export"></button>
@@ -45,15 +43,12 @@
   </header>
 
   <!-- Dwutorowe paski na żywo -->
-  <section class="live panel" data-view="quiz results">
+  <section class="live panel" data-view="quiz">
     <div class="live-head">
-      <h2 data-i18n="liveTitle"></h2>
+      <h2 data-i18n="progressTitle"></h2>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
       <span class="progress-txt" id="progressTxt"></span>
     </div>
-    <div class="axes" id="axes"></div>
-    <p class="summary" id="summary"></p>
-    <p class="hint axis-hint" data-i18n="axisClickHint"></p>
   </section>
 
   <main class="grid">
@@ -81,10 +76,6 @@
         <div id="dilemma" class="dilemma"></div>
         <div class="scale" id="scale"></div>
         <p class="fx-line" id="fxLine"></p>
-        <div class="importance" id="importance">
-          <span data-i18n="impTitle"></span>
-          <div class="seg small-seg" id="impSeg"></div>
-        </div>
         <div class="qnav">
           <button class="ghost" id="btnPrev" data-i18n="prev"></button>
           <button class="ghost" id="btnSkip" data-i18n="skip"></button>
@@ -93,6 +84,10 @@
         <p class="hint" data-i18n="shortcuts"></p>
       </div>
       <aside class="bubble" id="bubble">
+        <div class="importance" id="importance">
+          <span data-i18n="impTitle"></span>
+          <div class="seg small-seg" id="impSeg"></div>
+        </div>
         <div class="bubble-sec">
           <h4>💡 <span data-i18n="bubbleWhat"></span></h4>
           <p id="bWhat"></p>
@@ -102,11 +97,6 @@
           <p id="bExample"></p>
         </div>
         <div class="bubble-sec bpositions" id="bPositions" hidden></div>
-        <details class="bubble-sec args" id="bArgs">
-          <summary data-i18n="argsToggle"></summary>
-          <div class="arg pro"><h4 id="bProTitle"></h4><p id="bPro"></p></div>
-          <div class="arg con"><h4 id="bConTitle"></h4><p id="bCon"></p></div>
-        </details>
       </aside>
     </section>
 
@@ -120,7 +110,14 @@
       <p class="hint" data-i18n="ideoHint"></p>
     </section>
 
-    <section class="panel chart-card half" data-sec="compass" data-view="results">
+    <section class="panel wide" data-sec="axes" data-view="results">
+      <div class="card-head"><h2 data-i18n="axesTitle"></h2></div>
+      <div class="axes" id="axes"></div>
+      <p class="summary" id="summary"></p>
+      <p class="hint axis-hint" data-i18n="axisClickHint"></p>
+    </section>
+
+    <section class="panel chart-card wide" data-sec="compass" data-view="more">
       <div class="card-head">
         <h2 data-i18n="compassTitle"></h2>
         <div class="selects">
@@ -132,23 +129,8 @@
       <p class="hint" data-i18n="compassHint"></p>
     </section>
 
-    <section class="panel chart-card half" data-sec="radar" data-view="results">
-      <div class="card-head"><h2 data-i18n="radarTitle"></h2></div>
-      <canvas id="radar" class="sq"></canvas>
-      <p class="hint" data-i18n="radarHint"></p>
-    </section>
 
-    <section class="panel third" data-sec="match" data-view="match">
-      <div class="card-head"><h2 data-i18n="matchTitle"></h2></div>
-      <div id="matches" class="matches"></div>
-      <p class="hint" data-i18n="matchHint"></p>
-    </section>
 
-    <section class="panel third" data-sec="conf" data-view="results">
-      <div class="card-head"><h2 data-i18n="confTitle"></h2></div>
-      <div id="confidence" class="conf"></div>
-      <p class="hint" data-i18n="confHint"></p>
-    </section>
 
     <section class="panel third" data-sec="camps" data-view="results">
       <div class="card-head"><h2 data-i18n="campsTitle"></h2></div>
@@ -156,11 +138,6 @@
       <p class="hint" data-i18n="campsHint"></p>
     </section>
 
-    <section class="panel chart-card wide" data-sec="history" data-view="results">
-      <div class="card-head"><h2 data-i18n="historyTitle"></h2><div class="legend" id="legend"></div></div>
-      <canvas id="history" class="wide-canvas"></canvas>
-      <p class="hint" data-i18n="historyHint"></p>
-    </section>
 
     <section class="panel wide" data-sec="parties" data-view="match">
       <div class="card-head"><h2 data-i18n="partyTitle"></h2></div>
@@ -227,9 +204,6 @@
 
   <script src="js/i18n.js"></script>
   <script src="js/data.js"></script>
-  <script src="js/questions-1.js"></script>
-  <script src="js/questions-2.js"></script>
-  <script src="js/questions-3.js"></script>
   <script src="js/positions.js"></script>
   <script src="js/positions-2.js"></script>
   <script src="js/positions-3.js"></script>
@@ -243,6 +217,5 @@
   <script src="js/ideologies.js"></script>
   <script src="js/charts.js"></script>
   <script src="js/app.js"></script>
-  <!-- Asystent głosowy wyłączony (wrócimy do niego później): <script src="js/voice.js"></script> -->
 </body>
 </html>

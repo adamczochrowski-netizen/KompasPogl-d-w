@@ -6,74 +6,54 @@ Bezpieczeństwo, Sprawiedliwość, Technologia, Ustrój terytorialny.
 
 Działa na komputerze i na telefonie. Na telefonie można ją zainstalować jak zwykłą aplikację i używać bez internetu.
 
+Strona: https://adamczochrowski-netizen.github.io/KompasPogl-d-w/
+
 ## Uruchomienie
-- **Na komputerze, najprościej:** dwuklik w `index.html`.
-- **Z asystentem ElevenLabs / AI:** dwuklik w `start.bat` (szczegóły niżej).
-- **Na telefonie:** po publikacji na GitHub Pages otwórz adres strony i wybierz „Dodaj do ekranu głównego” (Android: menu ⋮, iPhone: przycisk Udostępnij).
+- **Na komputerze:** dwuklik w `index.html` albo dowolny prosty serwer, np. `python -m http.server 8765`.
+- **Na telefonie:** otwórz adres strony i wybierz „Dodaj do ekranu głównego” (Android: menu ⋮, iPhone: przycisk Udostępnij).
 
 Odpowiedzi zapisują się w przeglądarce, na danym urządzeniu.
 
 ## Co jest w środku
-- **Pytania w formie stanowisk:** przy każdym pytaniu wybierasz stanowisko najbliższe Tobie, typowe dla lewicy, centrum albo prawicy. Lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową, tam gdzie się różnią.
-- **Dwa tryby:** 📝 Test (wszystkie pytania) i 🗂️ Tematy (12 dziedzin, np. gospodarka, edukacja, klimat - odpowiadasz tylko na pytania z wybranej). Odpowiedzi są wspólne dla obu trybów.
-- **Dymek „i”:** dlaczego dany obóz tak uważa, przykład z prawdziwego świata i link do Wikipedii.
-- **Ważność** każdej odpowiedzi: mało / normalnie / bardzo (waga ×0,5 / ×1 / ×2).
-- **Wyniki:**
-  - paski 10 osi, kompas 2D, radar i ewolucja;
-  - **Twój rozkład**: ile razy wybierasz lewicę, centrum i prawicę, ogółem i w każdej dziedzinie, plus Twoje wyjątki;
-  - pewność wyniku.
-- **Dopasowanie:** typy poglądów, partie (Polska, Europa, Ameryki, Azja, Afryka) i 3 postacie (z Polski, ze świata i z fikcji). Pozycje to przybliżone szacunki.
-- **Migawki** w czasie i **porównanie ze znajomym** (wczytujesz jego plik z Eksportu).
-- **Raport** (drukuj albo zapisz jako PDF) i **obrazek PNG** do udostępnienia.
-- **Na telefonie:** dolny pasek z zakładkami Pytania / Wynik / Dopasowanie / Więcej.
+- **📝 Test:** stałe 60 pytań, po kilka z każdego tematu.
+- **🗂️ Tematy:** 12 dziedzin po 20 pytań; przy każdym podejściu losuje się 10, najpierw te bez odpowiedzi. Odpowiedzi są wspólne z testem.
+- **Pytania w formie stanowisk:** wybierasz stanowisko najbliższe Tobie. Lewica dzieli się na socjalną i progresywną, a prawica na konserwatywną i wolnorynkową tam, gdzie się różnią. Karty są w losowej kolejności (stałej dla danej osoby).
+- **Dymek „i”:** o co chodzi, ważność odpowiedzi oraz dlaczego dany obóz tak uważa, przykład i link do Wikipedii.
+- **Wynik:** mapa ideologii (30 ideologii, najbliższe dopasowania), Twoje osie (niepewne są wyszarzone) i Twój rozkład lewica / centrum / prawica.
+- **Dopasowanie:** partie (Polska, Europa, Ameryki, Azja, Afryka) i 3 postacie (z Polski, ze świata i z fikcji).
+- **Więcej:** kompas 2D z dowolnymi osiami, migawki i porównanie ze znajomym, lista odpowiedzi. W menu ⋯: raport (PDF), obrazek PNG, eksport i import, przelosowanie.
 
-Stare pytania ze skalą zgody (`js/questions-*.js`) czekają na przerobienie na stanowiska. Apka używa ich tylko do zapisania starego wyniku jako migawki.
-
-## Asystent głosowy 🎙️
-Na starcie wybierasz **wersję tradycyjną** albo **z asystentem AI**. Wybór zmienisz przyciskiem 🎙️ Asystent.
-
-Asystent czyta pytanie i stanowiska. Odpowiadasz numerem („drugie”) albo nazwą obozu („centrum”, „prawica wolnorynkowa”).
-Dostępne polecenia: „powtórz”, „wyjaśnij”, „pomiń”, „wstecz”, „stop”. Możesz dodać „bardzo ważne” albo „mało ważne”.
-
-- **Za darmo, bez kluczy** (też na GitHub Pages i telefonie): głos i rozpoznawanie mowy z przeglądarki. Najlepiej w Edge lub Chrome.
-- **ElevenLabs** (naturalny głos) i **Claude** (rozumienie swobodnych odpowiedzi). Działają tylko na komputerze, przez lokalny serwer:
-  1. Skopiuj `.env.example` jako `.env` i wpisz klucze.
-  2. Dla Claude doinstaluj pakiet: `pip install anthropic`.
-  3. Uruchom **`start.bat`**.
-
-  Klucze zostają na Twoim komputerze. Plik `.env` jest w `.gitignore`, więc nie trafi na GitHub.
+Wszystkie pozycje partii, postaci i ideologii to przybliżone szacunki.
 
 ## Publikacja na GitHub Pages
-1. Wrzuć zawartość folderu `KompasPogladow` do repozytorium na GitHubie (np. przez GitHub Desktop). Pliku `.env` nie wrzucaj: `.gitignore` sam go pominie.
-2. W repozytorium: **Settings → Pages → Build and deployment → Deploy from a branch**, gałąź `main`, folder `/ (root)`.
-3. Po minucie strona będzie pod adresem `https://<twoja-nazwa>.github.io/<nazwa-repozytorium>/`.
-
-Przy kolejnych zmianach podbij numer `CACHE` w `sw.js` (np. `kompas-v2`), żeby telefony szybciej pobrały nową wersję.
+Repozytorium `KompasPogl-d-w`, Pages z gałęzi `main`, folder `/ (root)`.
+Przy każdej zmianie podbij numer `CACHE` w `sw.js`, żeby telefony szybciej pobrały nową wersję.
 
 ## Pliki
 - `index.html`, `css/style.css`: wygląd
-- `js/positions.js`, `js/positions-2.js`, `js/positions-3.js`, `js/positions-4.js`: 60 pytań w formie stanowisk (aktualne)
-- `js/topics.js`: przypisanie pytań do tematów (tryb Tematy)
-- `js/questions-1.js`, `js/questions-2.js`, `js/questions-3.js`: stare pytania ze skalą (do przerobienia)
-- `js/data.js`: osie, obozy, archetypy
+- `js/positions*.js`: 60 pytań testu
+- `js/pool-*.js`: pytania tylko do Tematów (`pool: true`)
+- `js/topics.js`: przypisanie pytań do tematów
+- `js/ideologies.js`: ideologie na mapie
+- `js/data.js`: osie i obozy
 - `js/references.js`: partie i postacie (wektor 10 wartości od -1 do 1, w kolejności osi)
 - `js/i18n.js`: teksty interfejsu (PL / EN)
-- `js/charts.js`: wykresy
+- `js/charts.js`: kompas 2D
 - `js/app.js`: logika
-- `js/voice.js`: asystent głosowy
 - `manifest.webmanifest`, `sw.js`, `icons/`: instalacja na telefonie i działanie offline
-- `server.py`, `start.bat`, `.env.example`: lokalny serwer z kluczami API (ElevenLabs, Claude)
+- `_na-pozniej/`: odłożony asystent głosowy i stare pytania ze skalą (nie są wczytywane)
 
 ## Dodanie pytania (stanowiska)
 ```js
-{ id: 'x_nazwa', type: 'positions',
+{ id: 'x_nazwa', type: 'positions',          // pool: true - tylko w Tematach
   text: { pl: 'Pytanie?', en: 'Question?' },
   what: { pl: 'O co chodzi', en: '…' },
   options: [
     { camp: 'left', effects: { econ: -0.9 },
       text: { pl: 'Stanowisko', en: '…' }, why: { pl: 'Dlaczego', en: '…' },
       example: { pl: 'Przykład', en: '…' }, wiki: { pl: 'Hasło Wikipedii', en: 'Wikipedia title' } },
-    { camp: 'center', … }, { camp: 'right', … }   // albo right_cons + right_free
+    { camp: 'center', … }, { camp: 'right', … }   // albo left_soc / left_lib, right_cons / right_free
   ] }
 ```
-`effects` to „adres” stanowiska na osiach, od -1 do 1. Centrum nie musi leżeć w 0: o adresie decyduje treść stanowiska.
+`effects` to „adres” stanowiska na osiach, od -1 do 1. Odpowiedź zapisuje się jako numer stanowiska na liście,
+więc nowe stanowisko dopisuj na końcu albo dodaj wpis do `OPTION_INSERTS` w `js/app.js`.

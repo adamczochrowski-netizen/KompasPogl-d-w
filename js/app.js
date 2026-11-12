@@ -1,5 +1,5 @@
 (function () {
-  const { AXES, QUESTIONS, TOPICS = [], IDEOLOGIES = [], ARCHETYPES, PARTIES, PEOPLE, FICTION, REGIONS, POLE_INFO, CAMPS, CAMP_GROUPS, I18N, Charts } = SZ;
+  const { AXES, QUESTIONS, TOPICS = [], IDEOLOGIES = [], PARTIES, PEOPLE, FICTION, REGIONS, POLE_INFO, CAMPS, CAMP_GROUPS, I18N, Charts } = SZ;
   const STORE_KEY = 'kompas-pogladow-v1';
   const DATA_VERSION = 2;   // 2 = pytania w formie stanowisk (1 = skala zgody)
   // Wersje list stanowisk: { pytanie: numer, pod który wstawiono nowe stanowisko } (patrz migrateOptions).
@@ -244,6 +244,15 @@
   if (!deckOk) buildDeck();
   if (!(state.pos >= 0 && state.pos < state.deck.length)) state.pos = 0;
   const curQ = () => Q[state.deck[state.pos]];
+  // Kolejność kart stanowisk: losowa, ale stała dla danej osoby i pytania (ziarno zapisane w stanie).
+  if (!state.seed) { state.seed = Math.floor(Math.random() * 1e9); save(); }
+  function cardOrder(q) {
+    let h = state.seed;
+    for (const ch of q.id) h = (Math.imul(h ^ ch.charCodeAt(0), 2654435761) >>> 0);
+    const idx = q.options.map((_, i) => i);
+    for (let i = idx.length - 1; i > 0; i--) { h = (Math.imul(h, 1103515245) + 12345) >>> 0; const j = h % (i + 1); [idx[i], idx[j]] = [idx[j], idx[i]]; }
+    return idx;
+  }
   const compareProfile = () => state.snapshots.find(s => s.id === state.compare) || null;
 
   // ── Statyczne napisy ──
@@ -258,7 +267,6 @@
       $(id).innerHTML = AXES.map(a => `<option value="${a.id}">${tr(a.name)}</option>`).join('');
     });
     $('selX').value = state.cx; $('selY').value = state.cy;
-    $('legend').innerHTML = AXES.map(a => `<span><i style="background:${a.color}"></i>${tr(a.name)}</span>`).join('');
     $('impSeg').innerHTML = IMPORTANCE.map(([v, k]) => `<button data-imp="${v}">${t(k)}</button>`).join('');
     document.querySelectorAll('.collapse-btn').forEach(b => { b.title = t('collapse'); });
     buildAxes();
@@ -348,7 +356,7 @@
       </div>`).join('');
   }
 
-  function renderAxes(scores, count) {
+  function renderAxes(scores, count, consistency = {}) {
     const cmp = compareProfile();
     AXES.forEach(a => {
       const row = $('ax-' + a.id), v = scores[a.id], pct = (v + 1) / 2 * 100;
@@ -366,6 +374,7 @@
       row.querySelector('.pole.pos').style.opacity = v > .05 ? 1 : .45;
       const strength = count[a.id] ? `${v > 0 ? '+' : ''}${Math.round(v * 100)} · ${count[a.id]} ${t('answers')}` : '';
       row.querySelector('.axis-name').textContent = tr(a.name) + (strength ? '  ·  ' + strength : '');
+      row.classList.toggle('unsure', count[a.id] >= 2 && consistency[a.id] != null && consistency[a.id] < .4);
     });
   }
 
@@ -475,9 +484,9 @@
 
     const scale = $('scale');
     if (type === 'positions') {
-      // Karty stanowisk w stałej kolejności (lewica → centrum → prawica), z etykietą obozu.
+      // Karty stanowisk w losowej kolejności (stałej dla danej osoby), żeby pierwsza karta nie miała przewagi.
       scale.className = 'scale positions';
-      scale.innerHTML = q.options.map((o, i) => {
+      scale.innerHTML = cardOrder(q).map(i => { const o = q.options[i];
         const c = CAMPS[o.camp];
         return `<button data-o="${i}" class="pos-card ${cur === i ? 'sel' : ''}" style="--camp:${c.color}">
           <span class="camp-tag">${tr(c.name)}</span><span class="pos-text">${tr(o.text)}</span></button>`;
@@ -509,16 +518,6 @@
       </div>`;
     }).join('');
     $('bPositions').hidden = q.type !== 'positions';
-    const hasArgs = q.pro || q.con;
-    $('bArgs').classList.toggle('hidden', !hasArgs);
-    if (hasArgs) {
-      $('bProTitle').textContent = type === 'dilemma' ? t('bubbleProA') : t('bubblePro');
-      $('bConTitle').textContent = type === 'dilemma' ? t('bubbleProB') : t('bubbleCon');
-      // W dylematach tekst argumentu zaczyna się od „Za A: …” - tytuł już to mówi.
-      const strip = s => s.replace(/^(Za|For) [AB]: /, '');
-      $('bPro').textContent = strip(tr(q.pro));
-      $('bCon').textContent = strip(tr(q.con));
-    }
     $('bubble').classList.toggle('hidden', !state.bubble);
     $('btnBubble').classList.toggle('on', state.bubble);
     $('btnBubble').title = state.bubble ? t('bubbleHide') : t('bubbleShow');
@@ -549,17 +548,14 @@
   // ── Wykresy ──
   function renderCharts(scores) {
     const ax = axisById(state.cx), ay = axisById(state.cy), cmp = compareProfile();
-    const series = historySeries();
     Charts.compass($('compass'), {
       ax, ay,
       point: [scores[ax.id], scores[ay.id]],
-      trail: series.map(s => [s[ax.id] || 0, s[ay.id] || 0]),
+      trail: [],
       compare: cmp ? [cmp.scores[ax.id] || 0, cmp.scores[ay.id] || 0] : null,
       compareLabel: cmp ? cmp.name : '',
       labels: { xNeg: tr(ax.neg), xPos: tr(ax.pos), yNeg: tr(ay.neg), yPos: tr(ay.pos) }
     });
-    Charts.radar($('radar'), { axes: AXES, scores, compare: cmp ? cmp.scores : null, label: tr });
-    Charts.history($('history'), { axes: AXES, series });
   }
 
   function barList(items) {
@@ -568,11 +564,6 @@
         <div class="row"><b>${esc(r.name)}</b><span>${r.pct}%</span></div>
         <div class="bar"><div style="width:${r.pct}%"></div></div>
       </div>`).join('');
-  }
-
-  function renderMatches(scores, count) {
-    if (!Object.keys(state.answers).length) { $('matches').innerHTML = `<p class="hint">${t('summaryEmpty')}</p>`; return; }
-    $('matches').innerHTML = barList(rank(ARCHETYPES, scores, count).slice(0, 5).map(r => ({ name: tr(r.x.name), pct: r.pct })));
   }
 
   // ── Pewność wyniku ──
@@ -584,19 +575,6 @@
     if (c >= .4) return t('confMid');
     return t('confLow');
   }
-  function renderConfidence(count, consistency) {
-    $('confidence').innerHTML = AXES.map(a => {
-      const total = TEST.filter(q => axisWeights(q)[a.id]).length;
-      const c = consistency[a.id] || 0;
-      const col = c >= .75 ? '#4ade80' : c >= .4 ? '#fbbf24' : '#f87171';
-      return `<div class="conf-row">
-        <span style="color:${a.color}">${tr(a.name)}</span>
-        <div class="bar"><div style="width:${count[a.id] ? c * 100 : 0}%;background:${col}"></div></div>
-        <span class="lbl">${count[a.id]}/${total} · ${confidenceLabel(a, count, consistency)}</span>
-      </div>`;
-    }).join('');
-  }
-
   // ── Twój rozkład: ile razy wybierasz stanowiska lewicy, centrum i prawicy ──
   function campStats() {
     const groups = { left: 0, center: 0, right: 0 }, sub = {}, byAxis = {}, picks = [];
@@ -800,52 +778,58 @@
     ideoCache = { key, canvas: off, labels };
     return ideoCache;
   }
+  // Rysuje mapę na podanym kontekście; zwraca środek kropki „Ty” (w pikselach kontekstu) albo null.
+  function paintIdeo(g, size, k, scores, count, top, small) {
+    const pad = Math.round(26 * k), inner = size - pad * 2;
+    g.fillStyle = '#0d1017'; g.fillRect(0, 0, size, size);
+    const bg = ideoBackground(inner);
+    g.drawImage(bg.canvas, pad, pad);
+    g.textAlign = 'center'; g.textBaseline = 'middle';
+    bg.labels.filter(l => !small || l.n >= 14 || (top && top.x.id === l.x.id)).forEach(l => {
+      const fs = Math.round((small ? 8.5 : l.n > 20 ? 11.5 : 10) * k);
+      g.font = `700 ${fs}px "Segoe UI", system-ui, sans-serif`;
+      const name = tr(l.x.name), words = name.split(' ');
+      const lines = words.length > 1 && name.length > 12 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')] : [name];
+      lines.forEach((ln, i) => {
+        const y = pad + l.cy + (i - (lines.length - 1) / 2) * fs * 1.1;
+        g.lineWidth = 3 * k; g.strokeStyle = 'rgba(0,0,0,.75)'; g.strokeText(ln, pad + l.cx, y);
+        g.fillStyle = top && top.x.id === l.x.id ? '#fff59d' : '#fff'; g.fillText(ln, pad + l.cx, y);
+      });
+    });
+    const ea = axisById('econ'), pa = axisById('power');
+    g.font = `600 ${Math.round(11 * k)}px "Segoe UI", system-ui, sans-serif`; g.fillStyle = '#8a94a8';
+    g.fillText(`▲ ${tr(pa.pos)}`, size / 2, pad / 2);
+    g.fillText(`▼ ${tr(pa.neg)}`, size / 2, size - pad / 2);
+    g.save(); g.translate(pad / 2, size / 2); g.rotate(-Math.PI / 2); g.fillText(`◀ ${tr(ea.neg)}`, 0, 0); g.restore();
+    g.save(); g.translate(size - pad / 2, size / 2); g.rotate(Math.PI / 2); g.fillText(`${tr(ea.pos)} ▶`, 0, 0); g.restore();
+    if (!(count.econ || count.power)) return null;
+    const x = pad + (scores.econ + 1) / 2 * inner, y = pad + (1 - (scores.power + 1) / 2) * inner;
+    g.beginPath(); g.arc(x, y, 11 * k, 0, Math.PI * 2); g.fillStyle = 'rgba(255,255,255,.25)'; g.fill();
+    g.beginPath(); g.arc(x, y, 6.5 * k, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill();
+    g.lineWidth = 2.5 * k; g.strokeStyle = '#0d1017'; g.stroke();
+    g.font = `800 ${Math.round(12 * k)}px "Segoe UI", system-ui, sans-serif`;
+    g.lineWidth = 3 * k; g.strokeStyle = 'rgba(0,0,0,.8)'; g.strokeText(t('ideoYou'), x, y - 18 * k);
+    g.fillStyle = '#fff'; g.fillText(t('ideoYou'), x, y - 18 * k);
+    return { x, y };
+  }
+  const ideoTop = (scores, count) => Object.keys(state.answers).length >= MIN_FOR_MATCH ? rank(IDEOLOGIES, scores, count)[0] : null;
+  // Osobny obrazek mapy (do PNG i raportu) - działa też, gdy sekcja na ekranie jest ukryta.
+  function ideoImage(scores, count, size) {
+    const c = document.createElement('canvas'); c.width = c.height = size;
+    paintIdeo(c.getContext('2d'), size, 1, scores, count, ideoTop(scores, count), false);
+    return c;
+  }
   function renderIdeo(scores, count) {
     const canvas = $('ideoMap'), rect = canvas.getBoundingClientRect();
     if (rect.width < 120) return;   // ukryta zakładka / zwinięta sekcja
     const dpr = window.devicePixelRatio || 1, size = Math.round(rect.width * dpr);
     canvas.width = canvas.height = size;
-    const g = canvas.getContext('2d'), pad = Math.round(26 * dpr), inner = size - pad * 2;
-    g.fillStyle = '#0d1017'; g.fillRect(0, 0, size, size);
-    const bg = ideoBackground(inner);
-    g.drawImage(bg.canvas, pad, pad);
-    const answered = Object.keys(state.answers).length;
-    const ranked = answered ? rank(IDEOLOGIES, scores, count) : [];
-    const top = answered >= MIN_FOR_MATCH ? ranked[0] : null;
-    // Napisy z nazwami ideologii
-    g.textAlign = 'center'; g.textBaseline = 'middle';
-    const small = rect.width < 480;   // telefon: mniejsze napisy i tylko większe pola
-    bg.labels.filter(l => !small || l.n >= 14 || (top && top.x.id === l.x.id)).forEach(l => {
-      const fs = Math.round((small ? 8.5 : l.n > 20 ? 11.5 : 10) * dpr);
-      g.font = `700 ${fs}px "Segoe UI", system-ui, sans-serif`;
-      const words = tr(l.x.name).split(' ');
-      const lines = words.length > 1 && tr(l.x.name).length > 12 ? [words.slice(0, Math.ceil(words.length / 2)).join(' '), words.slice(Math.ceil(words.length / 2)).join(' ')] : [tr(l.x.name)];
-      lines.forEach((ln, i) => {
-        const y = pad + l.cy + (i - (lines.length - 1) / 2) * fs * 1.1;
-        g.lineWidth = 3 * dpr; g.strokeStyle = 'rgba(0,0,0,.75)'; g.strokeText(ln, pad + l.cx, y);
-        g.fillStyle = top && top.x.id === l.x.id ? '#fff59d' : '#fff'; g.fillText(ln, pad + l.cx, y);
-      });
-    });
-    // Podpisy osi
-    const ea = axisById('econ'), pa = axisById('power');
-    g.font = `600 ${Math.round(11 * dpr)}px "Segoe UI", system-ui, sans-serif`; g.fillStyle = '#8a94a8';
-    g.fillText(`▲ ${tr(pa.pos)}`, size / 2, pad / 2);
-    g.fillText(`▼ ${tr(pa.neg)}`, size / 2, size - pad / 2);
-    g.save(); g.translate(pad / 2, size / 2); g.rotate(-Math.PI / 2); g.fillText(`◀ ${tr(ea.neg)}`, 0, 0); g.restore();
-    g.save(); g.translate(size - pad / 2, size / 2); g.rotate(Math.PI / 2); g.fillText(`${tr(ea.pos)} ▶`, 0, 0); g.restore();
-    // Twoja kropka
+    const ranked = Object.keys(state.answers).length ? rank(IDEOLOGIES, scores, count) : [];
+    const top = ideoTop(scores, count);
+    const dot = paintIdeo(canvas.getContext('2d'), size, dpr, scores, count, top, rect.width < 480);
     const pulse = $('ideoPulse');
-    pulse.hidden = !(count.econ || count.power);
-    if (count.econ || count.power) {
-      const x = pad + (scores.econ + 1) / 2 * inner, y = pad + (1 - (scores.power + 1) / 2) * inner;
-      pulse.style.left = (x / dpr) + 'px'; pulse.style.top = (y / dpr) + 'px';
-      g.beginPath(); g.arc(x, y, 11 * dpr, 0, Math.PI * 2); g.fillStyle = 'rgba(255,255,255,.25)'; g.fill();
-      g.beginPath(); g.arc(x, y, 6.5 * dpr, 0, Math.PI * 2); g.fillStyle = '#fff'; g.fill();
-      g.lineWidth = 2.5 * dpr; g.strokeStyle = '#0d1017'; g.stroke();
-      g.font = `800 ${Math.round(12 * dpr)}px "Segoe UI", system-ui, sans-serif`;
-      g.lineWidth = 3 * dpr; g.strokeStyle = 'rgba(0,0,0,.8)'; g.strokeText(t('ideoYou'), x, y - 18 * dpr);
-      g.fillStyle = '#fff'; g.fillText(t('ideoYou'), x, y - 18 * dpr);
-    }
+    pulse.hidden = !dot;
+    if (dot) { pulse.style.left = (dot.x / dpr) + 'px'; pulse.style.top = (dot.y / dpr) + 'px'; }
     // Lista dopasowań
     if (!top) { $('ideoList').innerHTML = `<p class="hint">${t('ideoEmpty', { n: MIN_FOR_MATCH })}</p>`; return; }
     $('ideoList').innerHTML = `
@@ -862,14 +846,12 @@
 
   function renderAll() {
     const { scores, count, consistency } = current();
-    renderAxes(scores, count);
+    renderAxes(scores, count, consistency);
     renderSummary(scores, count, consistency);
     renderQuestion();
     // Błąd w rysowaniu wykresu nie może zatrzymać reszty apki.
     try { renderCharts(scores); } catch (e) { console.error(e); }
-    renderMatches(scores, count);
     try { renderIdeo(scores, count); } catch (e) { console.error(e); }
-    renderConfidence(count, consistency);
     renderContra();
     renderParties(scores, count);
     renderPeople(scores, count);
@@ -895,10 +877,10 @@
     $('report').innerHTML = `
       <h1>${t('appTitle')}</h1>
       <p class="rep-sub">${t('repSub', { date })} · ${t('repAnswered', { n: answered.length, total: TEST.length })}</p>
-      <h2>${t('liveTitle')}</h2><p>${summaryHtml(scores, count, consistency) || t('summaryEmpty')}</p>
-      <div class="rep-imgs"><div><img src="${$('compass').toDataURL()}"></div><div><img src="${$('radar').toDataURL()}"></div></div>
+      <h2>${t('axesTitle')}</h2><p>${summaryHtml(scores, count, consistency) || t('summaryEmpty')}</p>
+      <div class="rep-imgs"><div><img src="${ideoImage(scores, count, 520).toDataURL()}"></div></div>
       <div class="rep-cols">
-        <div><h2>${t('matchTitle')}</h2>${li(rank(ARCHETYPES, scores, count).slice(0, 5).map(r => `${tr(r.x.name)} - ${r.pct}%`))}</div>
+        <div><h2>${t('ideoTitle')}</h2>${li(rank(IDEOLOGIES, scores, count).slice(0, 5).map(r => `${tr(r.x.name)} - ${r.pct}%`))}</div>
         <div><h2>${t('peopleTitle')}</h2>${people}</div>
       </div>
       <h2>${t('partyTitle')}</h2>${parties}<p class="rep-note">${t('partyHint')}</p>
@@ -929,21 +911,32 @@
       if (g.roundRect) g.roundRect(x, y, w, h, 14); else g.rect(x, y, w, h);
       g.fill();
     };
-    panel(40, 110, 520, 525); g.drawImage($('compass'), 50, 120, 500, 500);
-    panel(580, 110, 290, 290); g.drawImage($('radar'), 585, 115, 280, 280);
-    panel(890, 110, 270, 290);
-
-    const list = (title, items, y) => {
-      g.fillStyle = '#e7ebf3'; g.font = `600 15px ${F}`; g.fillText(title, 906, y);
-      items.forEach((it, i) => {
-        g.fillStyle = i ? '#cbd5e1' : '#c4b5fd'; g.font = `${i ? 500 : 700} 14px ${F}`;
-        g.fillText(it.name.length > 24 ? it.name.slice(0, 23) + '…' : it.name, 906, y + 26 + i * 22);
-        g.fillStyle = '#8a94a8'; g.textAlign = 'right'; g.fillText(it.pct + '%', 1144, y + 26 + i * 22); g.textAlign = 'left';
+    panel(40, 110, 520, 525); g.drawImage(ideoImage(scores, count, 500), 50, 122, 500, 500);
+    panel(580, 110, 580, 290);
+    const top = ideoTop(scores, count), ranked = rank(IDEOLOGIES, scores, count);
+    const wrap = (text, x, y, maxW, lh) => {
+      let line = '', yy = y;
+      text.split(' ').forEach(w => {
+        const test = line ? line + ' ' + w : w;
+        if (g.measureText(test).width > maxW && line) { g.fillText(line, x, yy); line = w; yy += lh; } else line = test;
       });
+      if (line) g.fillText(line, x, yy);
+      return yy + lh;
     };
-    list(t('matchTitle'), rank(ARCHETYPES, scores, count).slice(0, 3).map(r => ({ name: tr(r.x.name), pct: r.pct })), 124);
-    if (enoughAnswers()) list(t('peopleTitle'), peoplePicks(scores, count).map(r => ({ name: r.x.name, pct: r.pct })), 258);
-
+    if (top) {
+      g.fillStyle = '#8a94a8'; g.font = `600 14px ${F}`; g.fillText(`${t('ideoBest').toUpperCase()} · ${top.pct}%`, 604, 130);
+      g.fillStyle = top.x.color; g.font = `800 34px ${F}`; g.fillText(tr(top.x.name), 604, 152);
+      g.fillStyle = '#cbd5e1'; g.font = `15px ${F}`;
+      let y = wrap(tr(top.x.desc), 604, 200, 530, 21) + 8;
+      g.fillStyle = '#8a94a8'; g.font = `600 13px ${F}`; g.fillText(t('ideoAlso'), 604, y);
+      ranked.slice(1, 4).forEach((r, i) => {
+        g.fillStyle = r.x.color; g.fillRect(604, y + 26 + i * 24, 10, 10);
+        g.fillStyle = '#e7ebf3'; g.font = `600 14px ${F}`; g.fillText(tr(r.x.name), 622, y + 22 + i * 24);
+        g.fillStyle = '#8a94a8'; g.textAlign = 'right'; g.fillText(r.pct + '%', 1140, y + 22 + i * 24); g.textAlign = 'left';
+      });
+    } else {
+      g.fillStyle = '#8a94a8'; g.font = `15px ${F}`; wrap(t('ideoEmpty', { n: MIN_FOR_MATCH }), 604, 130, 530, 21);
+    }
     AXES.forEach((a, i) => {
       const x = 580 + (i % 2) * 300, y = 422 + Math.floor(i / 2) * 43, v = scores[a.id], lvl = intensity(v);
       g.fillStyle = '#8a94a8'; g.font = `12px ${F}`; g.fillText(tr(a.name).toUpperCase(), x, y);
@@ -1063,7 +1056,6 @@
   $('btnExport').onclick = exportJson;
   $('btnReport').onclick = printReport;
   $('btnImage').onclick = shareImage;
-  $('btnShuffle').onclick = () => { buildDeck(); save(); renderAll(); };
   $('btnSnap').onclick = saveSnapshot;
   $('fileImport').onchange = e => { if (e.target.files[0]) importJson(e.target.files[0]); e.target.value = ''; };
   $('fileFriend').onchange = e => { if (e.target.files[0]) importFriend(e.target.files[0]); e.target.value = ''; };
@@ -1101,7 +1093,7 @@
   $('tabbar').addEventListener('click', e => {
     const b = e.target.closest('button[data-tab]'); if (b) setTab(b.dataset.tab);
   });
-  $('mShuffle').onclick = () => $('btnShuffle').click();
+  $('mShuffle').onclick = () => { buildDeck(); save(); renderAll(); };
   $('selX').onchange = e => { state.cx = e.target.value; save(); renderAll(); };
   $('selY').onchange = e => { state.cy = e.target.value; save(); renderAll(); };
   $('table').addEventListener('click', e => {
@@ -1125,17 +1117,15 @@
     if (e.target.matches('input, select, textarea') || e.ctrlKey || e.metaKey || e.altKey) return;
     const q = curQ(), n = Number(e.key);
     if (n >= 1 && n <= 5) {
-      if (isChoice(q)) { if (n <= q.options.length) answer(n - 1); }
+      if (q.type === 'positions') { if (n <= q.options.length) answer(cardOrder(q)[n - 1]); }
+      else if (isChoice(q)) { if (n <= q.options.length) answer(n - 1); }
       else answer(VALUES[n - 1]);
     }
     else if (e.key === 'ArrowLeft') go(state.pos - 1);
     else if (e.key === 'ArrowRight') go(state.pos + 1);
     else if (e.key.toLowerCase() === 'i') toggleBubble();
   });
-  // Po przewinięciu górny panel robi się kompaktowy, żeby nie zasłaniał wykresów.
-  window.addEventListener('scroll', () => {
-    document.querySelector('.live').classList.toggle('compact', window.scrollY > 140);
-  }, { passive: true });
+  // (Dawniej panel zmniejszał się po przewinięciu i strona przeskakiwała - teraz ma stałą wysokość.)
   let rz;
   window.addEventListener('resize', () => {
     clearTimeout(rz);
@@ -1164,7 +1154,7 @@
       const lean = AXES.filter(a => count[a.id] && intensity(scores[a.id]))
         .sort((a, b) => Math.abs(scores[b.id]) - Math.abs(scores[a.id])).slice(0, 3)
         .map(a => `${tr(a.name)}: ${intensity(scores[a.id])} ${tr(scores[a.id] < 0 ? a.neg : a.pos)}`);
-      const top = rank(ARCHETYPES, scores, count)[0];
+      const top = rank(IDEOLOGIES, scores, count)[0];
       return { lean, archetype: top ? tr(top.x.name) : '' };
     },
     showGuide: () => infoBox(t('guideHtml'))
