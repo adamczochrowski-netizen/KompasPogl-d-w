@@ -42,6 +42,14 @@
     </div>
   </header>
 
+  <!-- Zakładki: na komputerze pasek u góry, na telefonie przyklejony do dołu ekranu -->
+  <nav class="tabbar" id="tabbar">
+    <button data-tab="quiz"><span class="ti">📝</span><span data-i18n="tabQuiz"></span></button>
+    <button data-tab="results"><span class="ti">📊</span><span data-i18n="tabResults"></span></button>
+    <button data-tab="match"><span class="ti">🎯</span><span data-i18n="tabMatch"></span></button>
+    <button data-tab="more"><span class="ti">📁</span><span data-i18n="tabMore"></span></button>
+  </nav>
+
   <!-- Dwutorowe paski na żywo -->
   <section class="live panel" data-view="quiz">
     <div class="live-head">
@@ -184,13 +192,6 @@
     </section>
   </main>
 
-  <!-- Dolny pasek zakładek - widoczny tylko na telefonie -->
-  <nav class="tabbar" id="tabbar">
-    <button data-tab="quiz"><span class="ti">📝</span><span data-i18n="tabQuiz"></span></button>
-    <button data-tab="results"><span class="ti">📊</span><span data-i18n="tabResults"></span></button>
-    <button data-tab="match"><span class="ti">🎯</span><span data-i18n="tabMatch"></span></button>
-    <button data-tab="more"><span class="ti">📁</span><span data-i18n="tabMore"></span></button>
-  </nav>
   </div>
 
   <div class="toast" id="toast"></div>

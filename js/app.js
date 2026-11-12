@@ -979,7 +979,7 @@
       if (state.answers[state.deck[i]] == null) { go(i); return; }
     }
     state.justFinished = true; renderQuestion();
-    if (isPhone() && state.mode !== 'topic') toast(t('doneSeeResults'));
+    if (state.mode !== 'topic') toast(t('doneSeeResults'));
   }
 
   function go(i) {
