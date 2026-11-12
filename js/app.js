@@ -1168,7 +1168,16 @@
   renderAll();
   // Instalacja jako aplikacja na telefonie i działanie offline (tylko przez http/https, nie z pliku).
   if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
-    navigator.serviceWorker.register('sw.js').catch(() => { /* bez SW apka też działa */ });
+    const hadController = !!navigator.serviceWorker.controller;
+    navigator.serviceWorker.register('sw.js').then(reg => {
+      // Po powrocie do apki (np. z ekranu głównego telefonu) sprawdź, czy jest nowa wersja.
+      document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') reg.update().catch(() => {}); });
+    }).catch(() => { /* bez SW apka też działa */ });
+    // Gdy nowa wersja przejmie stronę, przeładuj raz, żeby od razu było widać zmiany.
+    let reloaded = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (hadController && !reloaded) { reloaded = true; location.reload(); }
+    });
   }
   // Ekran startowy (wybór wersji) pokazuje voice.js; bez niego - instrukcja przy pierwszym uruchomieniu.
   // DOMContentLoaded, a nie setTimeout: dopiero wtedy na pewno wczytały się wszystkie skrypty.

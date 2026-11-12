@@ -1,6 +1,6 @@
 // Service worker: apka działa bez internetu i da się ją zainstalować na telefonie.
 // Strategia „najpierw sieć”: zawsze świeża wersja, a bez internetu — kopia z pamięci.
-const CACHE = 'kompas-v18';
+const CACHE = 'kompas-v19';
 const FILES = [
   './', 'index.html', 'manifest.webmanifest', 'css/style.css',
   'js/i18n.js', 'js/data.js',
@@ -23,7 +23,8 @@ self.addEventListener('fetch', e => {
   // Tylko pliki tej apki; zapytania do serwera asystenta (/api/) i obce adresy idą zwykłą drogą.
   if (e.request.method !== 'GET' || url.origin !== location.origin || url.pathname.includes('/api/')) return;
   e.respondWith(
-    fetch(e.request)
+    // no-cache: zawsze pytamy serwer o świeżą wersję (omijamy pamięć przeglądarki GitHub Pages).
+    fetch(e.request, { cache: 'no-cache' })
       .then(res => {
         if (res.ok) { const copy = res.clone(); caches.open(CACHE).then(c => c.put(e.request, copy)); }
         return res;
